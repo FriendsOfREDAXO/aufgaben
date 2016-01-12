@@ -1,0 +1,22 @@
+# Alle hier gesetzten Werte können über $addon->getProperty($key) abgefragt werden
+
+package: aufgaben
+version: '1.0'
+author: Oliver Kreischer
+supportpage: www.redaxo.org/de/forum
+
+page:
+    title: 'Aufgaben'
+    perm: aufgaben[]
+    # block: system
+    icon: rex-icon fa-calendar-check-o
+    subpages:
+        aufgaben:
+            title: 'Aufgaben'
+            perm: 'aufgaben[]'
+            subpages:
+                todo: { title: 'Aktuelle Aufgaben' }
+                done: { title: 'Erledigte Aufgaben' }
+        kategorien: { title: 'Kategorien', perm: aufgaben[kategorien]}
+        info: { title: 'Info' }
+

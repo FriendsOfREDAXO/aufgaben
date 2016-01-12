@@ -1,0 +1,114 @@
+.stati {
+  display: inline-block;
+}
+.stati a i {
+  float: left;
+  display: inline-block;
+  width: 23px;
+  margin-right: 3px;
+  border: 1px solid #ddd;
+  padding: 3px 2px 3px 2px;
+  font-size: 14px;
+  text-align: center;
+  color: #ddd;
+  transition: all 0.3s ease 0s;
+}
+
+.stati a i:hover {
+  border: 1px solid #555;
+  color: #555;
+}
+
+.stati a i.current {
+  border: 1px solid #555;
+  color: #555;
+}
+
+.stati a i.current.fa-check  {
+  border: 1px solid #3CB594;
+  color: #3CB594;
+}
+
+.priowrapper {
+  display: inline-block;
+}
+
+.priowrapper a i {
+  float: left;
+  display: inline-block;
+  width: 23px;
+  margin-right: 3px;
+  border: 1px solid #ddd;
+  padding: 2px;
+  font-size: 16px;
+  text-align: center;
+  color: #ddd;
+  transition: all 0.3s ease 0s;
+}
+
+.priowrapper a i:hover {
+  border: 1px solid #555;
+}
+
+.priowrapper a i.fa-star {
+  color: #f0ad4e;
+}
+
+.priowrapper a i.fa-star-o  {
+  color: #999;
+}
+
+
+.collapsetitel {
+  display: inline-block;
+  color: #4B9AD9;
+
+}
+
+.collapsetitel:hover {
+  cursor: pointer;
+}
+
+
+.td_aufgaben {
+  width: auto;
+}
+
+.td_kategorie {
+  width: 150px;
+  font-size: 12px;
+}
+
+.td_prio {
+  width: 95px;
+  font-size: 14px;
+}
+
+.td_eigentuemer {
+  width: 150px;
+  font-size: 12px;
+}
+
+.td_status {
+  width: 175px;
+}
+.td_edit {
+  width: 35px;
+}
+
+.td_edit i {
+  padding: 2px 2px 2px 3px;
+  width: 23px;
+  font-size: 17px;
+  border: 1px solid #eee;
+
+}
+
+.aufgabentrenner {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  font-size: 12px;
+  padding: 4px 0 4px 0;
+  margin: 4px 0 4px 0;
+  color: #555;
+}
