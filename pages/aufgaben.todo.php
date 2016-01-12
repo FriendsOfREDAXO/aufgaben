@@ -65,14 +65,17 @@ if ($func == '') {
     }
 
     if($list->getValue('beschreibung')) {
-      $textile = htmlspecialchars_decode($list->getValue('beschreibung'));
-      $textile = str_replace('<br />', '', $textile);
-      $textile = rex_textile::parse($textile);
-      $textile = str_replace('###', '&#x20;', $textile);
-
+      $text = htmlspecialchars_decode($list->getValue('beschreibung'));
+      if(rex_addon::get('textile')->isAvailable()) {
+        $text = str_replace('<br />', '', $text);
+        $text = rex_textile::parse($text);
+        $text = str_replace('###', '&#x20;', $text);
+      } else {
+        $text = str_replace(PHP_EOL,'<br/>', $text );
+      }
       $user_name = rex::getUser()->getValue('name') != '' ? rex::getUser()->getValue('name') : rex::getUser()->getValue('login');
-      $textile = str_replace('*****', '<div class="aufgabentrenner">'.date("d.m.y").' - '. htmlspecialchars($user_name).'</div>', $textile);
-      $beschreibung = '<div id="collapse###id###" class="collapse"><br/>'.$textile.'</div>';
+      $text = str_replace('*****', '<div class="aufgabentrenner">'.date("d.m.y").' - '. htmlspecialchars($user_name).'</div>', $text);
+      $beschreibung = '<div id="collapse###id###" class="collapse"><br/>'.$text.'</div>';
     } else {
       $beschreibung = '';
     }
@@ -126,6 +129,7 @@ if ($func == '') {
       } else {
         $star  = 'fa-star';
       }
+        $list->addLinkAttribute('prio', 'title', 'Prio: '.$i);
         $list->setColumnParams('prio', ['func' => 'setprio', 'id' => '###id###', 'neueprio' => $i]);
         $prio .= $list->getColumnLink('prio', '<i class="rex-icon '.$current.' '.$star.' "></i>');
         $sql->next();
@@ -150,6 +154,7 @@ if ($func == '') {
       } else {
         $current  = '';
       }
+        $list->addLinkAttribute('status', 'title', $sql->getValue('status'));
         $list->setColumnParams('status', ['func' => 'setstatus', 'id' => '###id###', 'neuerstatus' => $sql->getValue('id')]);
         $status .= $list->getColumnLink('status', '<i class="rex-icon '.$current.' '.$sql->getValue('icon').' "></i>');
         $sql->next();

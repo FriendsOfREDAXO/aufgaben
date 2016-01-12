@@ -9,11 +9,11 @@ if ($func == 'import_beispieldaten') {
   -- Aufgaben
 
   INSERT IGNORE `rex_aufgaben_aufgaben` VALUES
-      (1, 'Fav Icon erstellen', '',1,1,0,1),
-      (2, 'Touch Icon erstellen', 'Zur Darstellung von Bildern in der Detailansicht im Medienpool',1,1,0,1),
+      (1, 'Fav Icon erstellen', 'Wird immer benötigt',1,1,0,1),
+      (2, 'Touch Icon erstellen', '',1,1,0,1),
       (3, 'Meta Infos erstellen', 'Sind Ortsbezogene meta Infos wichtig?',1,1,0,1),
-      (4, 'Print.css entwickeln', 'gg',1,1,0,1),
-      (5, 'robots.txt erstellen', '444444',7,1,0,1);
+      (4, 'Print.css entwickeln', 'Wird immer vergessen',1,1,0,1),
+      (5, 'robots.txt prüfen', ':-)',7,1,0,1);
 
   -- Kategorien
 
