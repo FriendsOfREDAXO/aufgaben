@@ -1,7 +1,7 @@
-.stati {
+.status {
   display: inline-block;
 }
-.stati a i {
+.status a i {
   float: left;
   display: inline-block;
   width: 23px;
@@ -14,17 +14,17 @@
   transition: all 0.3s ease 0s;
 }
 
-.stati a i:hover {
+.status a i:hover {
   border: 1px solid #555;
   color: #555;
 }
 
-.stati a i.current {
+.status a i.current {
   border: 1px solid #555;
   color: #555;
 }
 
-.stati a i.current.fa-check  {
+.status a i.current.fa-check  {
   border: 1px solid #3CB594;
   color: #3CB594;
 }
@@ -80,7 +80,7 @@
 }
 
 .td_prio {
-  width: 95px;
+  width: 120px;
   font-size: 14px;
 }
 
@@ -111,4 +111,40 @@
   padding: 4px 0 4px 0;
   margin: 4px 0 4px 0;
   color: #555;
+}
+
+
+
+.select-style {
+    border: 1px solid #cccccc;
+    width: auto;
+    overflow: hidden;
+    background: #fff url("data:image/png;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==") no-repeat 98% 50%;
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+    margin-top: 3px;
+}
+.select-style select {
+    padding: 1px 3px 3px 3px ;
+    font-size: 10px;
+    font-weight: normal;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance:none;
+    -webkit-border-radius: 0px;
+
+
+
+}
+.select-style select:focus {
+    outline: none;
+}
+.select-style select:hover {
+    cursor: pointer;
 }

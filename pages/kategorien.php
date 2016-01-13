@@ -26,9 +26,7 @@ if ($func == '') {
   $list->setColumnParams($thIcon, ['func' => 'edit', 'id' => '###id###']);
 
   $list->setColumnLabel('kategorie', 'Kategorie');
-
-  $list->addColumn($funcs, '<i class="rex-icon rex-icon-edit"></i> editieren', -1, ['<th class="rex-table-action" colspan="2">###VALUE###</th>', '<td class="rex-table-action">###VALUE###</td>']);
-  $list->setColumnParams($funcs, ['id' => '###id###', 'func' => 'edit']);
+  $list->setColumnLabel('farbe', 'Farbe');
 
   $delete = 'deleteCol';
   $list->addColumn($delete, '<i class="rex-icon rex-icon-delete"></i> löschen', -1, ['', '<td class="rex-table-action">###VALUE###</td>']);
@@ -54,6 +52,11 @@ if ($func == '') {
 
   $field = $form->addTextField('kategorie');
   $field->setLabel('Kategorie');
+  $field->getValidator()->add('notEmpty', 'Bitte geben Sie eine Kategorie an.');
+
+  $field = $form->addTextField('farbe');
+  $field->setLabel('Farbe');
+  $field->getValidator()->add('notEmpty', 'Bitte geben Sie  einnen Fabwert ( #123 oder #123456 ) an.');
 
   if ($func == 'edit') {
     $form->addParam('id', $id);

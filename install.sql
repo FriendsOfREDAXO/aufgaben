@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%aufgaben_aufgaben` (
 CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%aufgaben_kategorien` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `kategorie` varchar(255) DEFAULT NULL,
+    `farbe` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -25,6 +26,16 @@ CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%aufgaben_status` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `status` varchar(255) DEFAULT NULL,
     `icon` varchar(255)  DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%aufgaben_filter` (
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `user` int(10) DEFAULT NULL,
+    `kategorie` int(10)  DEFAULT NULL,
+    `eigentuemer` int(10)  DEFAULT NULL,
+    `prio` int(10)  DEFAULT NULL,
+    `status` int(10)  DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 

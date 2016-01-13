@@ -18,13 +18,13 @@ if ($func == 'import_beispieldaten') {
   -- Kategorien
 
   INSERT IGNORE `rex_aufgaben_kategorien` VALUES
-      (1,'Grundlagen'),
-      (2,'Backend'),
-      (3,'Design'),
-      (4,'Funktion'),
-      (5,'Fehler'),
-      (6,'Wunsch'),
-      (7,'SEO');
+      (1,'Grundlagen','#00ee00'),
+      (2,'Backend','#000'),
+      (3,'Design','#00f'),
+      (4,'Funktion','#000'),
+      (5,'Fehler','#f00'),
+      (6,'Wunsch','#000'),
+      (7,'SEO','#eee');
   ";
 
   $sql = rex_sql::factory();
@@ -37,14 +37,22 @@ if ($func == 'import_beispieldaten') {
 
 
 $content = '
+<h4>Eine ToDo Verwaltung für das Redaxo Backend.</h4>
 
-<h3>Text folgt</h3>
+<ul>
+<li>im Beschreibungsfeld kann mit der Eingabe von ***** (5 Sterne) ein Trenner hinzugefügt werden.</li>
+<li>durch Klick auf "blaue" Aufgaben wird die Beschreibung angezeigt.</li>
+<li>durch Klick auf die Überschriften wird die Tabelle entsprechend sortiert.</li>
+<li>Kategorien werden durch den Admin gepflegt.</li>
 
-<a href="index.php?page=aufgaben/info&amp;func=import_beispieldaten"><i class="rex-icon rex-icon-module"></i> Beispieldaten importieren</a>
+<hr/>
+
+<p><a href="index.php?page=aufgaben/info&amp;func=import_beispieldaten"><i class="rex-icon rex-icon-module"></i> Beispieldaten importieren</a>
+</p>
 
 ';
 $fragment = new rex_fragment();
-$fragment->setVar('title', 'Info');
+$fragment->setVar('title', 'Aufgaben');
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');
 
