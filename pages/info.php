@@ -18,13 +18,13 @@ if ($func == 'import_beispieldaten') {
   -- Kategorien
 
   INSERT IGNORE `rex_aufgaben_kategorien` VALUES
-      (1,'Grundlagen','#00ee00'),
-      (2,'Backend','#000'),
-      (3,'Design','#00f'),
-      (4,'Funktion','#000'),
-      (5,'Fehler','#f00'),
-      (6,'Wunsch','#000'),
-      (7,'SEO','#eee');
+      (1,'Grundlagen','#9EAEC2'),
+      (2,'Backend','#588D76'),
+      (3,'Design','#8D588A'),
+      (4,'Funktion','#9EAEC2'),
+      (5,'Fehler','#72A3A7'),
+      (6,'Wunsch','#FFD83D'),
+      (7,'SEO','#437047');
   ";
 
   $sql = rex_sql::factory();

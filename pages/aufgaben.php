@@ -1,5 +1,8 @@
 <?php
 
+// --------------------
+//  Vars
+// --------------------
 $func             = rex_request('func', 'string');
 $filter_kat       = rex_request('filter_kat', 'string');
 $eigentuemer_filter  = rex_request('eigentuemer_filter', 'string');
@@ -8,9 +11,9 @@ $status_filter    = rex_request('status_filter', 'string');
 $current_user     = rex::getUser()->getId();
 $no_rows    = '';
 
-
-$keine_aufgabe_vorhanden ='';
-
+// --------------------
+//  set Status
+// --------------------
 if ($func == 'setstatus') {
   $new_status = (rex_request('neuerstatus', 'int'));
   $id = (rex_request('id', 'int'));
@@ -27,6 +30,9 @@ if ($func == 'setstatus') {
   $func = '';
 }
 
+// --------------------
+//  set Prio
+// --------------------
 if ($func == 'setprio') {
   $new_prio = (rex_request('neueprio', 'int'));
   $id = (rex_request('id', 'int'));
@@ -43,8 +49,9 @@ if ($func == 'setprio') {
   $func = '';
 }
 
-
-
+// --------------------
+//  Ausgabe der Tabelle
+// --------------------
 if ($func == '' || $func == 'filter') {
 
     $addsql = '';
@@ -106,42 +113,59 @@ if ($func == '' || $func == 'filter') {
       $sql->insert();
     }
 
-
   if ($filter_kat != '0') {
-    $addsql .= ' AND kategorie = '.$filter_kat;
+    $addsql .= ' AND a.kategorie = '.$filter_kat;
   }
   if ($eigentuemer_filter != '0') {
-    $addsql .= ' AND eigentuemer = '.$eigentuemer_filter;
+    $addsql .= ' AND a.eigentuemer = '.$eigentuemer_filter;
   }
   if ($prio_filter != '0') {
-    $addsql .= ' AND prio = '.$prio_filter;
+    $addsql .= ' AND a.prio = '.$prio_filter;
   }
   if ($status_filter != '0') {
-    $addsql .= ' AND status = '.$status_filter;
+    $addsql .= ' AND a.status = '.$status_filter;
   }
-
-  $query = 'SELECT * FROM rex_aufgaben_aufgaben WHERE status != 6 '.$addsql.' ORDER BY id DESC';
+  $query = 'SELECT  *,
+                    a.id AS id,
+                    k.id AS kategorie_id,
+                    k.kategorie AS kategorie_name
+            FROM    ' . rex::getTable('aufgaben_aufgaben') . ' AS a
+            LEFT JOIN  ' . rex::getTable('aufgaben_kategorien') . ' AS k
+            ON a.kategorie = k.id
+            WHERE a.status > 0 ' . $addsql . ' ORDER BY a.id DESC';
 
   $list = rex_list::factory($query, 30, 'aufgaben');
-  $list->setNoRowsMessage('Keine Aufgaben vorhanden');
-
-
+  $list->setNoRowsMessage('<div class="alert alert-info" role="alert"><strong>Keine Aufgaben vorhanden.</strong><br/>Bitte legen Sie eine Aufgabe an oder ändern die Filtereinstellungen.</div>');
+  // --------------------
+  //  Edit
+  // --------------------
   $tdIcon = '<i class="rex-icon fa-calendar-check-o"></i>';
   $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '"><i class="rex-icon rex-icon-add"></i></a>';
-  $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon">###VALUE###</td>']);
+  $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon" style="border-left: 5px solid ###farbe###">###VALUE###</td>']);
   $list->setColumnParams($thIcon, ['func' => 'edit', 'id' => '###id###']);
-
+  // --------------------
+  //  remove Colums
+  // --------------------
   $list->removeColumn('id');
   $list->removeColumn('beschreibung');
-
+  $list->removeColumn('farbe');
+  $list->removeColumn('kategorie_id');
+  $list->removeColumn('kategorie_name');
+  // --------------------
+  //  set Sortable
+  // --------------------
   $list->setColumnSortable('kategorie');
   $list->setColumnSortable('eigentuemer');
   $list->setColumnSortable('prio');
-
   $list->setColumnSortable('status');
-
+  // --------------------
+  //
+  //  Aufgaben (title)
+  //  Beschreibung
+  //
+  // --------------------
   $list->setColumnLabel('titel', 'Aufgaben');
-  $list->setColumnLayout('titel', ['<th>###VALUE###</th>', '<td class="td_aufgaben">###VALUE###</td>']);
+  $list->setColumnLayout('titel', ['<th>###VALUE###</th>', '<td data-title="Aufgaben" class="td_aufgaben">###VALUE###</td>']);
   $list->setColumnFormat('titel', 'custom', function ($params) {
     $list = $params['list'];
     if ($list->getValue('beschreibung') != '') {
@@ -168,8 +192,11 @@ if ($func == '' || $func == 'filter') {
     $aufgabe .= $beschreibung;
     return $aufgabe;
   });
-
-  // Kategoriefilter
+  // --------------------
+  //
+  //  Kategoriefilter
+  //
+  // --------------------
   $kategoriefilter = '';
   $sql = rex_sql::factory();
   //$sql->setDebug();
@@ -187,10 +214,13 @@ if ($func == '' || $func == 'filter') {
     $sql->next();
   }
   $kategoriefilter .= "</select></div>";
-
-  // Kategorie
+  // --------------------
+  //
+  //  Kategorie
+  //
+  // --------------------
   $list->setColumnLabel('kategorie', 'Kategorie');
-  $list->setColumnLayout('kategorie', ['<th>###VALUE###<br/>'.$kategoriefilter.'</th>', '<td class="td_kategorie">###VALUE###</td>']);
+  $list->setColumnLayout('kategorie', ['<th>###VALUE###<br/>'.$kategoriefilter.'</th>', '<td data-title="Kategorie" class="td_kategorie">###VALUE###</td>']);
   $list->setColumnFormat('kategorie', 'custom', function ($params) {
   $list = $params['list'];
   $sql = rex_sql::factory();
@@ -201,11 +231,11 @@ if ($func == '' || $func == 'filter') {
   $kategorie = $sql->getValue('kategorie');
   return $kategorie;
   });
-
-
-
-
-  // Eigentümer
+  // --------------------
+  //
+  //  Eigentümerfilter (Zuständig)
+  //
+  // --------------------
   $sql = rex_sql::factory();
   // $sql->setDebug();
   $sql->setTable('rex_user');
@@ -222,9 +252,13 @@ if ($func == '' || $func == 'filter') {
     $sql->next();
   }
   $eigentuemerfilter .= "</div>";
-
+  // --------------------
+  //
+  //  Eigentümer (Zuständig)
+  //
+  // --------------------
   $list->setColumnLabel('eigentuemer', 'Zuständig');
-  $list->setColumnLayout('eigentuemer', ['<th>###VALUE###<br/>'.$eigentuemerfilter.'</th>', '<td class="td_eigentuemer">###VALUE###</td>']);
+  $list->setColumnLayout('eigentuemer', ['<th>###VALUE###<br/>'.$eigentuemerfilter.'</th>', '<td data-title="Zuständig" class="td_eigentuemer">###VALUE###</td>']);
   $list->setColumnFormat('eigentuemer', 'custom', function ($params) {
    $list = $params['list'];
    $sql = rex_sql::factory();
@@ -235,11 +269,11 @@ if ($func == '' || $func == 'filter') {
    $eigentuemer = $sql->getValue('name');
    return $eigentuemer;
   });
-
-
-
-
-  // Prio
+  // --------------------
+  //
+  //  Priofilter
+  //
+  // --------------------
   $sql = rex_sql::factory();
   // $sql->setDebug();
   $sql->setTable('rex_user');
@@ -256,11 +290,13 @@ if ($func == '' || $func == 'filter') {
     $sql->next();
   }
   $priofilter .= "</div>";
-
-
-
+  // --------------------
+  //
+  //  Prio
+  //
+  // --------------------
   $list->setColumnLabel('prio', 'Prio');
-  $list->setColumnLayout('prio', ['<th>###VALUE###<br/>'.$priofilter.'</th>', '<td class="td_prio">###VALUE###</td>']);
+  $list->setColumnLayout('prio', ['<th>###VALUE###<br/>'.$priofilter.'</th>', '<td data-title="Prio" class="td_prio">###VALUE###</td>']);
   $list->setColumnFormat('prio', 'custom', function ($params) {
     $list = $params['list'];
     $sql = rex_sql::factory();
@@ -289,10 +325,11 @@ if ($func == '' || $func == 'filter') {
       $prio .= "</div>";
       return $prio;
     });
-
-
-
-  // Statusfilter
+  // --------------------
+  //
+  //  Statusfilter
+  //
+  // --------------------
   $statusfilter = '';
   $sql = rex_sql::factory();
   //$sql->setDebug();
@@ -310,13 +347,13 @@ if ($func == '' || $func == 'filter') {
     $sql->next();
   }
   $statusfilter .= "</select></div>";
-
-
-
-
-
+  // --------------------
+  //
+  //  Status
+  //
+  // --------------------
   $list->setColumnLabel('status', 'Status');
-  $list->setColumnLayout('status', ['<th>###VALUE###<br/>'.$statusfilter.'</th>', '<td class="td_status">###VALUE###</td>']);
+  $list->setColumnLayout('status', ['<th>###VALUE###<br/>'.$statusfilter.'</th>', '<td data-title="Status" class="td_status">###VALUE###</td>']);
   $list->setColumnFormat('status', 'custom', function ($params) {
     $list = $params['list'];
     $sql = rex_sql::factory();
@@ -338,7 +375,11 @@ if ($func == '' || $func == 'filter') {
     $status .= "</div>";
     return $status;
   });
-
+  // --------------------
+  //
+  //  Edit
+  //
+  // --------------------
   $list->addColumn('edit', '<i class="rex-icon rex-icon-edit"></i>');
   $list->setColumnLayout('edit', ['<th>###VALUE###</th>', '<td class="td_edit">###VALUE###</td>']);
   $list->setColumnLabel('edit', '');
