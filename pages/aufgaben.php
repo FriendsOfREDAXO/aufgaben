@@ -3,13 +3,20 @@
 // --------------------
 //  Vars
 // --------------------
-$func             = rex_request('func', 'string');
-$filter_kat       = rex_request('filter_kat', 'string');
-$eigentuemer_filter  = rex_request('eigentuemer_filter', 'string');
-$prio_filter      = rex_request('prio_filter', 'string');
-$status_filter    = rex_request('status_filter', 'string');
-$current_user     = rex::getUser()->getId();
+$func               = rex_request('func', 'string');
+$aufgabe            = rex_request('aufgabe', 'string');
+$filter_kat         = rex_request('filter_kat', 'string');
+$eigentuemer_filter = rex_request('eigentuemer_filter', 'string');
+$prio_filter        = rex_request('prio_filter', 'string');
+$status_filter      = rex_request('status_filter', 'string');
+$current_user       = rex::getUser()->getId();
 $no_rows    = '';
+
+
+if ($aufgabe == 'new') {
+  // Hier die E-Mail generieren
+}
+
 
 // --------------------
 //  set Status
@@ -125,16 +132,18 @@ if ($func == '' || $func == 'filter') {
   if ($status_filter != '0') {
     $addsql .= ' AND a.status = '.$status_filter;
   }
-  $query = 'SELECT  *,
+  $query = 'SELECT  a.*,
                     a.id AS id,
-                    k.id AS kategorie_id,
-                    k.kategorie AS kategorie_name
+                    k.id,
+                    k.kategorie AS kategorie_name,
+                    k.farbe
             FROM    ' . rex::getTable('aufgaben_aufgaben') . ' AS a
             LEFT JOIN  ' . rex::getTable('aufgaben_kategorien') . ' AS k
             ON a.kategorie = k.id
             WHERE a.status > 0 ' . $addsql . ' ORDER BY a.id DESC';
 
   $list = rex_list::factory($query, 30, 'aufgaben');
+
   $list->setNoRowsMessage('<div class="alert alert-info" role="alert"><strong>Keine Aufgaben vorhanden.</strong><br/>Bitte legen Sie eine Aufgabe an oder ändern die Filtereinstellungen.</div>');
   // --------------------
   //  Edit
@@ -149,6 +158,7 @@ if ($func == '' || $func == 'filter') {
   $list->removeColumn('id');
   $list->removeColumn('beschreibung');
   $list->removeColumn('farbe');
+  $list->removeColumn('kategorie_farbe');
   $list->removeColumn('kategorie_id');
   $list->removeColumn('kategorie_name');
   // --------------------
@@ -199,8 +209,9 @@ if ($func == '' || $func == 'filter') {
   // --------------------
   $kategoriefilter = '';
   $sql = rex_sql::factory();
-  //$sql->setDebug();
+  // $sql->setDebug();
   $sql->setTable(rex::getTablePrefix().'aufgaben_kategorien');
+  $sql->setWhere('id > 0 ORDER BY kategorie');
   $sql->select();
   $kategoriefilter = "<div id='kategoriefilter' class='select-style'><select>";
   $kategoriefilter .= '<option value="0">Kein Filter</option>';
@@ -239,6 +250,7 @@ if ($func == '' || $func == 'filter') {
   $sql = rex_sql::factory();
   // $sql->setDebug();
   $sql->setTable('rex_user');
+  $sql->setWhere('id > 0 ORDER BY name');
   $sql->select();
   $eigentuemerfilter = "<div id='eigentuemerfilter' class='select-style'><select>";
   $eigentuemerfilter .= '<option value="0" >Kein Filter</option>';
@@ -276,7 +288,8 @@ if ($func == '' || $func == 'filter') {
   // --------------------
   $sql = rex_sql::factory();
   // $sql->setDebug();
-  $sql->setTable('rex_user');
+  $sql->setTable('rex_aufgaben_aufgaben');
+  $sql->setWhere('id > 0 ORDER BY prio');
   $sql->select();
   $priofilter = "<div id='priofilter' class='select-style'><select>";
   $priofilter .= '<option value="0" >Kein Filter</option>';
@@ -332,8 +345,9 @@ if ($func == '' || $func == 'filter') {
   // --------------------
   $statusfilter = '';
   $sql = rex_sql::factory();
-  //$sql->setDebug();
+  // $sql->setDebug();
   $sql->setTable(rex::getTablePrefix().'aufgaben_status');
+  // $sql->setWhere('id > 0 ORDER BY status');
   $sql->select();
   $statusfilter = "<div id='statusfilter' class='select-style'><select>";
   $statusfilter .= '<option value="0">Kein Filter</option>';
@@ -413,12 +427,15 @@ if ($func == '' || $func == 'filter') {
   $select->addOption('Bitte wählen','');
   $select->addSqlOptions($query);
 
-
   $field = $form->addSelectField('eigentuemer');
   $field->setLabel('Zuständig');
   $field->getValidator()->add('notEmpty', 'Bitte geben Sie an wer für dies Aufgabe zustädig ist.');
-  $select =$field->getSelect();
+  $select = $field->getSelect();
+  if ($func == 'add') {
+        $select->setSelected($current_user);
+  }
   $select->setSize(1);
+
   $query = 'SELECT name as label, id FROM rex_user';
   $select->addOption('Bitte wählen','');
   $select->addSqlOptions($query);
@@ -434,6 +451,10 @@ if ($func == '' || $func == 'filter') {
 
   if ($func == 'edit') {
     $form->addParam('id', $id);
+  }
+
+  if ($func == 'add') {
+    $form->addParam('aufgabe', 'new');
   }
 
   $content = $form->get();

@@ -1,14 +1,15 @@
 Aufgaben-AddOn für REDAXO 5
 ===========================
-ACHTUNG:
 
-Diese Version funktioniert gerade nicht :-)
+<h4>Eine ToDo Verwaltung für das Redaxo Backend.</h4>
 
-- "Kategorie" wird zwei mal ausgegeben
-- Kategoriesortierung geht dementsprechend nicht
+<ul>
+<li>im Beschreibungsfeld kann mit der Eingabe von ***** (5 Sterne) ein Trenner hinzugefügt werden.</li>
+<li>durch Klick auf "blaue" Aufgaben wird die Beschreibung angezeigt.</li>
+<li>durch Klick auf die Überschriften wird die Tabelle entsprechend sortiert.</li>
+<li>die Filtereinstellung werden für jeden Benutzer individuell gespeichert.</li>
+<li>Kategorien werden durch den Admin gepflegt.</li>
 
-
-===========================
 
 ToDo
 ---------
