@@ -210,9 +210,7 @@ if ($func == '' || $func == 'filter') {
   $kategoriefilter = '';
   $sql = rex_sql::factory();
   // $sql->setDebug();
-  $sql->setTable(rex::getTablePrefix().'aufgaben_kategorien');
-  $sql->setWhere('id > 0 ORDER BY kategorie');
-  $sql->select();
+  $sql->setQuery('SELECT * FROM rex_aufgaben_kategorien ORDER BY kategorie');
   $kategoriefilter = "<div id='kategoriefilter' class='select-style'><select>";
   $kategoriefilter .= '<option value="0">Kein Filter</option>';
   for($i=0; $i<$sql->getRows(); $i++) {
@@ -249,9 +247,7 @@ if ($func == '' || $func == 'filter') {
   // --------------------
   $sql = rex_sql::factory();
   // $sql->setDebug();
-  $sql->setTable('rex_user');
-  $sql->setWhere('id > 0 ORDER BY name');
-  $sql->select();
+  $sql->setQuery('SELECT * FROM rex_user ORDER BY name');
   $eigentuemerfilter = "<div id='eigentuemerfilter' class='select-style'><select>";
   $eigentuemerfilter .= '<option value="0" >Kein Filter</option>';
   for($i=0; $i<$sql->getRows(); $i++) {
@@ -286,23 +282,11 @@ if ($func == '' || $func == 'filter') {
   //  Priofilter
   //
   // --------------------
-  $sql = rex_sql::factory();
-  // $sql->setDebug();
-  $sql->setTable('rex_aufgaben_aufgaben');
-  $sql->setWhere('id > 0 ORDER BY prio');
-  $sql->select();
-  $priofilter = "<div id='priofilter' class='select-style'><select>";
-  $priofilter .= '<option value="0" >Kein Filter</option>';
-  for($i=1; $i<4; $i++) {
-    if($sql->getValue('id') == $prio_filter) {
-      $selected  = 'selected';
-    } else {
-      $selected  = '';
-    }
-    $priofilter .= '<option value="'.$i.'" '.$selected.'>Prio '.$i.'</option>';
-    $sql->next();
-  }
-  $priofilter .= "</div>";
+  $s = new rex_select();
+  $s->addOption('kein Filter', -0);
+  $s->addSqlOptions('SELECT CONCAT("Prio ", IF(prio IS NULL, 0, prio)) AS name, prio AS value FROM rex_aufgaben_aufgaben GROUP BY prio ORDER BY prio');
+  $s->setSelected($prio_filter);
+  $priofilter = '<div id="priofilter" class="select-style">' . $s->get() . '</div>';
   // --------------------
   //
   //  Prio
@@ -346,9 +330,7 @@ if ($func == '' || $func == 'filter') {
   $statusfilter = '';
   $sql = rex_sql::factory();
   // $sql->setDebug();
-  $sql->setTable(rex::getTablePrefix().'aufgaben_status');
-  // $sql->setWhere('id > 0 ORDER BY status');
-  $sql->select();
+  $sql->setQuery('SELECT * FROM rex_aufgaben_status ORDER BY status');
   $statusfilter = "<div id='statusfilter' class='select-style'><select>";
   $statusfilter .= '<option value="0">Kein Filter</option>';
   for($i=0; $i<$sql->getRows(); $i++) {
@@ -423,7 +405,7 @@ if ($func == '' || $func == 'filter') {
   $field->getValidator()->add('notEmpty', 'Bitte eine Kategorie auswählen.');
   $select = $field->getSelect();
   $select->setSize(1);
-  $query = 'SELECT kategorie as label, id FROM rex_aufgaben_kategorien';
+  $query = 'SELECT kategorie as label, id FROM rex_aufgaben_kategorien ORDER BY kategorie';
   $select->addOption('Bitte wählen','');
   $select->addSqlOptions($query);
 
@@ -486,11 +468,3 @@ $("#statusfilter select").change(function(){
      location.replace("index.php?page=aufgaben/aufgaben&func=filter&status_filter="+$value );
 });
 </script>
-
-
-
-
-
-
-
-
