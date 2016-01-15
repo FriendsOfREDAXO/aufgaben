@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%aufgaben_filter` (
     `eigentuemer` int(10)  DEFAULT NULL,
     `prio` int(10)  DEFAULT NULL,
     `status` int(10)  DEFAULT NULL,
+    `erledigt` int(10)  DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 

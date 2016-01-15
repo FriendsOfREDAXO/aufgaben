@@ -9,7 +9,9 @@ $filter_kat         = rex_request('filter_kat', 'string');
 $eigentuemer_filter = rex_request('eigentuemer_filter', 'string');
 $prio_filter        = rex_request('prio_filter', 'string');
 $status_filter      = rex_request('status_filter', 'string');
+$erledigt_filter    = rex_request('erledigt_filter', 'string');
 $current_user       = rex::getUser()->getId();
+
 $no_rows    = '';
 
 
@@ -17,6 +19,46 @@ if ($aufgabe == 'new') {
   // Hier die E-Mail generieren
 }
 
+
+// --------------------
+//  Ereldigtschalter
+// --------------------
+if ($func == 'erledigtfilter') {
+
+    $sql = rex_sql::factory();
+    // $sql->setDebug();
+    $sql->setTable('rex_aufgaben_filter');
+    $sql->setWhere('user = '.$current_user);
+    $sql->select();
+    if ($sql->getRows() > 0) {
+
+      if ($erledigt_filter == '') {
+          $erledigt_filter = '0';
+      }
+
+      $sql = rex_sql::factory();
+      // $sql->setDebug();
+      $sql->setTable('rex_aufgaben_filter');
+      $sql->setWhere('user = '.$current_user);
+      $sql->setValue('erledigt', $erledigt_filter);
+      $sql->update();
+
+    } else {
+
+      if ($erledigt_filter == '') {
+        $erledigt_filter = '0';
+      }
+
+      $sql = rex_sql::factory();
+      // $sql->setDebug();
+      $sql->setTable('rex_aufgaben_filter');
+      $sql->setValue('erledigt', '1');
+
+      $sql->insert();
+    }
+
+    $func = '';
+}
 
 // --------------------
 //  set Status
@@ -132,6 +174,18 @@ if ($func == '' || $func == 'filter') {
   if ($status_filter != '0') {
     $addsql .= ' AND a.status = '.$status_filter;
   }
+
+  $sql = rex_sql::factory();
+  // $sql->setDebug();
+  $sql->setQuery('SELECT erledigt FROM rex_aufgaben_filter WHERE user = '.$current_user);
+  $aktueller_erledigt_status = $sql->getValue('erledigt');
+
+  if ($aktueller_erledigt_status == 0) {
+    $where = ' a.status > 0';
+  } else {
+    $where = ' a.status != 6';
+  }
+
   $query = 'SELECT  a.*,
                     a.id AS id,
                     k.id,
@@ -140,11 +194,11 @@ if ($func == '' || $func == 'filter') {
             FROM    ' . rex::getTable('aufgaben_aufgaben') . ' AS a
             LEFT JOIN  ' . rex::getTable('aufgaben_kategorien') . ' AS k
             ON a.kategorie = k.id
-            WHERE a.status > 0 ' . $addsql . ' ORDER BY a.id DESC';
+            WHERE ' . $where . ' ' . $addsql . ' ORDER BY a.id DESC';
 
   $list = rex_list::factory($query, 30, 'aufgaben');
 
-  $list->setNoRowsMessage('<div class="alert alert-info" role="alert"><strong>Keine Aufgaben vorhanden.</strong><br/>Bitte legen Sie eine Aufgabe an oder ändern die Filtereinstellungen.</div>');
+  $list->setNoRowsMessage('<div class="alert alert-info" role="alert"><strong>Keine Aufgaben vorhanden.</strong><br/><br/>Mögliche Ursachen:<br/><br/><ul><li>es ist keine Aufgabe angelegt</li><li>keine der vorhandenen Aufgaben erfüllt auf die eingestellten Filterkriterien</li><li>die Ausgabe der erledigten Aufgaben ist abgeschaltet</li></ul></div>');
   // --------------------
   //  Edit
   // --------------------
@@ -282,11 +336,17 @@ if ($func == '' || $func == 'filter') {
   //  Priofilter
   //
   // --------------------
-  $s = new rex_select();
-  $s->addOption('kein Filter', -0);
-  $s->addSqlOptions('SELECT CONCAT("Prio ", IF(prio IS NULL, 0, prio)) AS name, prio AS value FROM rex_aufgaben_aufgaben GROUP BY prio ORDER BY prio');
-  $s->setSelected($prio_filter);
-  $priofilter = '<div id="priofilter" class="select-style">' . $s->get() . '</div>';
+  $priofilter = "<div id='priofilter' class='select-style'><select>";
+  $priofilter .= '<option value="0">Kein Filter</option>';
+  for($i=1; $i<=3; $i++) {
+    if($i == $prio_filter) {
+      $selected  = 'selected';
+    } else {
+      $selected  = '';
+    }
+    $priofilter .= '<option value="'.$i.'" '.$selected.'>Prio '.$i.'</option>';
+  }
+  $priofilter .= "</select></div>";
   // --------------------
   //
   //  Prio
@@ -330,7 +390,7 @@ if ($func == '' || $func == 'filter') {
   $statusfilter = '';
   $sql = rex_sql::factory();
   // $sql->setDebug();
-  $sql->setQuery('SELECT * FROM rex_aufgaben_status ORDER BY status');
+  $sql->setQuery('SELECT * FROM rex_aufgaben_status ORDER BY id');
   $statusfilter = "<div id='statusfilter' class='select-style'><select>";
   $statusfilter .= '<option value="0">Kein Filter</option>';
   for($i=0; $i<$sql->getRows(); $i++) {
@@ -376,16 +436,27 @@ if ($func == '' || $func == 'filter') {
   //  Edit
   //
   // --------------------
+
+
   $list->addColumn('edit', '<i class="rex-icon rex-icon-edit"></i>');
   $list->setColumnLayout('edit', ['<th>###VALUE###</th>', '<td class="td_edit">###VALUE###</td>']);
-  $list->setColumnLabel('edit', '');
+
+  if ($aktueller_erledigt_status == 0) {
+    $list->setColumnLabel('edit', '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);"><i class="rex-icon fa-eye-slash"></a>');
+  } else {
+    $list->setColumnLabel('edit', '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);"><i class="rex-icon fa-eye"></a>');
+  }
   $list->setColumnParams('edit', ['func' => 'edit', 'id' => '###id###']);
   $list->addLinkAttribute('', 'class', 'rex-edit');
 
   $content = $list->get();
+
   $fragment = new rex_fragment();
   $fragment->setVar('content', $content, false);
   echo $fragment->parse('core/page/section.php');
+
+
+
 
 } elseif ($func == 'edit' || $func == 'add') {
 
@@ -467,4 +538,15 @@ $("#statusfilter select").change(function(){
      $value = $("#statusfilter select").val();
      location.replace("index.php?page=aufgaben/aufgaben&func=filter&status_filter="+$value );
 });
+$("#statusfilter select").change(function(){
+     $value = $("#statusfilter select").val();
+     location.replace("index.php?page=aufgaben/aufgaben&func=filter&status_filter="+$value );
+});
+$("#erledigtverbergen").click(function(){
+  location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&erledigt_filter=1" );
+});
+$("#erledigtanzeigen").click(function(){
+  location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&erledigt_filter=0" );
+});
+
 </script>
