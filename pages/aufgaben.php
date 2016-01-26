@@ -264,7 +264,7 @@ if ($func == '' || $func == 'filter') {
   $kategoriefilter = '';
   $sql = rex_sql::factory();
   // $sql->setDebug();
-  $sql->setQuery('SELECT * FROM rex_aufgaben_kategorien ORDER BY kategorie');
+  $sql->setQuery('SELECT k.* FROM rex_aufgaben_kategorien k INNER JOIN rex_aufgaben_aufgaben a ON (a.kategorie = k.id) GROUP BY k.id ORDER BY k.kategorie');
   $kategoriefilter = "<div id='kategoriefilter' class='select-style'><select>";
   $kategoriefilter .= '<option value="0">Kein Filter</option>';
   for($i=0; $i<$sql->getRows(); $i++) {
