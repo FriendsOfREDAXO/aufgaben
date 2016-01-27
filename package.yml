@@ -1,16 +1,21 @@
 # Alle hier gesetzten Werte können über $addon->getProperty($key) abgefragt werden
 
 package: aufgaben
-version: '1.7.2'
+version: '1.7.5'
 author: Oliver Kreischer
-supportpage: www.redaxo.org/de/forum
+supportpage: github.com/olien/aufgaben/issues
 
 page:
-    title: 'Aufgaben'
-    perm: aufgaben[]
-    # block: system
-    icon: rex-icon fa-calendar-check-o
-    subpages:
-        aufgaben: { title: 'Aufgaben',perm: aufgaben[] }
-        kategorien: { title: 'Kategorien', perm: aufgaben[kategorien]}
-        info: { title: 'Info' }
+  title: 'Aufgaben'
+  perm: aufgaben[]
+  icon: rex-icon fa-calendar-check-o
+  subpages:
+      aufgaben: { title: 'Aufgaben',perm: aufgaben[] }
+      kategorien: { title: 'Kategorien', perm: aufgaben[kategorien]}
+      info:
+        title: 'Info'
+        subpages:
+          hilfe: { title: 'Hilfe'}
+          changelog: { title: 'Changelog'}
+          lizenz: { title: 'Lizenz'}
+

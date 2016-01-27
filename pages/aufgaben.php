@@ -202,7 +202,7 @@ if ($func == '' || $func == 'filter') {
   // --------------------
   //  Edit
   // --------------------
-  $tdIcon = '<i class="rex-icon fa-calendar-check-o"></i>';
+  $tdIcon = '<i class="rex-icon rex-icon-edit"></i>';
   $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '"><i class="rex-icon rex-icon-add"></i></a>';
   $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon" style="border-left: 5px solid ###farbe###">###VALUE###</td>']);
   $list->setColumnParams($thIcon, ['func' => 'edit', 'id' => '###id###']);
@@ -228,7 +228,14 @@ if ($func == '' || $func == 'filter') {
   //  Beschreibung
   //
   // --------------------
-  $list->setColumnLabel('titel', 'Aufgaben');
+
+  if ($aktueller_erledigt_status == 0) {
+    $titleLink = '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);"><i class="rex-icon fa-eye-slash"></a>';
+  } else {
+    $titleLink = '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);"><i class="rex-icon fa-eye"></a>';
+  }
+
+  $list->setColumnLabel('titel', 'Aufgaben '.$titleLink);
   $list->setColumnLayout('titel', ['<th>###VALUE###</th>', '<td data-title="Aufgaben" class="td_aufgaben">###VALUE###</td>']);
   $list->setColumnFormat('titel', 'custom', function ($params) {
     $list = $params['list'];
@@ -256,6 +263,25 @@ if ($func == '' || $func == 'filter') {
     $aufgabe .= $beschreibung;
     return $aufgabe;
   });
+
+  // --------------------
+  //
+  //  Edit
+  //
+  // --------------------
+/*
+
+  $list->addColumn('edit', '<i class="rex-icon rex-icon-edit"></i>');
+  $list->setColumnLayout('edit', ['<th>###VALUE###</th>', '<td class="td_edit">###VALUE###</td>']);
+
+  if ($aktueller_erledigt_status == 0) {
+    $list->setColumnLabel('edit', '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);"><i class="rex-icon fa-eye-slash"></a>');
+  } else {
+    $list->setColumnLabel('edit', '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);"><i class="rex-icon fa-eye"></a>');
+  }
+  $list->setColumnParams('edit', ['func' => 'edit', 'id' => '###id###']);
+  $list->addLinkAttribute('', 'class', 'rex-edit');
+  */
   // --------------------
   //
   //  Kategoriefilter
@@ -431,23 +457,7 @@ if ($func == '' || $func == 'filter') {
     $status .= "</div>";
     return $status;
   });
-  // --------------------
-  //
-  //  Edit
-  //
-  // --------------------
 
-
-  $list->addColumn('edit', '<i class="rex-icon rex-icon-edit"></i>');
-  $list->setColumnLayout('edit', ['<th>###VALUE###</th>', '<td class="td_edit">###VALUE###</td>']);
-
-  if ($aktueller_erledigt_status == 0) {
-    $list->setColumnLabel('edit', '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);"><i class="rex-icon fa-eye-slash"></a>');
-  } else {
-    $list->setColumnLabel('edit', '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);"><i class="rex-icon fa-eye"></a>');
-  }
-  $list->setColumnParams('edit', ['func' => 'edit', 'id' => '###id###']);
-  $list->addLinkAttribute('', 'class', 'rex-edit');
 
   $content = $list->get();
 

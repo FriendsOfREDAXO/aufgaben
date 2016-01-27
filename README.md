@@ -1,29 +1,22 @@
-Aufgaben-AddOn für REDAXO 5
-===========================
+### Aufgaben-AddOn für REDAXO 5 ###
 
-<h4>Eine ToDo Verwaltung für das Redaxo Backend.</h4>
+##### Eine ToDo Verwaltung für das Redaxo Backend. #####
 
-<ul>
-<li>im Beschreibungsfeld kann mit der Eingabe von ***** (5 Sterne) ein Trenner hinzugefügt werden.</li>
-<li>durch Klick auf "blaue" Aufgaben wird die Beschreibung angezeigt.</li>
-<li>durch Klick auf die Überschriften wird die Tabelle entsprechend sortiert.</li>
-<li>die Filtereinstellung werden für jeden Benutzer individuell gespeichert.</li>
-<li>Kategorien werden durch den Admin gepflegt.</li>
+<br/>
 
+* im Beschreibungsfeld kann mit der Eingabe von ***** (5 Sterne) ein Trenner hinzugefügt werden.</li>
+* durch Klick auf "blaue" Aufgaben wird die Beschreibung angezeigt.</li>
+* durch Klick auf die Überschriften wird die Tabelle entsprechend sortiert.</li>
+* durch Klick auf das Auge (rechts im Tabellenkopf) können die erledigten Aufgaben dauerhaft ein- bzw. ausgeblendet werden.</li>
+* Kategorien werden durch den Admin gepflegt.
 
-ToDo
----------
+<br/>
 
-siehe [ISSUES](https://github.com/olien/REX5-aufgaben/issues/)
+---
 
+### Credits ###
 
-Changelog
----------
+* [Thomas Blum](https://github.com/tbaddade) und [Thomas Kaegi](https://github.com/phoebusryan) für die Mithilfe, den zahlreichen Tipps und die unendliche Gedult
+* [RexDude](https://github.com/RexDude) für seine zahlreichen inspirierenden Addons
+* [Parsedown](http://parsedown.org/) Class by Emanuil Rusev
 
-siehe [CHANGELOG.md](CHANGELOG.md)
-
-
-Lizenz
-------
-
-siehe [LICENSE.md](LICENSE.md)
