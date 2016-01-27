@@ -1,9 +1,9 @@
 # Alle hier gesetzten Werte können über $addon->getProperty($key) abgefragt werden
 
 package: aufgaben
-version: '1.7.1'
+version: '1.7.2'
 author: Oliver Kreischer
-supportpage: www.redaxo.org/de/forum
+supportpage: github.com/olien/aufgaben/issues
 
 page:
     title: 'Aufgaben'
@@ -13,4 +13,3 @@ page:
     subpages:
         aufgaben: { title: 'Aufgaben',perm: aufgaben[] }
         kategorien: { title: 'Kategorien', perm: aufgaben[kategorien]}
-        info: { title: 'Info' }
