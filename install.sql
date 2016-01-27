@@ -49,3 +49,25 @@ REPLACE INTO `%TABLE_PREFIX%aufgaben_status` VALUES
     (4,'Warten auf etwas','fa-hourglass-start'),
     (5,'Auf später verschoben','fa-calendar'),
     (6,'Erledigt','fa-check');
+
+/*
+-- Aufgaben
+
+INSERT IGNORE `%TABLE_PREFIX%aufgaben_aufgaben` VALUES
+    (1, 'Fav Icon erstellen', 'Wird immer benötigt',1,1,0,1),
+    (2, 'Touch Icon erstellen', '',1,1,0,1),
+    (3, 'Meta Infos erstellen', 'Sind Ortsbezogene meta Infos wichtig?',1,1,0,1),
+    (4, 'Print.css entwickeln', 'Wird immer vergessen',1,1,0,1),
+    (5, 'robots.txt prüfen', ':-)',7,1,0,1);
+
+-- Kategorien
+
+INSERT IGNORE `%TABLE_PREFIX%aufgaben_kategorien` VALUES
+    (1,'Grundlagen','#9EAEC2'),
+    (2,'Backend','#588D76'),
+    (3,'Design','#8D588A'),
+    (4,'Funktion','#9EAEC2'),
+    (5,'Fehler','#72A3A7'),
+    (6,'Wunsch','#FFD83D'),
+    (7,'SEO','#437047');
+*/
