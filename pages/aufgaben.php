@@ -1,5 +1,6 @@
 <?php
 
+
 // --------------------
 //  Vars
 // --------------------
@@ -12,16 +13,43 @@ $status_filter      = rex_request('status_filter', 'string');
 $erledigt_filter    = rex_request('erledigt_filter', 'string');
 $current_user       = rex::getUser()->getId();
 
+
 $no_rows    = '';
 
+// --------------------
+//  E-Mail senden
+// --------------------
+if ($aufgabe == 'new' AND $func == '') {
 
-if ($aufgabe == 'new') {
-  // Hier die E-Mail generieren
+  $sql = rex_sql::factory();
+  $sql->setQuery('SELECT * FROM rex_aufgaben_aufgaben ORDER BY id DESC LIMIT 1');
+  $mail_titel = $sql->getValue('titel');
+  $mail_beschreibung = $sql->getValue('beschreibung');
+
+  $mail = new rex_mailer();
+
+  $body  = "<h3>".$mail_titel."</h3>";
+  $body  .= "<p>".$mail_beschreibung."</b>";
+
+  $text_body = $mail_titel."\n\n";
+  $text_body .= $mail_beschreibung."\n\n";
+
+  $mail->From = "no-reply@".$_SERVER['SERVER_NAME'];
+  $mail->FromName = $_SERVER['SERVER_NAME'];
+  $mail->Subject = "Neue Aufgabe: ".$_SERVER['SERVER_NAME'];
+
+  $mail->Body    = $body;
+  $mail->AltBody = $text_body;
+  $mail->AddAddress(rex::getErrorEmail(), rex::getErrorEmail());
+
+  if(!$mail->Send()) {
+    echo "E-Mail konnte nicht gesendet werden.<br/>";
+  }
+
 }
 
-
 // --------------------
-//  Ereldigtschalter
+//  Erledigtschalter
 // --------------------
 if ($func == 'erledigtfilter') {
 
@@ -266,24 +294,6 @@ if ($func == '' || $func == 'filter') {
 
   // --------------------
   //
-  //  Edit
-  //
-  // --------------------
-/*
-
-  $list->addColumn('edit', '<i class="rex-icon rex-icon-edit"></i>');
-  $list->setColumnLayout('edit', ['<th>###VALUE###</th>', '<td class="td_edit">###VALUE###</td>']);
-
-  if ($aktueller_erledigt_status == 0) {
-    $list->setColumnLabel('edit', '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);"><i class="rex-icon fa-eye-slash"></a>');
-  } else {
-    $list->setColumnLabel('edit', '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);"><i class="rex-icon fa-eye"></a>');
-  }
-  $list->setColumnParams('edit', ['func' => 'edit', 'id' => '###id###']);
-  $list->addLinkAttribute('', 'class', 'rex-edit');
-  */
-  // --------------------
-  //
   //  Kategoriefilter
   //
   // --------------------
@@ -466,10 +476,7 @@ if ($func == '' || $func == 'filter') {
   echo $fragment->parse('core/page/section.php');
 
 
-
-
 } elseif ($func == 'edit' || $func == 'add') {
-
   $fieldset = $func == 'edit' ? 'Aufgabe editieren' : 'Aufgabe hinzufügen';
   $id = rex_request('id', 'int');
 
@@ -492,7 +499,7 @@ if ($func == '' || $func == 'filter') {
 
   $field = $form->addSelectField('eigentuemer');
   $field->setLabel('Zuständig');
-  $field->getValidator()->add('notEmpty', 'Bitte geben Sie an wer für dies Aufgabe zustädig ist.');
+  $field->getValidator()->add('notEmpty', 'Bitte geben Sie an wer für diese Aufgabe zuständig ist.');
   $select = $field->getSelect();
   if ($func == 'add') {
         $select->setSelected($current_user);
@@ -512,12 +519,12 @@ if ($func == '' || $func == 'filter') {
   # $select->addOption('Erledigt',2);
   $select->addSqlOptions($query);
 
-  if ($func == 'edit') {
-    $form->addParam('id', $id);
-  }
-
   if ($func == 'add') {
     $form->addParam('aufgabe', 'new');
+  }
+
+  if ($func == 'edit') {
+    $form->addParam('id', $id);
   }
 
   $content = $form->get();

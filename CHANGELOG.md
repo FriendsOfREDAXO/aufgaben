@@ -4,6 +4,13 @@
 
 ### Changelog ###
 
+### 17.01.2016 Version 1.8 ###
+
+- Anpassung der install.php und update.php (https://github.com/olien/aufgaben/issues/26)
+- install.sql gelöscht
+- Abhängigkeit phpmailer hinzugefügt
+- Bei einer neuen Aufgabe wird eine E-Mail an die unter "System" eingetragenen E-Mail Adresse gesendet
+
 
 ### 27.01.2016 Version 1.7.5 ###
 
