@@ -302,7 +302,7 @@ if ($func == '' || $func == 'filter') {
   //  UpdateDate
   //
   // --------------------
-  $list->setColumnLabel('updatedate', 'Letze Aktualisierung');
+  $list->setColumnLabel('updatedate', 'Letzte Aktualisierung');
   $list->setColumnLayout('updatedate', ['<th>###VALUE###</th>', '<td data-title="Letze Aktualisierung" class="td_updatedate">###VALUE###</td>']);
   $list->setColumnFormat('updatedate', 'custom', function ($params) {
   $list = $params['list'];
