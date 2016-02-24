@@ -7,6 +7,10 @@ rex_sql_table::get("rex_aufgaben_aufgaben")
 ->ensureColumn(new rex_sql_column('eigentuemer', 'int(10)'))
 ->ensureColumn(new rex_sql_column('prio', 'int(10)'))
 ->ensureColumn(new rex_sql_column('status', 'int(10)'))
+->ensureColumn(new rex_sql_column('createdate', 'DATETIME'))
+->ensureColumn(new rex_sql_column('updatedate', 'DATETIME'))
+->ensureColumn(new rex_sql_column('createuser', 'varchar(255)'))
+->ensureColumn(new rex_sql_column('updateuser', 'varchar(255)'))
 ->alter();
 
 

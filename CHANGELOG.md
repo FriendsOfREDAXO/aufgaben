@@ -4,7 +4,11 @@
 
 ### Changelog ###
 
-### 17.01.2016 Version 1.8 ###
+### 24.02.2016 Version 1.8.5 ###
+
+- creatuser/creatdate und updateuser/updatedate hinzugefügt
+
+### 17.02.2016 Version 1.8 ###
 
 - Anpassung der install.php und update.php (https://github.com/olien/aufgaben/issues/26)
 - install.sql gelöscht

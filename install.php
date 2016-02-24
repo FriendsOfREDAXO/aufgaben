@@ -10,6 +10,10 @@ $sql->setQuery('
     `eigentuemer` int(10) DEFAULT NULL,
     `prio` int(10) DEFAULT NULL,
     `status` int(10) DEFAULT NULL,
+    `createdate` DATETIME DEFAULT NULL,
+    `updatedate` DATETIME DEFAULT NULL,
+    `createuser` varchar(255) DEFAULT NULL,
+    `updateuser` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ');

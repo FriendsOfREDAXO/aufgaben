@@ -243,6 +243,9 @@ if ($func == '' || $func == 'filter') {
   $list->removeColumn('kategorie_farbe');
   $list->removeColumn('kategorie_id');
   $list->removeColumn('kategorie_name');
+  $list->removeColumn('createdate');
+  $list->removeColumn('createuser');
+  $list->removeColumn('updateuser');
   // --------------------
   //  set Sortable
   // --------------------
@@ -250,6 +253,7 @@ if ($func == '' || $func == 'filter') {
   $list->setColumnSortable('eigentuemer');
   $list->setColumnSortable('prio');
   $list->setColumnSortable('status');
+  $list->setColumnSortable('updatedate');
   // --------------------
   //
   //  Aufgaben (title)
@@ -292,6 +296,19 @@ if ($func == '' || $func == 'filter') {
     return $aufgabe;
   });
 
+
+  // --------------------
+  //
+  //  UpdateDate
+  //
+  // --------------------
+  $list->setColumnLabel('updatedate', 'Letze Aktualisierung');
+  $list->setColumnLayout('updatedate', ['<th>###VALUE###</th>', '<td data-title="Letze Aktualisierung" class="td_updatedate">###VALUE###</td>']);
+  $list->setColumnFormat('updatedate', 'custom', function ($params) {
+  $list = $params['list'];
+    $updatedate = date('d.m.Y H:i', strtotime($list->getValue('updatedate'))).'<br/><span>'.$list->getValue('updateuser').'</span>';
+    return $updatedate;
+  });
   // --------------------
   //
   //  Kategoriefilter
@@ -520,10 +537,34 @@ if ($func == '' || $func == 'filter') {
   $select->addSqlOptions($query);
 
   if ($func == 'add') {
+
     $form->addParam('aufgabe', 'new');
   }
 
   if ($func == 'edit') {
+
+      $form->getSql()->setValue('updatedate', date('d.m.Y H:i:s', $form->getSql()->getDateTimeValue('updatedate')));
+      $field = $form->addReadonlyField('updatedate');
+      $field->setHeader('<hr/><div class="row"><div class="col-md-6">');
+      $field->setFooter('</div>');
+      $field->setLabel('Letzte Änderung am ');
+
+      $field = $form->addReadonlyField('updateuser');
+      $field->setHeader('<div class="col-md-6">');
+      $field->setFooter('</div></div>');
+      $field->setLabel('von');
+
+      $form->getSql()->setValue('createdate', date('d.m.Y H:i:s', $form->getSql()->getDateTimeValue('createdate')));
+      $field = $form->addReadonlyField('createdate');
+      $field->setHeader('<div class="row"><div class="col-md-6">');
+      $field->setFooter('</div>');
+      $field->setLabel('Erstellt am ');
+
+      $field = $form->addReadonlyField('createuser');
+      $field->setHeader('<div class="col-md-6">');
+      $field->setFooter('</div></div><br/>');
+      $field->setLabel('von');
+
     $form->addParam('id', $id);
   }
 

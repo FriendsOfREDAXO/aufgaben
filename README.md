@@ -16,7 +16,7 @@
 
 ### Credits ###
 
-* [Thomas Blum](https://github.com/tbaddade) und [Thomas Kaegi](https://github.com/phoebusryan) für die Mithilfe, den zahlreichen Tipps und die unendliche Gedult
+* [Thomas Blum](https://github.com/tbaddade), [Gregor Harlan](https://github.com/gharlan) und [Thomas Kaegi](https://github.com/phoebusryan) für die Mithilfe, den zahlreichen Tipps und die unendliche Gedult
 * [RexDude](https://github.com/RexDude) für seine zahlreichen inspirierenden Addons
 * [Parsedown](http://parsedown.org/) Class by Emanuil Rusev
 

@@ -1,19 +1,26 @@
 <?php
 
+
 $func = rex_request('func', 'string');
 
 if ($func == 'import_beispieldaten') {
+
+  $current_user       = rex::getUser()->getId();
+  $sql = rex_sql::factory();
+  //$sql->setDebug();
+  $sql->setQuery('SELECT * FROM rex_user WHERE id = '.$current_user);
+  $user = $sql->getValue('name');
 
   $qry = "
 
   -- Aufgaben
 
   INSERT IGNORE `rex_aufgaben_aufgaben` VALUES
-      (1, 'Fav Icon erstellen', 'Wird immer benötigt',1,1,0,1),
-      (2, 'Touch Icon erstellen', '',1,1,0,1),
-      (3, 'Meta Infos erstellen', 'Sind Ortsbezogene meta Infos wichtig?',1,1,0,1),
-      (4, 'Print.css entwickeln', 'Wird immer vergessen',1,1,0,1),
-      (5, 'robots.txt prüfen', ':-)',7,1,0,1);
+      (1, 'Fav Icon erstellen', 'Wird immer benötigt',1,1,0,1,now(),now(),'$user','$user'),
+      (2, 'Touch Icon erstellen', '',1,1,0,1,now(),now(),'$user','$user'),
+      (3, 'Meta Infos erstellen', 'Sind Ortsbezogene meta Infos wichtig?',1,1,0,1,now(),now(),'$user','$user'),
+      (4, 'Print.css entwickeln', 'Wird immer vergessen',1,1,0,1,now(),now(),'$user','$user'),
+      (5, 'robots.txt prüfen', ':-)',7,1,0,1,now(),now(),'$user','$user');
 
   -- Kategorien
 

@@ -89,9 +89,20 @@
   font-size: 12px;
 }
 
+.td_updatedate {
+  width: 150px;
+  font-size: 12px;
+}
+
+.td_updatedate span {
+  font-size: 10px;
+  color: #999;
+}
+
 .td_status {
   width: 175px;
 }
+
 .td_edit {
   width: 35px;
 }
