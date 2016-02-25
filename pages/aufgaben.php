@@ -306,7 +306,20 @@ if ($func == '' || $func == 'filter') {
   $list->setColumnLayout('updatedate', ['<th>###VALUE###</th>', '<td data-title="Letze Aktualisierung" class="td_updatedate">###VALUE###</td>']);
   $list->setColumnFormat('updatedate', 'custom', function ($params) {
   $list = $params['list'];
-    $updatedate = date('d.m.Y H:i', strtotime($list->getValue('updatedate'))).'<br/><span>'.$list->getValue('updateuser').'</span>';
+
+    if ($list->getValue('updatedate') == '0000-00-00 00:00:00') {
+        $updatedatevalue = '-';
+    } else {
+        $updatedatevalue = date('d.m.Y H:i', strtotime($list->getValue('updatedate')));
+    }
+
+    if ($list->getValue('updateuser') == '') {
+        $updateuservalue = '';
+    } else {
+        $updateuservalue = $list->getValue('updateuser');
+    }
+
+    $updatedate = $updatedatevalue.'<br/><span>'.$updateuservalue.'</span>';
     return $updatedate;
   });
   // --------------------
@@ -543,27 +556,34 @@ if ($func == '' || $func == 'filter') {
 
   if ($func == 'edit') {
 
-      $form->getSql()->setValue('updatedate', date('d.m.Y H:i:s', $form->getSql()->getDateTimeValue('updatedate')));
-      $field = $form->addReadonlyField('updatedate');
-      $field->setHeader('<hr/><div class="row"><div class="col-md-6">');
-      $field->setFooter('</div>');
-      $field->setLabel('Letzte Änderung am ');
+      if ($form->getSql()->getValue('updateuser') != '') {
 
-      $field = $form->addReadonlyField('updateuser');
-      $field->setHeader('<div class="col-md-6">');
-      $field->setFooter('</div></div>');
-      $field->setLabel('von');
+        $form->getSql()->setValue('updatedate', date('d.m.Y H:i:s', $form->getSql()->getDateTimeValue('updatedate')));
+        $field = $form->addReadonlyField('updatedate');
+        $field->setHeader('<hr/><div class="row"><div class="col-md-6">');
+        $field->setFooter('</div>');
+        $field->setLabel('Letzte Änderung am ');
 
-      $form->getSql()->setValue('createdate', date('d.m.Y H:i:s', $form->getSql()->getDateTimeValue('createdate')));
-      $field = $form->addReadonlyField('createdate');
-      $field->setHeader('<div class="row"><div class="col-md-6">');
-      $field->setFooter('</div>');
-      $field->setLabel('Erstellt am ');
+        $field = $form->addReadonlyField('updateuser');
+        $field->setHeader('<div class="col-md-6">');
+        $field->setFooter('</div></div>');
+        $field->setLabel('von');
 
-      $field = $form->addReadonlyField('createuser');
-      $field->setHeader('<div class="col-md-6">');
-      $field->setFooter('</div></div><br/>');
-      $field->setLabel('von');
+      }
+
+      if ($form->getSql()->getValue('createuser') != '') {
+
+        $form->getSql()->setValue('createdate', date('d.m.Y H:i:s', $form->getSql()->getDateTimeValue('createdate')));
+        $field = $form->addReadonlyField('createdate');
+        $field->setHeader('<div class="row"><div class="col-md-6">');
+        $field->setFooter('</div>');
+        $field->setLabel('Erstellt am ');
+
+        $field = $form->addReadonlyField('createuser');
+        $field->setHeader('<div class="col-md-6">');
+        $field->setFooter('</div></div><br/>');
+        $field->setLabel('von');
+      }
 
     $form->addParam('id', $id);
   }

@@ -4,6 +4,10 @@
 
 ### Changelog ###
 
+### 25.02.2016 Version 1.8.6 ###
+
+- Beim Update werden jetzt die neuen Felder richtig berüksichtigt (hoffentlich :-))
+
 ### 24.02.2016 Version 1.8.5 ###
 
 - creatuser/creatdate und updateuser/updatedate hinzugefügt
