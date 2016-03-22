@@ -1,6 +1,7 @@
 <?php
 
 
+
 // --------------------
 //  Vars
 // --------------------
@@ -26,6 +27,13 @@ if ($aufgabe == 'new' AND $func == '') {
   $mail_titel = $sql->getValue('titel');
   $mail_beschreibung = $sql->getValue('beschreibung');
 
+  $sql_email = rex_sql::factory();
+  // $sql_email->setDebug();
+  $sql_email->setQuery('SELECT email FROM rex_user WHERE id = '.$sql->getValue('eigentuemer'));
+  $email_adresse = $sql_email->getValue('email');
+
+
+
   $mail = new rex_mailer();
 
   $body  = "<h3>".$mail_titel."</h3>";
@@ -40,12 +48,16 @@ if ($aufgabe == 'new' AND $func == '') {
 
   $mail->Body    = $body;
   $mail->AltBody = $text_body;
-  $mail->AddAddress(rex::getErrorEmail(), rex::getErrorEmail());
+
+  if ($email_adresse != '') {
+    $mail->AddAddress($email_adresse, $email_adresse);
+  } else {
+    $mail->AddAddress(rex::getErrorEmail(), rex::getErrorEmail());
+  }
 
   if(!$mail->Send()) {
     echo "E-Mail konnte nicht gesendet werden.<br/>";
   }
-
 }
 
 // --------------------
@@ -385,6 +397,7 @@ if ($func == '' || $func == 'filter') {
   //  Eigentümer (Zuständig)
   //
   // --------------------
+
   $list->setColumnLabel('eigentuemer', 'Zuständig');
   $list->setColumnLayout('eigentuemer', ['<th>###VALUE###<br/>'.$eigentuemerfilter.'</th>', '<td data-title="Zuständig" class="td_eigentuemer">###VALUE###</td>']);
   $list->setColumnFormat('eigentuemer', 'custom', function ($params) {
@@ -550,7 +563,6 @@ if ($func == '' || $func == 'filter') {
   $select->addSqlOptions($query);
 
   if ($func == 'add') {
-
     $form->addParam('aufgabe', 'new');
   }
 

@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+### 22.03.2016 Version 1.8.7 ###
+
+- E-MAil an Zustänigen nach dem Anlegen einer neuen Aufgaben
+  (Fallback bei leeren E-Mail Feld auf ErrorMail Adresse)
+
 ### 25.02.2016 Version 1.8.6 ###
 
 - Beim Update werden jetzt die neuen Felder richtig berüksichtigt (hoffentlich :-))
