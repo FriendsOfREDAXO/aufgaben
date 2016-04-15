@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+### 15.04.2016 Version 1.9.1 ###
+
+- Die Anzahl der Aufgaben in der Navi wird bei 0 Aufgaben ausgeblendet
+- Farben angepasst
+- Vorbereitungen für die "Beobachten" Funktion
 
 ### 15.04.2016 Version 1.9 ###
 
@@ -12,6 +17,7 @@
 - Nutzung von Pjax bei der Änderung von "Status" und "Priorität"
 - Anzeige der Anzahl der "eigenen" Aufgaben in der Navigation
 - Lizenz geändert (Beerware - Danke an Thomas)
+
 
 ### 22.03.2016 Version 1.8.7 ###
 

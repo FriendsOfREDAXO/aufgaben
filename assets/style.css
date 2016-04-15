@@ -6,21 +6,20 @@
   display: inline-block;
   width: 23px;
   margin-right: 3px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   padding: 3px 2px 3px 2px;
   font-size: 14px;
   text-align: center;
-  color: #ddd;
+  color: #ccc;
   transition: all 0.3s ease 0s;
 }
 
 .status a i:hover {
-  border: 1px solid #555;
-  color: #555;
+  border: 1px solid #000;
+  color: #000;
 }
 
 .status a i.current {
-  border: 1px solid #555;
   color: #555;
 }
 
@@ -38,35 +37,44 @@
   display: inline-block;
   width: 23px;
   margin-right: 3px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   padding: 2px;
   font-size: 16px;
   text-align: center;
-  color: #ddd;
+  color: #ccc;
   transition: all 0.3s ease 0s;
 }
 
 .priowrapper a i:hover {
-  border: 1px solid #555;
+  border: 1px solid #000;
+  color: #000;
 }
 
 .priowrapper a i.fa-star {
+  padding: 3px 2px 1px 2px;
   color: #f0ad4e;
 }
 
 .priowrapper a i.fa-star-o  {
-  color: #999;
+  padding: 3px 2px 1px 2px;
 }
+
+.priowrapper a i.fa-star-o:hover  {
+  padding: 3px 2px 1px 2px;
+  color: #f0ad4e;
+}
+
 
 
 .collapsetitel {
   display: inline-block;
   color: #4B9AD9;
-
 }
+
 
 .collapsetitel:hover {
   cursor: pointer;
+  color: #000;
 }
 
 
@@ -164,13 +172,35 @@
 }
 
 
-.erledigtschalter i {
+.erledigtschalter {
   padding: 6px 0 0 2px;
   width: auto;
-  font-size: 16px;
+  float: right;
+  font-size: 12px;
+}
+.erledigtschalter i {
+  margin-right: 5px;
 }
 
 #rex-navi-page-aufgaben .label {
   margin-top: 2px;
   float: right;
+}
+
+a.watch {
+  color: #ddd !important;
+}
+
+a.watch :hover {
+  transition: all 0.3s ease 0s;
+  color: #000;
+}
+
+a.watch i {
+    color: #ddd !important;
+    font-size: 15px;
+}
+
+a.watch.enabled i{
+  color: #555 !important;
 }

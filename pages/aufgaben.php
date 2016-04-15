@@ -249,7 +249,7 @@ if ($func == '' || $func == 'filter') {
   // --------------------
   $tdIcon = '<i class="rex-icon rex-icon-edit"></i>';
   $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '"><i class="rex-icon rex-icon-add"></i></a>';
-  $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon" style="border-left: 5px solid ###farbe###">###VALUE###</td>']);
+  $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon" style="border-left: 5px solid ###farbe###">###VALUE###<a class="watch" href="javascript:void(0);"><i class="rex-icon fa-eye-slash"></i></a></td>']);
   $list->setColumnParams($thIcon, ['func' => 'edit', 'id' => '###id###']);
   // --------------------
   //  remove Colums
@@ -279,9 +279,9 @@ if ($func == '' || $func == 'filter') {
   // --------------------
 
   if ($aktueller_erledigt_status == 0) {
-    $titleLink = '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);"><i class="rex-icon fa-eye-slash"></a>';
+    $titleLink = '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);"><i class="rex-icon fa-square-o"></i>Erledigte verbergen</a>';
   } else {
-    $titleLink = '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);"><i class="rex-icon fa-eye"></a>';
+    $titleLink = '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);"><i class="rex-icon fa-check-square-o"></i>Erledigte anzeigen</a>';
   }
 
   $list->setColumnLabel('titel', 'Aufgaben '.$titleLink);
@@ -649,6 +649,11 @@ $("#erledigtverbergen").click(function(){
 });
 $("#erledigtanzeigen").click(function(){
   location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&erledigt_filter=0" );
+});
+
+$(".watch").click(function(){
+  // location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&erledigt_filter=0" );
+  $(this).toggleClass( "enabled" );
 });
 
 $("select.form-control").on('change', function () {
