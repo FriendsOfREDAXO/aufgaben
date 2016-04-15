@@ -1,2 +1,11 @@
-navigation_aufgaben = !
-aufgaben_title = Aufgaben
+
+
+modulsammlung_title            = Modulsammlung
+modulsammlung_install          = Module installieren
+modulsammlung_info             = Info
+
+
+form_modul_name                     = Modul Name
+form_modul_install_button           = Modul installieren
+
+perm_general_gmb[] = Modulsammlung

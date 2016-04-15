@@ -1,91 +1,30 @@
 <?php
 
-$sql = rex_sql::factory();
-$sql->setQuery('
-  CREATE TABLE IF NOT EXISTS `rex_aufgaben_aufgaben` (
-    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `titel` varchar(255) DEFAULT NULL,
-    `beschreibung` longtext DEFAULT NULL,
-    `kategorie` int(10) DEFAULT NULL,
-    `eigentuemer` int(10) DEFAULT NULL,
-    `prio` int(10) DEFAULT NULL,
-    `status` int(10) DEFAULT NULL,
-    `createdate` DATETIME DEFAULT NULL,
-    `updatedate` DATETIME DEFAULT NULL,
-    `createuser` varchar(255) DEFAULT NULL,
-    `updateuser` varchar(255) DEFAULT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-');
+/** @var rex_addon $this */
 
+// Diese Datei ist keine Pflichtdatei mehr.
 
-$sql = rex_sql::factory();
-$sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_kategorien` (
-    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `kategorie` varchar(255) DEFAULT NULL,
-    `farbe` varchar(255) DEFAULT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-');
+// SQL-Anweisungen können auch weiterhin über die install.sql ausgeführt werden.
 
-$sql = rex_sql::factory();
-$sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_status` (
-    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `status` varchar(255) DEFAULT NULL,
-    `icon` varchar(255)  DEFAULT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-');
+// Abhängigkeiten (PHP-Version, PHP-Extensions, Redaxo-Version, andere Addons/Plugins) sollten in die package.yml eingetragen werden.
+// Sie brauchen hier dann nicht mehr überprüft werden!
 
-$sql = rex_sql::factory();
-$sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_filter` (
-    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `user` int(10) DEFAULT NULL,
-    `kategorie` int(10)  DEFAULT NULL,
-    `eigentuemer` int(10)  DEFAULT NULL,
-    `prio` int(10)  DEFAULT NULL,
-    `status` int(10)  DEFAULT NULL,
-    `erledigt` int(10)  DEFAULT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-');
+// Hier können zum Beispiel Konfigurationswerte in der rex_config initialisiert werden.
+// Das if-Statement ist notwendig, um bei einem reinstall die Konfiguration nicht zu überschreiben.
+if (!$this->hasConfig()) {
+   // $this->setConfig('url', 'http://www.example.com');
+   // $this->setConfig('ids', [1, 4, 5]);
+}
 
+// Mit einer rex_functional_exception kann die Installation mit einer Fehlermeldung abgebrochen werden.
+$somethingIsWrong = false;
+if ($somethingIsWrong) {
+    throw new rex_functional_exception('Something is wrong');
+}
 
-$sql = rex_sql::factory();
-$sql->setQuery("REPLACE INTO `rex_aufgaben_status` VALUES
-    (1,'Offen','fa-folder-open-o'),
-    (2,'Wird bearbeitet','fa-gears'),
-    (3,'Frage','fa-question'),
-    (4,'Warten auf etwas','fa-hourglass-start'),
-    (5,'Auf später verschoben','fa-calendar'),
-    (6,'Erledigt','fa-check');
-");
-
-rex_sql_table::get("rex_aufgaben_aufgaben")
-->ensureColumn(new rex_sql_column('titel', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('beschreibung', 'longtext'))
-->ensureColumn(new rex_sql_column('kategorie', 'int(10)'))
-->ensureColumn(new rex_sql_column('eigentuemer', 'int(10)'))
-->ensureColumn(new rex_sql_column('prio', 'int(10)'))
-->ensureColumn(new rex_sql_column('status', 'int(10)'))
-->alter();
-
-
-rex_sql_table::get("rex_aufgaben_kategorien")
-->ensureColumn(new rex_sql_column('kategorie', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('farbe', 'varchar(255)'))
-->alter();
-
-rex_sql_table::get("rex_aufgaben_status")
-->ensureColumn(new rex_sql_column('status', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('icon', 'varchar(255)'))
-->alter();
-
-rex_sql_table::get("rex_aufgaben_filter")
-->ensureColumn(new rex_sql_column('user', 'int(10)'))
-->ensureColumn(new rex_sql_column('kategorie', 'int(10)'))
-->ensureColumn(new rex_sql_column('eigentuemer', 'int(10)'))
-->ensureColumn(new rex_sql_column('prio', 'int(10)'))
-->ensureColumn(new rex_sql_column('status', 'int(10)'))
-->ensureColumn(new rex_sql_column('erledigt', 'int(10)'))
-->alter();
+// Alternativ kann ähnlich wie in R4 mit den Properties "install" und "installmsg" die Installation als nicht erfolgreich markiert werden.
+// Im Gegensatz zu R4 muss für eine erfolgreiche Installation keine Property mehr gesetzt werden.
+if ($somethingIsWrong) {
+    $this->setProperty('installmsg', 'Something is wrong');
+    $this->setProperty('install', false);
+}

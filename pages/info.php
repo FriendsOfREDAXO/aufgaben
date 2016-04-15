@@ -1,60 +1,81 @@
 <?php
 
-$func = rex_request('func', 'string');
+$fragment = new rex_fragment();
+$content = '<p>
 
-if ($func == 'import_beispieldaten') {
+<h3>Modulsammlung</h3>
+<br/>
+<p>Zweck dieses Addons ist die schnelle und unkomplizierte Installation einiger "Standard" Module.</p>
+<p>Da es keinen Updateprozess vorhandener Module gibt (ist auch nicht geplant) kann das Addon nach der Installation der gewünschten Module eigentlich wieder gelöscht werden.<p>
 
-  $qry = "
+<p>Selbstverständlich können (und sollen) die Module nach der Installation individuell angepasst werden.</p>
 
-  -- Aufgaben
-
-  INSERT IGNORE `rex_aufgaben_aufgaben` VALUES
-      (1, 'Fav Icon erstellen', 'Wird immer benötigt',1,1,0,1),
-      (2, 'Touch Icon erstellen', '',1,1,0,1),
-      (3, 'Meta Infos erstellen', 'Sind Ortsbezogene meta Infos wichtig?',1,1,0,1),
-      (4, 'Print.css entwickeln', 'Wird immer vergessen',1,1,0,1),
-      (5, 'robots.txt prüfen', ':-)',7,1,0,1);
-
-  -- Kategorien
-
-  INSERT IGNORE `rex_aufgaben_kategorien` VALUES
-      (1,'Grundlagen','#9EAEC2'),
-      (2,'Backend','#588D76'),
-      (3,'Design','#8D588A'),
-      (4,'Funktion','#9EAEC2'),
-      (5,'Fehler','#72A3A7'),
-      (6,'Wunsch','#FFD83D'),
-      (7,'SEO','#437047');
-  ";
-
-  $sql = rex_sql::factory();
-  // $sql->setDebug();
-  $sql->setQuery($qry);
-
-  echo '<div class="alert alert-success">Der Beispieldaten wurden eingefügt.</div>';
-  $func = '';
-}
-
-
-$content = '
-<h4>Eine ToDo Verwaltung für das Redaxo Backend.</h4>
-
-<ul>
-<li>im Beschreibungsfeld kann mit der Eingabe von ***** (5 Sterne) ein Trenner hinzugefügt werden.</li>
-<li>durch Klick auf "blaue" Aufgaben wird die Beschreibung angezeigt.</li>
-<li>durch Klick auf die Überschriften wird die Tabelle entsprechend sortiert.</li>
-<li>durch Klick auf das Auge (rechts im Tabellenkopf) können die erledigten Aufgaben dauerhaft ein- bzw. ausgeblendet werden.</li>
-<li>Kategorien werden durch den Admin gepflegt.</li>
-
-<hr/>
-
-<p><a href="index.php?page=aufgaben/info&amp;func=import_beispieldaten"><i class="rex-icon rex-icon-module"></i> Beispieldaten importieren</a>
-</p>
+<p>Legt doch bitte für alle auftretende Fehler, Notices und Wünsche ein Issue an:
+<a href="https://github.com/olien/REX5-Modulsammlung" target="_blank">https://github.com/olien/REX5-Modulsammlung</a></p>
 
 ';
+
 $fragment = new rex_fragment();
-$fragment->setVar('title', 'Aufgaben');
+$fragment->setVar('class', 'info', false);
+$fragment->setVar('title', $this->i18n('info'), false);
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');
 
 
+
+$fragment = new rex_fragment();
+$content = '';
+
+$sql = rex_sql::factory();
+// $sql->setDebug();
+ $sql->setQuery("SELECT rex_module.id as id,rex_module.name, COUNT(s.module_id) as occurence
+ FROM rex_module
+ LEFT JOIN rex_article_slice as s
+ ON (s.module_id=rex_module.id)
+ GROUP BY rex_module.id ORDER by occurence");
+
+$modulinfos = '';
+
+
+  foreach ($sql->getArray() as $row)   {
+
+    if ($row['occurence'] == 0) {
+      $orange = "class='orange'";
+    } else {
+      $orange = '';
+    }
+
+    $modulinfos .= '
+      <tr '.$orange.'>
+        <td class="id">'.$row['id'].'</td>
+        <td class="tg-031e">'.$row['name'].'</td>
+        <td class="tg-031e">'.$row['occurence'].'</td>
+      </tr>
+    ';
+
+  }
+
+$content .= '
+<table class="tg">
+  <tr>
+    <th class="tg-031e">Modul ID</th>
+    <th class="tg-031e">Modul Bezeichnung</th>
+    <th class="tg-031e">Verwendung</th>
+  </tr>
+  '.$modulinfos.'
+</table>';
+
+
+
+$fragment = new rex_fragment();
+$fragment->setVar('class', 'info', false);
+$fragment->setVar('title', "Aktuelle Modulbenutzung", false);
+$fragment->setVar('body', $content, false);
+echo $fragment->parse('core/page/section.php');
+?>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0; width: 100%;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px !important;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;padding: 5px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal; font-weight: bold;}
+.tg tr.orange {background: #efbf3d; }
+</style>

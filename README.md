@@ -1,22 +1,51 @@
-### Aufgaben-AddOn für REDAXO 5 ###
+Redaxo 5 Modulsammlung
+=======================
 
-##### Eine ToDo Verwaltung für das Redaxo Backend. #####
+Ziel diese Addons ist es einfach einige Module für Redaxo 5.x installieren zu können.
 
-<br/>
+Da es keinen Updateprozess vorhandener Module gibt (ist auch nicht geplant) kann das Addon nach der Installation der gewünschten Module eigentlich wieder gelöscht werden.
 
-* im Beschreibungsfeld kann mit der Eingabe von ***** (5 Sterne) ein Trenner hinzugefügt werden.</li>
-* durch Klick auf "blaue" Aufgaben wird die Beschreibung angezeigt.</li>
-* durch Klick auf die Überschriften wird die Tabelle entsprechend sortiert.</li>
-* durch Klick auf das Auge (rechts im Tabellenkopf) können die erledigten Aufgaben dauerhaft ein- bzw. ausgeblendet werden.</li>
-* Kategorien werden durch den Admin gepflegt.
+Selbstverständlich können (und sollen) die Module nach der Installation individuell angepasst werden.
 
-<br/>
+Das Frontend CSS wird nicht mitgeliefert :-)
 
----
+Schreibt doch bitte auftretende Fehler, Notices und Wünsche als Issue.
 
-### Credits ###
 
-* [Thomas Blum](https://github.com/tbaddade), [Gregor Harlan](https://github.com/gharlan) und [Thomas Kaegi](https://github.com/phoebusryan) für die Mithilfe, den zahlreichen Tipps und die unendliche Gedult
-* [RexDude](https://github.com/RexDude) für seine zahlreichen inspirierenden Addons
-* [Parsedown](http://parsedown.org/) Class by Emanuil Rusev
+Aktuell enthaltene Module
+-------------------------
 
+* 0010 - Text / Bild / Video / Link | 1-4 Spalten
+* 0020 - Abstand oder Trennlinie mit/ohne Grafik
+* 0030 - Google Maps Modul / Routenplaner
+* 0040 - Text / Kontaktformular
+* 0060 - Nur Text (Footer, Seitenleiste etc.)
+* 0100 - Alle Bilder mit aus dem Medienpool mit Copyright anzeigen
+* 0110 - Sitemap
+
+Geplante Module
+--------------------
+
+* Text / Bildergalerie
+* Text / Download
+* Text / Bilderslider (100% Breite / Contentbreite) // OWL Slider?
+* evtl.  Parallax
+* "Alle" - Minibeispiele
+
+
+ToDo
+---------
+
+siehe [ISSUES](https://github.com/olien/REX5-Modulsammlung/issues/)
+
+
+Changelog
+---------
+
+siehe [CHANGELOG.md](CHANGELOG.md)
+
+
+Lizenz
+------
+
+siehe [LICENSE.md](LICENSE.md)

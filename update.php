@@ -1,34 +1,22 @@
 <?php
 
-rex_sql_table::get("rex_aufgaben_aufgaben")
-->ensureColumn(new rex_sql_column('titel', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('beschreibung', 'longtext'))
-->ensureColumn(new rex_sql_column('kategorie', 'int(10)'))
-->ensureColumn(new rex_sql_column('eigentuemer', 'int(10)'))
-->ensureColumn(new rex_sql_column('prio', 'int(10)'))
-->ensureColumn(new rex_sql_column('status', 'int(10)'))
-->ensureColumn(new rex_sql_column('createdate', 'DATETIME'))
-->ensureColumn(new rex_sql_column('updatedate', 'DATETIME'))
-->ensureColumn(new rex_sql_column('createuser', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('updateuser', 'varchar(255)'))
-->alter();
+/** @var rex_addon $this */
 
+// Diese Datei wird beim Update eines Addons über den Installer aufgerufen
 
-rex_sql_table::get("rex_aufgaben_kategorien")
-->ensureColumn(new rex_sql_column('kategorie', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('farbe', 'varchar(255)'))
-->alter();
+// Hier können zum Beispiel DB-Tabellen angepasst werden
 
-rex_sql_table::get("rex_aufgaben_status")
-->ensureColumn(new rex_sql_column('status', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('icon', 'varchar(255)'))
-->alter();
+// $this->getVersion() liefert die noch aktuell installierte Version
 
-rex_sql_table::get("rex_aufgaben_filter")
-->ensureColumn(new rex_sql_column('user', 'int(10)'))
-->ensureColumn(new rex_sql_column('kategorie', 'int(10)'))
-->ensureColumn(new rex_sql_column('eigentuemer', 'int(10)'))
-->ensureColumn(new rex_sql_column('prio', 'int(10)'))
-->ensureColumn(new rex_sql_column('status', 'int(10)'))
-->ensureColumn(new rex_sql_column('erledigt', 'int(10)'))
-->alter();
+if (rex_string::versionCompare($this->getVersion(), '0.1', '<')) {
+
+}
+
+// DB-Anpassungen:
+// rex_sql_table::get(rex::getTable('my_table'))
+//     ->ensureColumn(new rex_sql_column('new_column', 'varchar(255)'))
+//     ->alter()
+// ;
+
+// Update kann abgebrochen werden:
+// throw new rex_functional_exception('Fehlermeldung');

@@ -1,3 +1,5 @@
-<h4>"Aufgaben" - eine ToDo Verwaltung für das Redaxo Backend.</h4>
+<h3>Modulsammlung</h3>
 
-Weitere Informationen finden sich im Addon unter "Hilfe"
+<p>
+Addon zur Installation von Modulen
+</p>
