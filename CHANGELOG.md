@@ -8,9 +8,9 @@
 ### 15.04.2016 Version 1.9 ###
 
 - CSS Anpassung für die Tabellen
-- CSS Anpassungen einiger Selects
-- Nutzung von Pjax bei der Änderung von "Status" und Priorität"
-- Anzeige der "eigenen" Aufgaben in der Navigation
+- CSS Anpassungen einiger Select Felder
+- Nutzung von Pjax bei der Änderung von "Status" und "Priorität"
+- Anzeige der Anzahl der "eigenen" Aufgaben in der Navigation
 - Lizenz geändert (Beerware - Danke an Thomas)
 
 ### 22.03.2016 Version 1.8.7 ###
