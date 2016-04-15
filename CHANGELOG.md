@@ -1,68 +1,63 @@
-Modulsammlung - Changelog
-===
+##### ToDo siehe [ISSUES](https://github.com/olien/aufgaben/issues) #####
 
-#### 21.03.2016 Version 3.6.1-beta
+---
 
-* bei allen Modulen Fehler korrigiert und die Unterstützung für Redactor entfernt
+### Changelog ###
 
-#### 29.02.2016 Version 3.5-beta
 
-* Lizenz geändert
-* Bezeichnung "0040 - Text / Kontaktformular" geändert
-* Reihenfolge der Module geändert
-* Update der Module
+### 15.04.2016 Version 1.9 ###
 
-#### 04.01.2016 Version 3.1-beta
+- CSS Anpassung für die Tabellen
+- CSS Anpassungen einiger Selects
+- Nutzung von Pjax bei der Änderung von "Status" und Priorität"
+- Anzeige der "eigenen" Aufgaben in der Navigation
+- Lizenz geändert (Beerware - Danke an Thomas)
 
-* Installationsseite komplett neu erstellt
-* Kleinere Änderungen
+### 22.03.2016 Version 1.8.7 ###
 
-#### 03.01.2016 Version 3.0-beta
+- E-Mail an Zuständigen nach dem Anlegen einer neuen Aufgaben
+  (Fallback bei leeren E-Mail Feld auf ErrorMail Adresse)
 
-* Text / Bild: Textfelder / Redacor Bug behoben
-* Text / Bild: Textfelder / Darstellungsfehler behoben
-* Text / Bild: img mit <figure> eingebunden
-* Text / Bild: Textile Ausgabe neu
-* Google Maps: Redacor Bug behoben
-* Google Maps: Textile Ausgabe neu
-* Nur Text: Textile Ausgabe neu
-* Sitemap: Info erstellt
-* Sitemap: Textile Ausgabe neu
-* Text / Kontaktformular: Textile Ausgabe neu
-* Text / Kontaktformular: Textile Bug behoben
-* Text / Kontaktformular: Redacor Bug behoben
+### 25.02.2016 Version 1.8.6 ###
 
-#### 21.12.2015 Version 2.9-beta
+- Beim Update werden jetzt die neuen Felder richtig berüksichtigt (hoffentlich :-))
 
-###### Neues Modul: Nur Text
-###### Neues Modul: Text / Kontaktformular
+### 24.02.2016 Version 1.8.5 ###
 
-###### Info Seite erweitert
-* Aktuell verwendete bzw. nicht verwendete Module werden ausgegeben
+- creatuser/creatdate und updateuser/updatedate hinzugefügt
 
-#### 18.12.2015 Version 2.8-beta
+### 17.02.2016 Version 1.8 ###
 
-###### Update: Abstand oder Trennlinie mit/ohne Grafik
-* CSS ID vergeben
-* Umstellug: project_vars
-* Erklärung aktualisiert
+- Anpassung der install.php und update.php (https://github.com/olien/aufgaben/issues/26)
+- install.sql gelöscht
+- Abhängigkeit phpmailer hinzugefügt
+- Bei einer neuen Aufgabe wird eine E-Mail an die unter "System" eingetragenen E-Mail Adresse gesendet
 
-###### Update: Alle Bilder mit aus dem Medienpool mit Copyright anzeigen
-* CSS ID vergeben
 
-###### Update: Google Maps Modul / Routenplaner
-* Name geändert: Google Maps / Routenplaner
-* Modulinfo ausgelager
-* CSS Info ausgelagert
+### 27.01.2016 Version 1.7.5 ###
 
-###### Update: Text / Bild / Video / Link Modul
-  * Umstellug: project_vars
-  * Prüfung ob Redactor / MarkItUp Profile schon vorhanden sind
+- Änderungen des UI. Danke an Thomas Kaegi (https://github.com/phoebusryan) für den PR
+- "Parsedown" hinzugefügt. Abgeguckt bei SEO 42 von RexDude https://github.com/RexDude :-)
+- Hilfe Seiten entwicklet
 
-###### Neues Modul: Sitemap
 
-###### Sontiges
+### 27.01.2016 Version 1.7.2 ###
 
-* Readme aktualisiert
-* Infoseite aktualisiert
-* Module ins Accordion gepackt (danke an Thomas)
+- Nicht zugewiesene Optionen werden im Filter angezeigt
+  Danke an Thomas Kaegi (https://github.com/phoebusryan) für die Anpassung
+
+### 14.01.2016 Version 1.7.1 ###
+
+- Filter Tabelle löschen in uninstall.php
+
+### 14.01.2016 Version 1.7 ###
+
+- Fehler beim Priofilter behoben
+- erledigt Status (Auge) hinzugefügt
+
+### 14.01.2016 Version 1.5.1 ###
+
+- Fehler gefixt
+- Filter alphabetisch sortiert
+- Neue Aufgabe > Aktueller User vorausgewählt
+

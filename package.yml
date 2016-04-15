@@ -1,14 +1,26 @@
+# Alle hier gesetzten Werte können über $addon->getProperty($key) abgefragt werden
 
-
-package: modulsammlung
-version: '3.6.1-beta'
+package: aufgaben
+version: '1.9'
 author: Oliver Kreischer
-supportpage: www.redaxo.org/de/forum
+supportpage: github.com/olien/aufgaben/issues
 
 page:
-    title: 'translate:title'
-    perm: modulsammlung[]
-    icon: rex-icon fa-plus-square
-    subpages:
-        install: { title: 'translate:install' }
-        info: { title: 'translate:info'}
+  title: 'Aufgaben'
+  perm: aufgaben[]
+  pjax: true
+  icon: rex-icon fa-calendar-check-o
+  subpages:
+      aufgaben: { title: 'Aufgaben',perm: aufgaben[] }
+      kategorien: { title: 'Kategorien', perm: aufgaben[kategorien]}
+      info:
+        title: 'Info'
+        subpages:
+          hilfe: { title: 'Hilfe'}
+          changelog: { title: 'Changelog'}
+          lizenz: { title: 'Lizenz'}
+
+requires:
+    packages:
+        phpmailer: '^2.0.1'
+    redaxo: '>=5.0.0'

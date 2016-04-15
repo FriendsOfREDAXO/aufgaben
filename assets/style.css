@@ -115,6 +115,14 @@
 
 }
 
+#aufgaben tbody tr:nth-child(odd) {
+   background-color: #efefef;
+}
+
+#aufgaben thead {
+  font-size: 12px;
+}
+
 .aufgabentrenner {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
@@ -123,8 +131,6 @@
   margin: 4px 0 4px 0;
   color: #555;
 }
-
-
 
 .select-style {
     border: 1px solid #cccccc;
@@ -149,9 +155,6 @@
     -webkit-appearance: none;
     -moz-appearance:none;
     -webkit-border-radius: 0px;
-
-
-
 }
 .select-style select:focus {
     outline: none;
@@ -160,8 +163,14 @@
     cursor: pointer;
 }
 
+
 .erledigtschalter i {
-  padding: 2px 1px 2px 2px;
-  width: 23px;
-  font-size: 17px;
+  padding: 6px 0 0 2px;
+  width: auto;
+  font-size: 16px;
+}
+
+#rex-navi-page-aufgaben .label {
+  margin-top: 2px;
+  float: right;
 }
