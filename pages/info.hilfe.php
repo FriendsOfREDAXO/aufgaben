@@ -32,6 +32,11 @@ if ($func == 'import_beispieldaten') {
       (5,'Fehler','#72A3A7'),
       (6,'Wunsch','#FFD83D'),
       (7,'SEO','#437047');
+
+-- User Settings
+
+  INSERT IGNORE `rex_aufgaben_user_settings` VALUES (1,$current_user,0,5,0);
+
   ";
 
   $sql = rex_sql::factory();

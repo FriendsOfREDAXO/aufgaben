@@ -50,6 +50,15 @@ $sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_filter` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ');
 
+$sql = rex_sql::factory();
+$sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_user_settings` (
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `user` int(10) DEFAULT NULL,
+    `watch` int(10)  DEFAULT NULL,
+    `counter` int(10)  DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+');
 
 $sql = rex_sql::factory();
 $sql->setQuery("REPLACE INTO `rex_aufgaben_status` VALUES
@@ -70,10 +79,16 @@ rex_sql_table::get("rex_aufgaben_aufgaben")
 ->ensureColumn(new rex_sql_column('status', 'int(10)'))
 ->alter();
 
-
 rex_sql_table::get("rex_aufgaben_kategorien")
 ->ensureColumn(new rex_sql_column('kategorie', 'varchar(255)'))
 ->ensureColumn(new rex_sql_column('farbe', 'varchar(255)'))
+->alter();
+
+rex_sql_table::get("rex_aufgaben_user_settings")
+->ensureColumn(new rex_sql_column('user', 'int(10)'))
+->ensureColumn(new rex_sql_column('watch', 'int(10)'))
+->ensureColumn(new rex_sql_column('counter', 'int(10)'))
+->ensureColumn(new rex_sql_column('filter', 'int(20)'))
 ->alter();
 
 rex_sql_table::get("rex_aufgaben_status")
@@ -91,6 +106,10 @@ rex_sql_table::get("rex_aufgaben_filter")
 ->alter();
 
 
-if (!$this->hasConfig()) {
-    $this->setConfig('anzahl', '0');
-}
+
+$error = '';
+// Überprüfungen
+
+if(!$error)
+  $this->setConfig('install', true);
+

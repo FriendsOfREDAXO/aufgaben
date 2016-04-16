@@ -33,7 +33,6 @@ if ($aufgabe == 'new' AND $func == '') {
   $email_adresse = $sql_email->getValue('email');
 
 
-
   $mail = new rex_mailer();
 
   $body  = "<h3>".$mail_titel."</h3>";
@@ -236,11 +235,34 @@ if ($func == '' || $func == 'filter') {
             ON a.kategorie = k.id
             WHERE ' . $where . ' ' . $addsql . ' ORDER BY a.id DESC';
 
+
+
   $list = rex_list::factory($query, 30, 'aufgaben');
 
   // Anzahl der Aufgaben
   $anzahl = $list->getRows();
-  $this->setConfig('anzahl', $anzahl);
+
+    $sql_anzahl = rex_sql::factory();
+    // $sql_anzahl->setDebug();
+    $sql_anzahl->setTable('rex_aufgaben_user_settings');
+    $sql_anzahl->setWhere('user = '.$current_user);
+    $sql_anzahl->select();
+    if ($sql_anzahl->getRows() > 0) {
+      $sql_anzahl_update = rex_sql::factory();
+      $sql_anzahl_update->setTable('rex_aufgaben_user_settings');
+      $sql_anzahl_update->setWhere('user = '.$current_user);
+      $sql_anzahl_update->setValue('counter', $anzahl);
+      $sql_anzahl_update->update();
+
+    } else {
+      $sql_anzahl_insert = rex_sql::factory();
+      $sql_anzahl_insert->setTable('rex_aufgaben_user_settings');
+      $sql_anzahl_insert->setValue('user',$current_user);
+      $sql_anzahl_insert->setValue('counter', $anzahl);
+      $sql_anzahl_insert->insert();
+    }
+
+    show_counter();
 
 
   $list->setNoRowsMessage('<div class="alert alert-info" role="alert"><strong>Keine Aufgaben vorhanden.</strong><br/><br/>Mögliche Ursachen:<br/><br/><ul><li>es ist keine Aufgabe angelegt</li><li>keine der vorhandenen Aufgaben erfüllt auf die eingestellten Filterkriterien</li><li>die Ausgabe der erledigten Aufgaben ist abgeschaltet</li></ul></div>');

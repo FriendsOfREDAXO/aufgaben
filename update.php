@@ -32,3 +32,11 @@ rex_sql_table::get("rex_aufgaben_filter")
 ->ensureColumn(new rex_sql_column('status', 'int(10)'))
 ->ensureColumn(new rex_sql_column('erledigt', 'int(10)'))
 ->alter();
+
+
+rex_sql_table::get("rex_aufgaben_user_settings")
+->ensureColumn(new rex_sql_column('user', 'int(10)'))
+->ensureColumn(new rex_sql_column('watch', 'int(10)'))
+->ensureColumn(new rex_sql_column('counter', 'int(10)'))
+->ensureColumn(new rex_sql_column('filter', 'int(20)'))
+->alter();

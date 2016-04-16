@@ -204,3 +204,8 @@ a.watch i {
 a.watch.enabled i{
   color: #555 !important;
 }
+
+#aufgaben form table {
+  margin-bottom: 0;
+}
+
