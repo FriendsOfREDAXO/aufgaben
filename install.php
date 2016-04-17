@@ -14,6 +14,7 @@ $sql->setQuery('
     `updatedate` DATETIME DEFAULT NULL,
     `createuser` varchar(255) DEFAULT NULL,
     `updateuser` varchar(255) DEFAULT NULL,
+    `finaldate` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ');

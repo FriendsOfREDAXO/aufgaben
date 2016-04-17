@@ -1,7 +1,5 @@
 <?php
 
-
-
 // --------------------
 //  Vars
 // --------------------
@@ -293,6 +291,7 @@ if ($func == '' || $func == 'filter') {
   $list->setColumnSortable('prio');
   $list->setColumnSortable('status');
   $list->setColumnSortable('updatedate');
+  $list->setColumnSortable('finaldate');
   // --------------------
   //
   //  Aufgaben (title)
@@ -301,12 +300,12 @@ if ($func == '' || $func == 'filter') {
   // --------------------
 
   if ($aktueller_erledigt_status == 0) {
-    $titleLink = '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);"><i class="rex-icon fa-square-o"></i>Erledigte verbergen</a>';
+    $titleLink = '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);">Aufgaben<i class="rex-icon fa-check-square-o"></i></a>';
   } else {
-    $titleLink = '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);"><i class="rex-icon fa-check-square-o"></i>Erledigte anzeigen</a>';
+    $titleLink = '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);">Aufgaben<i class="rex-icon fa-square-o"></i></a>';
   }
 
-  $list->setColumnLabel('titel', 'Aufgaben '.$titleLink);
+  $list->setColumnLabel('titel', $titleLink);
   $list->setColumnLayout('titel', ['<th>###VALUE###</th>', '<td data-title="Aufgaben" class="td_aufgaben">###VALUE###</td>']);
   $list->setColumnFormat('titel', 'custom', function ($params) {
     $list = $params['list'];
@@ -361,6 +360,28 @@ if ($func == '' || $func == 'filter') {
     $updatedate = $updatedatevalue.'<br/><span>'.$updateuservalue.'</span>';
     return $updatedate;
   });
+
+
+  // --------------------
+  //
+  //  Finaldate
+  //
+  // --------------------
+  $list->setColumnLabel('finaldate', 'Fällig');
+  $list->setColumnLayout('finaldate', ['<th>###VALUE###</th>', '<td data-title="Fällig" class="td_finaldate">###VALUE###</td>']);
+  $list->setColumnFormat('finaldate', 'custom', function ($params) {
+  $list = $params['list'];
+
+    if ($list->getValue('updatedate') == '0000-00-00 00:00:00') {
+        $finaldatevalue = '-';
+    } else {
+        $finaldatevalue = date('d.m.Y H:i', strtotime($list->getValue('updatedate')));
+    }
+
+    $finaldate = $finaldate;
+    return $finaldate;
+  });
+
   // --------------------
   //
   //  Kategoriefilter
@@ -554,6 +575,7 @@ if ($func == '' || $func == 'filter') {
 
   $field = $form->addTextField('titel');
   $field->setLabel('Titel');
+  $field->getValidator()->add('notEmpty', 'Bitte einen Titel angeben.');
 
   $field = $form->addTextareaField('beschreibung');
   $field->setLabel('Beschreibung');
@@ -580,6 +602,13 @@ if ($func == '' || $func == 'filter') {
         $select->setSelected($current_user);
   }
   $select->setSize(1);
+
+
+  $field = $form->addTextField('finaldate');
+  // Hier Datepicker Klasse vergeben
+  $field->setLabel('Fertigstellungsdatum');
+
+
 
   $query = 'SELECT name as label, id FROM rex_user';
   $select->addOption('Bitte wählen','');
@@ -682,7 +711,7 @@ $("select.form-control").on('change', function () {
   $(this).blur();
 });
 
-
+var $input = $('.datepicker').pickadate();
 
 </script>
 

@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+### 16.04.2016 Version 1.9.3 ###
+
+- Title = Pflichtfeld
+- Vorbereitung für das Hinzufügen eines Fälligkeitsdatums
+
 ### 16.04.2016 Version 1.9.2 ###
 
 - Tabelle für die User Setting hinzugefügt
