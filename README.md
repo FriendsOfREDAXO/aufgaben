@@ -7,7 +7,7 @@
 * im Beschreibungsfeld kann mit der Eingabe von ***** (5 Sterne) ein Trenner hinzugefügt werden.</li>
 * durch Klick auf "blaue" Aufgaben wird die Beschreibung angezeigt.</li>
 * durch Klick auf die Überschriften wird die Tabelle entsprechend sortiert.</li>
-* durch Klick auf das Auge (rechts neben "Aufgaben") können die erledigten Aufgaben dauerhaft ein- bzw. ausgeblendet werden.</li>
+* durch Klick auf das Wort "Aufgaben" können die erledigten Aufgaben dauerhaft ein- bzw. ausgeblendet werden.
 * Kategorien werden durch den Admin gepflegt.
 
 <br/>

@@ -1,7 +1,5 @@
 <?php
 
-
-
 // --------------------
 //  Vars
 // --------------------
@@ -31,7 +29,6 @@ if ($aufgabe == 'new' AND $func == '') {
   // $sql_email->setDebug();
   $sql_email->setQuery('SELECT email FROM rex_user WHERE id = '.$sql->getValue('eigentuemer'));
   $email_adresse = $sql_email->getValue('email');
-
 
 
   $mail = new rex_mailer();
@@ -236,11 +233,34 @@ if ($func == '' || $func == 'filter') {
             ON a.kategorie = k.id
             WHERE ' . $where . ' ' . $addsql . ' ORDER BY a.id DESC';
 
+
+
   $list = rex_list::factory($query, 30, 'aufgaben');
 
   // Anzahl der Aufgaben
   $anzahl = $list->getRows();
-  $this->setConfig('anzahl', $anzahl);
+
+    $sql_anzahl = rex_sql::factory();
+    // $sql_anzahl->setDebug();
+    $sql_anzahl->setTable('rex_aufgaben_user_settings');
+    $sql_anzahl->setWhere('user = '.$current_user);
+    $sql_anzahl->select();
+    if ($sql_anzahl->getRows() > 0) {
+      $sql_anzahl_update = rex_sql::factory();
+      $sql_anzahl_update->setTable('rex_aufgaben_user_settings');
+      $sql_anzahl_update->setWhere('user = '.$current_user);
+      $sql_anzahl_update->setValue('counter', $anzahl);
+      $sql_anzahl_update->update();
+
+    } else {
+      $sql_anzahl_insert = rex_sql::factory();
+      $sql_anzahl_insert->setTable('rex_aufgaben_user_settings');
+      $sql_anzahl_insert->setValue('user',$current_user);
+      $sql_anzahl_insert->setValue('counter', $anzahl);
+      $sql_anzahl_insert->insert();
+    }
+
+    show_counter();
 
 
   $list->setNoRowsMessage('<div class="alert alert-info" role="alert"><strong>Keine Aufgaben vorhanden.</strong><br/><br/>Mögliche Ursachen:<br/><br/><ul><li>es ist keine Aufgabe angelegt</li><li>keine der vorhandenen Aufgaben erfüllt auf die eingestellten Filterkriterien</li><li>die Ausgabe der erledigten Aufgaben ist abgeschaltet</li></ul></div>');
@@ -271,6 +291,7 @@ if ($func == '' || $func == 'filter') {
   $list->setColumnSortable('prio');
   $list->setColumnSortable('status');
   $list->setColumnSortable('updatedate');
+  $list->setColumnSortable('finaldate');
   // --------------------
   //
   //  Aufgaben (title)
@@ -279,12 +300,12 @@ if ($func == '' || $func == 'filter') {
   // --------------------
 
   if ($aktueller_erledigt_status == 0) {
-    $titleLink = '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);"><i class="rex-icon fa-square-o"></i>Erledigte verbergen</a>';
+    $titleLink = '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);">Aufgaben<i class="rex-icon fa-check-square-o"></i></a>';
   } else {
-    $titleLink = '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);"><i class="rex-icon fa-check-square-o"></i>Erledigte anzeigen</a>';
+    $titleLink = '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);">Aufgaben<i class="rex-icon fa-square-o"></i></a>';
   }
 
-  $list->setColumnLabel('titel', 'Aufgaben '.$titleLink);
+  $list->setColumnLabel('titel', $titleLink);
   $list->setColumnLayout('titel', ['<th>###VALUE###</th>', '<td data-title="Aufgaben" class="td_aufgaben">###VALUE###</td>']);
   $list->setColumnFormat('titel', 'custom', function ($params) {
     $list = $params['list'];
@@ -339,6 +360,30 @@ if ($func == '' || $func == 'filter') {
     $updatedate = $updatedatevalue.'<br/><span>'.$updateuservalue.'</span>';
     return $updatedate;
   });
+
+
+  // --------------------
+  //
+  //  Finaldate
+  //
+  // --------------------
+
+  $list->setColumnLabel('finaldate', 'Fällig');
+  $list->setColumnLayout('finaldate', ['<th>###VALUE###</th>', '<td data-title="Fälligkeitsdatum" class="td_finaldate">###VALUE###</td>']);
+  $list->setColumnFormat('finaldate', 'custom', function ($params) {
+    $list = $params['list'];
+    if ($list->getValue('finaldate') != '') {
+      if ($list->getValue('finaldate') <= date('Y-m-d')) {
+        $finaldate = "<span class='text-danger'>".date('d.m.Y', strtotime($list->getValue('finaldate')))."</span>";
+      } else {
+        $finaldate = date('d.m.Y', strtotime($list->getValue('finaldate')));
+      }
+    } else {
+      $finaldate = '';
+    }
+    return $finaldate;
+  });
+
   // --------------------
   //
   //  Kategoriefilter
@@ -532,6 +577,7 @@ if ($func == '' || $func == 'filter') {
 
   $field = $form->addTextField('titel');
   $field->setLabel('Titel');
+  $field->getValidator()->add('notEmpty', 'Bitte einen Titel angeben.');
 
   $field = $form->addTextareaField('beschreibung');
   $field->setLabel('Beschreibung');
@@ -558,6 +604,13 @@ if ($func == '' || $func == 'filter') {
         $select->setSelected($current_user);
   }
   $select->setSize(1);
+
+
+  $field = $form->addTextField('finaldate');
+  $field->setPrefix('<div class="datepicker">');
+  $field->setSuffix('</div>');
+  $field->setLabel('Fälligkeitsdatum');
+
 
   $query = 'SELECT name as label, id FROM rex_user';
   $select->addOption('Bitte wählen','');
@@ -660,7 +713,18 @@ $("select.form-control").on('change', function () {
   $(this).blur();
 });
 
-
+var $input = $('.datepicker input').pickadate({
+  monthsFull: [ 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ],
+  monthsShort: [ 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' ],
+  weekdaysFull: [ 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' ],
+  weekdaysShort: [ 'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa' ],
+  today: 'Heute',
+  clear: 'Löschen',
+  close: 'Schließen',
+  firstDay: 1,
+  format: 'dd.mm.yyyy',
+  formatSubmit: 'yyyy-mm-dd'
+});
 
 </script>
 

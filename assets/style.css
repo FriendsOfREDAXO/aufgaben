@@ -107,6 +107,11 @@
   color: #999;
 }
 
+.td_finaldate {
+  width: 90px;
+  font-size: 12px;
+}
+
 .td_status {
   width: 175px;
 }
@@ -173,13 +178,15 @@
 
 
 .erledigtschalter {
-  padding: 6px 0 0 2px;
-  width: auto;
-  float: right;
+  position: relative;
+  display: inline-block;
   font-size: 12px;
 }
 .erledigtschalter i {
-  margin-right: 5px;
+  position: absolute;
+  bottom: 1px;
+  font-size: 14px;
+  margin-left: 5px;
 }
 
 #rex-navi-page-aufgaben .label {
@@ -204,3 +211,8 @@ a.watch i {
 a.watch.enabled i{
   color: #555 !important;
 }
+
+#aufgaben form table {
+  margin-bottom: 0;
+}
+

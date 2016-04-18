@@ -4,6 +4,20 @@
 
 ### Changelog ###
 
+### 18.04.2016 Version 1.9.4 ###
+
+- Fälligkeitsdatum hinzugefügt
+
+### 16.04.2016 Version 1.9.3 ###
+
+- Title = Pflichtfeld
+- Vorbereitung für das Hinzufügen eines Fälligkeitsdatums
+
+### 16.04.2016 Version 1.9.2 ###
+
+- Tabelle für die User Setting hinzugefügt
+- Fehler bei der Anzeige der "offenen" Aufgaben gefixt.
+
 ### 15.04.2016 Version 1.9.1 ###
 
 - Die Anzahl der Aufgaben in der Navi wird bei 0 Aufgaben ausgeblendet
