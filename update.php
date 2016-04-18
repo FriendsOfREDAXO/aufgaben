@@ -11,6 +11,7 @@ rex_sql_table::get("rex_aufgaben_aufgaben")
 ->ensureColumn(new rex_sql_column('updatedate', 'DATETIME'))
 ->ensureColumn(new rex_sql_column('createuser', 'varchar(255)'))
 ->ensureColumn(new rex_sql_column('updateuser', 'varchar(255)'))
+->ensureColumn(new rex_sql_column('finaldate', 'varchar(255)'))
 ->alter();
 
 
