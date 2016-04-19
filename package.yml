@@ -23,4 +23,4 @@ page:
 requires:
     packages:
         phpmailer: '^2.0.1'
-    redaxo: '>=5.0.0'
+    redaxo: '>=5.1.0'

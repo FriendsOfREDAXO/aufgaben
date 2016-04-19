@@ -18,30 +18,49 @@ $no_rows    = '';
 // --------------------
 //  E-Mail senden
 // --------------------
-if ($aufgabe == 'new' AND $func == '') {
+if ($aufgabe == 'new' OR $aufgabe == 'edit' AND $func == '') {
 
   $sql = rex_sql::factory();
   $sql->setQuery('SELECT * FROM rex_aufgaben_aufgaben ORDER BY id DESC LIMIT 1');
-  $mail_titel = $sql->getValue('titel');
-  $mail_beschreibung = $sql->getValue('beschreibung');
+
+  $mail_titel         = $sql->getValue('titel');
+  $mail_beschreibung  = $sql->getValue('beschreibung');
+  $mail_eigentuemer   = $sql->getValue('eigentuemer');
+  $mail_prio          = $sql->getValue('prio');
+  $mail_status        = $sql->getValue('status');
+  $mail_creatuser     = $sql->getValue('createuser');
+  $mail_updateuser    = $sql->getValue('updateuser');
+  $mail_finaldate     = $sql->getValue('finaldate');
+
+  if(rex_addon::get('textile')->isAvailable()) {
+    $text_beschreibung = str_replace('<br />', '', $mail_beschreibung);
+    $text_beschreibung = rex_textile::parse($text_beschreibung);
+    $text_beschreibung = str_replace('###', '&#x20;', $text_beschreibung);
+  } else {
+    $text_beschreibung = str_replace(PHP_EOL,'<br/>', $mail_beschreibung );
+  }
 
   $sql_email = rex_sql::factory();
   // $sql_email->setDebug();
   $sql_email->setQuery('SELECT email FROM rex_user WHERE id = '.$sql->getValue('eigentuemer'));
   $email_adresse = $sql_email->getValue('email');
 
-
   $mail = new rex_mailer();
 
   $body  = "<h3>".$mail_titel."</h3>";
-  $body  .= "<p>".$mail_beschreibung."</b>";
+  $body  .= "<p>".$text_beschreibung."</b>";
 
   $text_body = $mail_titel."\n\n";
   $text_body .= $mail_beschreibung."\n\n";
 
   $mail->From = "no-reply@".$_SERVER['SERVER_NAME'];
   $mail->FromName = $_SERVER['SERVER_NAME'];
-  $mail->Subject = "Neue Aufgabe: ".$_SERVER['SERVER_NAME'];
+
+  if ($aufgabe == 'new') {
+    $mail->Subject = "(".$_SERVER['SERVER_NAME'].") Neue Aufgabe: ".$mail_titel;
+  } else if ($aufgabe == 'edit') {
+    $mail->Subject = "(".$_SERVER['SERVER_NAME'].") Aufgabe geändert: ".$mail_titel;
+  }
 
   $mail->Body    = $body;
   $mail->AltBody = $text_body;
@@ -200,16 +219,16 @@ if ($func == '' || $func == 'filter') {
     }
 
   if ($filter_kat != '0') {
-    $addsql .= ' AND a.kategorie = '.$filter_kat;
+    $addsql .= ' AND a.kategorie IN ('.$filter_kat.')';
   }
   if ($eigentuemer_filter != '0') {
-    $addsql .= ' AND a.eigentuemer = '.$eigentuemer_filter;
+    $addsql .= ' AND a.eigentuemer IN ('.$eigentuemer_filter.')';
   }
   if ($prio_filter != '0') {
-    $addsql .= ' AND a.prio = '.$prio_filter;
+    $addsql .= ' AND a.prio IN ('.$prio_filter.')';
   }
   if ($status_filter != '0') {
-    $addsql .= ' AND a.status = '.$status_filter;
+    $addsql .= ' AND a.status IN ('.$status_filter.')';
   }
 
   $sql = rex_sql::factory();
@@ -393,18 +412,26 @@ if ($func == '' || $func == 'filter') {
   $sql = rex_sql::factory();
   // $sql->setDebug();
   $sql->setQuery('SELECT k.* FROM rex_aufgaben_kategorien k INNER JOIN rex_aufgaben_aufgaben a ON (a.kategorie = k.id) GROUP BY k.id ORDER BY k.kategorie');
-  $kategoriefilter = "<div id='kategoriefilter' class='select-style'><select>";
-  $kategoriefilter .= '<option value="0">Kein Filter</option>';
+  $kategoriefilter = "<select id='kategoriefilter' multiple>";
   for($i=0; $i<$sql->getRows(); $i++) {
-    if($sql->getValue('id') == $filter_kat) {
+
+    $kat_ids = explode(',', $filter_kat);
+
+
+    if(in_array($sql->getValue('id'), $kat_ids)) {
       $selected  = 'selected';
     } else {
       $selected  = '';
     }
+
     $kategoriefilter .= '<option value="'.$sql->getValue('id').'" '.$selected.'>'.$sql->getValue('kategorie').'</option>';
+
+
+
+
     $sql->next();
   }
-  $kategoriefilter .= "</select></div>";
+  $kategoriefilter .= "</select>";
   // --------------------
   //
   //  Kategorie
@@ -430,8 +457,7 @@ if ($func == '' || $func == 'filter') {
   $sql = rex_sql::factory();
   // $sql->setDebug();
   $sql->setQuery('SELECT * FROM rex_user ORDER BY name');
-  $eigentuemerfilter = "<div id='eigentuemerfilter' class='select-style'><select>";
-  $eigentuemerfilter .= '<option value="0" >Kein Filter</option>';
+  $eigentuemerfilter = "<select id='eigentuemerfilter' multiple>";
   for($i=0; $i<$sql->getRows(); $i++) {
     if($sql->getValue('id') == $eigentuemer_filter) {
       $selected  = 'selected';
@@ -441,7 +467,7 @@ if ($func == '' || $func == 'filter') {
     $eigentuemerfilter .= '<option value="'.$sql->getValue('id').'" '.$selected.'>'.$sql->getValue('name').'</option>';
     $sql->next();
   }
-  $eigentuemerfilter .= "</div>";
+  $eigentuemerfilter .= "</select>";
   // --------------------
   //
   //  Eigentümer (Zuständig)
@@ -465,8 +491,7 @@ if ($func == '' || $func == 'filter') {
   //  Priofilter
   //
   // --------------------
-  $priofilter = "<div id='priofilter' class='select-style'><select>";
-  $priofilter .= '<option value="0">Kein Filter</option>';
+  $priofilter = "<select id='priofilter' multiple>";
   for($i=1; $i<=3; $i++) {
     if($i == $prio_filter) {
       $selected  = 'selected';
@@ -475,7 +500,7 @@ if ($func == '' || $func == 'filter') {
     }
     $priofilter .= '<option value="'.$i.'" '.$selected.'>Prio '.$i.'</option>';
   }
-  $priofilter .= "</select></div>";
+  $priofilter .= "</select>";
   // --------------------
   //
   //  Prio
@@ -520,8 +545,7 @@ if ($func == '' || $func == 'filter') {
   $sql = rex_sql::factory();
   // $sql->setDebug();
   $sql->setQuery('SELECT * FROM rex_aufgaben_status ORDER BY id');
-  $statusfilter = "<div id='statusfilter' class='select-style'><select>";
-  $statusfilter .= '<option value="0">Kein Filter</option>';
+  $statusfilter = "<select id='statusfilter' multiple>";
   for($i=0; $i<$sql->getRows(); $i++) {
     if($sql->getValue('id') == $status_filter) {
       $selected  = 'selected';
@@ -531,7 +555,7 @@ if ($func == '' || $func == 'filter') {
     $statusfilter .= '<option value="'.$sql->getValue('id').'" '.$selected.'>'.$sql->getValue('status').'</option>';
     $sql->next();
   }
-  $statusfilter .= "</select></div>";
+  $statusfilter .= "</select>";
   // --------------------
   //
   //  Status
@@ -611,6 +635,8 @@ if ($func == '' || $func == 'filter') {
   $field->setSuffix('</div>');
   $field->setLabel('Fälligkeitsdatum');
 
+// date('d.m.Y H:i:s'
+
 
   $query = 'SELECT name as label, id FROM rex_user';
   $select->addOption('Bitte wählen','');
@@ -632,6 +658,8 @@ if ($func == '' || $func == 'filter') {
   }
 
   if ($func == 'edit') {
+
+      $form->addParam('aufgabe', 'edit');
 
       if ($form->getSql()->getValue('updateuser') != '') {
 
@@ -677,26 +705,38 @@ if ($func == '' || $func == 'filter') {
 }
 ?>
 <script>
-$("#kategoriefilter select").change(function(){
-     $value = $("#kategoriefilter select").val();
-     location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_kat="+$value );
+
+
+$('#kategoriefilter').SumoSelect({okCancelInMulti: true });
+
+$('#priofilter').SumoSelect({ okCancelInMulti: true });
+$('#eigentuemerfilter').SumoSelect({ okCancelInMulti: true });
+$('#statusfilter').SumoSelect({ okCancelInMulti: true });
+
+$("#kategoriefilter").change(function(){
+     $value_k = $("#kategoriefilter").val();
+     if ($value_k == null) {$value_k = '0'};
+     location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_kat="+$value_k );
 });
-$("#eigentuemerfilter select").change(function(){
-     $value = $("#eigentuemerfilter select").val();
-     location.replace("index.php?page=aufgaben/aufgaben&func=filter&eigentuemer_filter="+$value );
+$("#eigentuemerfilter").change(function(){
+     $value_e = $("#eigentuemerfilter").val();
+     if ($value_e == null) $value_e = '0';
+     location.replace("index.php?page=aufgaben/aufgaben&func=filter&eigentuemer_filter="+$value_e );
 });
-$("#priofilter select").change(function(){
-     $value = $("#priofilter select").val();
-     location.replace("index.php?page=aufgaben/aufgaben&func=filter&prio_filter="+$value );
+$("#priofilter").change(function(){
+     $value_p = $("#priofilter").val();
+     if ($value_p == null) {$value_p = '0'};
+     location.replace("index.php?page=aufgaben/aufgaben&func=filter&prio_filter="+$value_p );
 });
-$("#statusfilter select").change(function(){
-     $value = $("#statusfilter select").val();
-     location.replace("index.php?page=aufgaben/aufgaben&func=filter&status_filter="+$value );
+$("#statusfilter").change(function(){
+     $value_s = $("#statusfilter").val();
+     if ($value_s == null) {$value_s = '0'};
+     location.replace("index.php?page=aufgaben/aufgaben&func=filter&status_filter="+$value_s );
 });
-$("#statusfilter select").change(function(){
-     $value = $("#statusfilter select").val();
-     location.replace("index.php?page=aufgaben/aufgaben&func=filter&status_filter="+$value );
-});
+
+
+
+
 $("#erledigtverbergen").click(function(){
   location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&erledigt_filter=1" );
 });
@@ -726,6 +766,14 @@ var $input = $('.datepicker input').pickadate({
   formatSubmit: 'yyyy-mm-dd'
 });
 
+
 </script>
+
+
+<ul>
+<li>filter zuständig / prio / status noch anpassen</li>
+<li>sumoselect stylen / eindeutschen</li>
+<li>sumoselect 1. zeile</li>
+</ul>
 
 

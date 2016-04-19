@@ -4,6 +4,10 @@
 
 ### Changelog ###
 
+### 18.04.2016 Version 1.9.5 ###
+
+- E-Mail Benachrichtigung bei geänderten Aufgaben
+
 ### 18.04.2016 Version 1.9.4 ###
 
 - Fälligkeitsdatum hinzugefügt

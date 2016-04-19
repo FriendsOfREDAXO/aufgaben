@@ -9,6 +9,11 @@ if (rex::isBackend() && rex::getUser()) {
   rex_view::addJSFile($this->getAssetsUrl('picker.js'));
   rex_view::addJSFile($this->getAssetsUrl('picker.date.js'));
 
+  // SumoSelect
+  rex_view::addCssFile($this->getAssetsUrl('sumoselect.css'));
+  rex_view::addJSFile($this->getAssetsUrl('jquery.sumoselect.js'));
+
+
 function show_counter()
 {
 
