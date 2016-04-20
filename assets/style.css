@@ -216,3 +216,34 @@ a.watch.enabled i{
   margin-bottom: 0;
 }
 
+.SumoSelect .SumoUnder{
+  height: 0px;
+}
+.SumoSelect {
+  font-size: 10px;
+}
+
+.SumoSelect{width: 100% !important;}
+.SelectBox {padding: 3px 4px !important;
+  border: 1px solid #e0e3e9 !important;}
+ .SumoSelect > .CaptionCont > span.placeholder { color: #ccc; font-style: normal !important; }
+
+.SumoSelect > .CaptionCont > label > i {
+    margin-top: 1px !important;
+    opacity: 0.3 !important;
+}
+
+.SumoSelect:focus > .CaptionCont,.SumoSelect:hover > .CaptionCont, .SumoSelect.open > .CaptionCont {
+  border: 1px solid #222 !important;
+}
+
+.SumoSelect:hover > .CaptionCont > label > i {
+  opacity: 1 !important;
+}
+
+ .SumoSelect.open > .optWrapper {
+    min-width: 180px !important;
+ }
+
+
+

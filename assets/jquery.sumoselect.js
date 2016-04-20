@@ -15,10 +15,10 @@
 
         // This is the easiest way to have default options.
         var settings = $.extend({
-            placeholder: 'Select Here',   // Dont change it here.
-            csvDispCount: 3,              // display no. of items in multiselect. 0 to display all.
-            captionFormat:'{0} Selected', // format of caption text. you can set your locale.
-            captionFormatAllSelected:'{0} all selected!', // format of caption text when all elements are selected. set null to use captionFormat. It will not work if there are disabled elements in select.
+            placeholder: 'Anzeige filtern',   // Dont change it here.
+            csvDispCount: 2,              // display no. of items in multiselect. 0 to display all.
+            captionFormat:'{0} ausgewählt', // format of caption text. you can set your locale.
+            captionFormatAllSelected:'Alle ausgewählt!', // format of caption text when all elements are selected. set null to use captionFormat. It will not work if there are disabled elements in select.
             floatWidth: 400,              // Screen width of device at which the list is rendered in floating popup fashion.
             forceCustomRendering: false,  // force the custom modal on all devices below floatWidth resolution.
             nativeOnDevice: ['Android', 'BlackBerry', 'iPhone', 'iPad', 'iPod', 'Opera Mini', 'IEMobile', 'Silk'], //
@@ -29,10 +29,10 @@
             selectAll: false,             // to display select all button in multiselect mode.|| also select all will not be available on mobile devices.
 
             search: false,                // to display input for filtering content. selectAlltext will be input text placeholder
-            searchText: 'Search...',      // placeholder for search input
+            searchText: 'Suche...',      // placeholder for search input
             noMatch: 'No matches for "{0}"',
             prefix: '',                   // some prefix usually the field name. eg. '<b>Hello</b>'
-            locale: ['OK', 'Cancel', 'Select All'],  // all text that is used. don't change the index.
+            locale: ['OK', 'Abbruch', 'Alles auswählen'],  // all text that is used. don't change the index.
             up: false                     // set true to open upside.
         }, options);
 
@@ -138,7 +138,7 @@
                     var O = this;
 
                     if(!opt.attr('value'))opt.attr('value',opt.val());
-                                                                                    // todo: remove this data val 
+                                                                                    // todo: remove this data val
                     li = $('<li class="opt"><label>' + opt.text() + '</label></li>');//.data('val',opt.val());
                     li.data('opt', opt);    // store a direct reference to option.
                     if (O.is_multi) li.prepend('<span><i></i></span>');
@@ -343,12 +343,12 @@
                     O.showOpts();
                 },
                 nav: function (up) {
-                    var O = this, c, 
+                    var O = this, c,
                     s=O.ul.find('li.opt:not(.disabled, .hidden)'),
                     sel = O.ul.find('li.opt.sel:not(.hidden)'),
                     idx = s.index(sel);
                     if (O.is_opened && sel.length) {
-                        
+
                         if (up && idx > 0)
                             c = s.eq(idx-1);
                         else if(!up && idx < s.length-1 && idx > -1)
@@ -361,7 +361,7 @@
                         // setting sel item to visible view.
                         var ul = O.ul,
                             st = ul.scrollTop(),
-                            t = sel.position().top + st;                            
+                            t = sel.position().top + st;
                         if(t >= st + ul.height()-sel.outerHeight())
                             ul.scrollTop(t - ul.height() + sel.outerHeight());
                         if(t<st)
@@ -546,13 +546,13 @@
                     else{
                         opt = O.E.find('option[value="'+i+'"]')[0]||0;
                     }
-                    if (!opt || opt.disabled) 
+                    if (!opt || opt.disabled)
                         return;
 
                     if(opt.selected != c){
                         opt.selected = c;
                         if(!O.mob)O.optDiv.find('ul.options li.opt').eq(i).toggleClass('selected',c);
-                        
+
                         O.callChange();
                         O.setPstate();
                         O.setText();

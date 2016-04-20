@@ -4,7 +4,7 @@
 .SelectBox {padding: 5px 8px;}
 
 /* Filtering style */
-.SumoSelect .hidden { display:none; }
+.SumoSelect .hidden { display:none;  }
 .SumoSelect .search-txt{display:none;outline:none;}
 .SumoSelect .no-match{display:none;padding: 6px;}
 .SumoSelect.open .search-txt{display: inline-block;position: absolute;top: 0;left: 0;width: 100%;margin: 0;padding: 5px 8px;border: none;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border-radius: 5px;}
@@ -17,7 +17,7 @@
     .SumoSelect > .optWrapper > .options  li.opt label, .SumoSelect > .CaptionCont,.SumoSelect .select-all > label { user-select: none; -o-user-select: none; -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; }
 
 .SumoSelect { display: inline-block; position: relative;outline:none;}
-.SumoSelect:focus > .CaptionCont,.SumoSelect:hover > .CaptionCont, .SumoSelect.open > .CaptionCont {box-shadow: 0 0 2px #7799D0;border-color: #7799D0;}
+.SumoSelect:focus > .CaptionCont,.SumoSelect:hover > .CaptionCont, .SumoSelect.open > .CaptionCont {}
     .SumoSelect > .CaptionCont { position: relative; border: 1px solid #A4A4A4; min-height: 14px; background-color: #fff;border-radius:2px;margin:0;}
         .SumoSelect > .CaptionCont > span { display: block; padding-right: 30px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;cursor:default;}
             /*placeholder style*/
@@ -28,7 +28,7 @@
                 background-position: center center; width: 16px; height: 16px; display: block; position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;background-repeat: no-repeat;opacity: 0.8;}
 
     .SumoSelect > .optWrapper {display:none; z-index: 1000; top: 30px; width: 100%; position: absolute; left: 0; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; background: #fff; border: 1px solid #ddd; box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.11); border-radius: 3px;overflow: hidden;}
-        .SumoSelect.open > .optWrapper {top:35px; display:block;}
+        .SumoSelect.open > .optWrapper {top: 25px; display:block;}
         .SumoSelect.open > .optWrapper.up {top: auto;bottom: 100%;margin-bottom: 5px;}
 
         .SumoSelect > .optWrapper ul {list-style: none; display: block; padding: 0; margin: 0; overflow: auto;}
@@ -51,7 +51,7 @@
             .SumoSelect > .optWrapper > .options li.group > label {cursor: default;padding: 8px 6px;font-weight: bold;}
 
         /*Floating styles*/
-        .SumoSelect > .optWrapper.isFloating { position: fixed; top: 0; left: 0; right: 0; width: 90%; bottom: 0; margin: auto; max-height: 90%; }
+        .SumoSelect > .optWrapper.isFloating { position: fixed; top: 0px; left: 0; right: 0; width: 90%; bottom: 0; margin: auto; max-height: 90%; }
 
     /*disabled state*/
     .SumoSelect > .optWrapper > .options li.opt.disabled { background-color: inherit;pointer-events: none;}
@@ -79,7 +79,7 @@
 
     /*styling for only multiple select on popup mode*/
     .SumoSelect > .optWrapper.multiple.isFloating > .options li.opt { padding-left: 35px; }
-    .SumoSelect > .optWrapper.multiple.isFloating { padding-bottom: 43px; }
+    .SumoSelect > .optWrapper.multiple.isFloating { padding-bottom: 143px; }
 
     .SumoSelect > .optWrapper.multiple > .options li.opt.selected span i,
     .SumoSelect .select-all.selected > span i,

@@ -182,7 +182,7 @@ if ($func == '' || $func == 'filter') {
       }
 
       $sql = rex_sql::factory();
-      // $sql->setDebug();
+     $sql->setDebug();
       $sql->setTable('rex_aufgaben_filter');
       $sql->setValue('kategorie', $filter_kat);
       $sql->setValue('eigentuemer', $eigentuemer_filter);
@@ -459,11 +459,17 @@ if ($func == '' || $func == 'filter') {
   $sql->setQuery('SELECT * FROM rex_user ORDER BY name');
   $eigentuemerfilter = "<select id='eigentuemerfilter' multiple>";
   for($i=0; $i<$sql->getRows(); $i++) {
-    if($sql->getValue('id') == $eigentuemer_filter) {
+
+
+    $eigentuemer_filter_ids = explode(',', $eigentuemer_filter);
+
+
+    if(in_array($sql->getValue('id'), $eigentuemer_filter_ids)) {
       $selected  = 'selected';
     } else {
       $selected  = '';
     }
+
     $eigentuemerfilter .= '<option value="'.$sql->getValue('id').'" '.$selected.'>'.$sql->getValue('name').'</option>';
     $sql->next();
   }
@@ -547,11 +553,16 @@ if ($func == '' || $func == 'filter') {
   $sql->setQuery('SELECT * FROM rex_aufgaben_status ORDER BY id');
   $statusfilter = "<select id='statusfilter' multiple>";
   for($i=0; $i<$sql->getRows(); $i++) {
-    if($sql->getValue('id') == $status_filter) {
+
+   $status_filter_ids = explode(',', $status_filter);
+
+
+    if(in_array($sql->getValue('id'), $status_filter_ids)) {
       $selected  = 'selected';
     } else {
       $selected  = '';
     }
+
     $statusfilter .= '<option value="'.$sql->getValue('id').'" '.$selected.'>'.$sql->getValue('status').'</option>';
     $sql->next();
   }
@@ -771,9 +782,12 @@ var $input = $('.datepicker input').pickadate({
 
 
 <ul>
-<li>filter zuständig / prio / status noch anpassen</li>
+<li>filter prio noch anpassen</li>
 <li>sumoselect stylen / eindeutschen</li>
-<li>sumoselect 1. zeile</li>
+<li>int raus aus den tabellen</li>
+<li>auf Version 2.0 und Rex 5.1 umstellen wenn fertig</li>
+<li>responsive?</li>
+<li>schönerer Datepicker</li>
+<li>CSS Auslagern</li>
 </ul>
-
 
