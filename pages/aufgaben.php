@@ -756,18 +756,15 @@ $("select.form-control").on('change', function () {
   $(this).blur();
 });
 
-var $input = $('.datepicker input').pickadate({
-  monthsFull: [ 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ],
-  monthsShort: [ 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' ],
-  weekdaysFull: [ 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' ],
-  weekdaysShort: [ 'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa' ],
-  today: 'Heute',
-  clear: 'Löschen',
-  close: 'Schließen',
-  firstDay: 1,
-  format: 'dd.mm.yyyy',
-  formatSubmit: 'yyyy-mm-dd'
+
+$('.datepicker input').datepicker({
+    language: "de",
+    keyboardNavigation: false,
+    forceParse: false,
+    calendarWeeks: true,
+    todayHighlight: true
 });
+
 
 
 </script>
@@ -778,7 +775,7 @@ var $input = $('.datepicker input').pickadate({
 <li>int raus aus den tabellen</li>
 <li>Mails!</li>
 <li>responsive?</li>
-<li>schönerer Datepicker - gibt es einen bevorzugten?</li>
+<li>Datepicker CSS / Funktion prüfen)</li>
 <li>Beobachten: alle einem zugewiesenen Aufgaben.</li>
 </ul>
 

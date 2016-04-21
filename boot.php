@@ -4,14 +4,10 @@ if (rex::isBackend() && rex::getUser()) {
   rex_view::addCssFile($this->getAssetsUrl('style.css'));
 
   // Datepicker
-  rex_view::addCssFile($this->getAssetsUrl('default.css'));
-  rex_view::addCssFile($this->getAssetsUrl('default.date.css'));
-  rex_view::addJSFile($this->getAssetsUrl('picker.js'));
-  rex_view::addJSFile($this->getAssetsUrl('picker.date.js'));
-
+  rex_view::addJSFile($this->getAssetsUrl('js/bootstrap-datepicker.js'));
+  rex_view::addJSFile($this->getAssetsUrl('js/bootstrap-datepicker.de.js'));
   // SumoSelect
-  rex_view::addJSFile($this->getAssetsUrl('jquery.sumoselect.js'));
-
+  rex_view::addJSFile($this->getAssetsUrl('js/jquery.sumoselect.js'));
 
   rex_extension::register('PACKAGES_INCLUDED', function () {
     if (rex::getUser() && $this->getProperty('compile')) {

@@ -8,6 +8,7 @@
 
 - Filter neu gebaut (Multiselect)
 - Nutzung von SCSS
+- Datepicker ausgetauscht
 
 ### 18.04.2016 Version 1.9.5 ###
 
