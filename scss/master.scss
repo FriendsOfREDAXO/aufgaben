@@ -1,0 +1,193 @@
+@import "../aufgaben/scss/sumoselect";
+
+
+// Status
+#aufgaben {
+  .status {
+    display: inline-block;
+    a i {
+      float: left;
+      display: inline-block;
+      width: 23px;
+      margin-right: 3px;
+      border: 1px solid #ccc;
+      padding: 3px 2px 3px 2px;
+      font-size: 14px;
+      text-align: center;
+      color: #ccc;
+      transition: all 0.3s ease 0s;
+      &:hover {
+        border: 1px solid #000;
+        color: #000;
+      }
+      .current {
+        color: #555;
+        .fa-check  {
+          border: 1px solid #3CB594;
+          color: #3CB594;
+        }
+      }
+    }
+  }
+}
+
+
+// Prio
+#aufgaben {
+  .priowrapper {
+    display: inline-block;
+    a i {
+      float: left;
+      display: inline-block;
+      width: 23px;
+      margin-right: 3px;
+      border: 1px solid #ccc;
+      padding: 2px;
+      font-size: 16px;
+      text-align: center;
+      color: #ccc;
+      transition: all 0.3s ease 0s;
+      &:hover {
+        border: 1px solid #000;
+        color: #000;
+      }
+      &.fa-star {
+        padding: 3px 2px 1px 2px;
+        color: #f0ad4e;
+      }
+      &.fa-star-o  {
+        padding: 3px 2px 1px 2px;
+        &:hover  {
+          padding: 3px 2px 1px 2px;
+          color: #f0ad4e;
+        }
+      }
+    }
+  }
+}
+
+
+// Tabelle
+#aufgaben {
+  .collapsetitel {
+    display: inline-block;
+    color: #4B9AD9;
+    &:hover {
+      cursor: pointer;
+      color: #000;
+    }
+  }
+  .td_aufgaben {
+    width: auto;
+  }
+
+  .td_kategorie {
+    width: 150px;
+    font-size: 12px;
+  }
+
+  .td_prio {
+    width: 120px;
+    font-size: 14px;
+  }
+
+  .td_eigentuemer {
+    width: 150px;
+    font-size: 12px;
+  }
+
+  .td_updatedate {
+    width: 150px;
+    font-size: 12px;
+    span {
+      font-size: 10px;
+      color: #999;
+    }
+  }
+
+  .td_finaldate {
+    width: 90px;
+    font-size: 12px;
+  }
+  .td_status {
+    width: 175px;
+  }
+  .td_edit {
+    width: 35px;
+    i {
+      padding: 2px 2px 2px 3px;
+      width: 23px;
+      font-size: 17px;
+      border: 1px solid #eee;
+    }
+  }
+  tbody tr:nth-child(odd) {
+     background-color: #efefef;
+  }
+  thead {
+    font-size: 12px;
+  }
+  form table {
+    margin-bottom: 0;
+  }
+}
+
+
+// Trenner
+#aufgaben {
+  .aufgabentrenner {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;
+    padding: 4px 0 4px 0;
+    margin: 4px 0 4px 0;
+    color: #555;
+  }
+}
+
+// Erledigtschalter
+#aufgaben {
+  .erledigtschalter {
+    position: relative;
+    display: inline-block;
+    font-size: 12px;
+  }
+  .erledigtschalter i {
+    position: absolute;
+    bottom: 1px;
+    font-size: 14px;
+    margin-left: 5px;
+  }
+}
+
+// Navi
+#rex-navi-page-aufgaben .label {
+  margin-top: 2px;
+  float: right;
+}
+
+// Watch
+#aufgaben {
+  a.watch {
+    color: #ddd !important;
+    i {
+      color: #ddd !important;
+      font-size: 15px;
+      &:hover {
+        transition: all 0.3s ease 0s;
+        color: #000 !important;
+      }
+    }
+    &.enabled i{
+      color: #555 !important;
+    }
+  }
+}
+
+
+
+
+
+
+
+

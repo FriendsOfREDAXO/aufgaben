@@ -1,23 +1,22 @@
 <?php
 
-// --------------------
+// *************************************
 //  Vars
-// --------------------
+// *************************************
 $func               = rex_request('func', 'string');
 $aufgabe            = rex_request('aufgabe', 'string');
-$filter_kat         = rex_request('filter_kat', 'string');
-$eigentuemer_filter = rex_request('eigentuemer_filter', 'string');
-$prio_filter        = rex_request('prio_filter', 'string');
-$status_filter      = rex_request('status_filter', 'string');
-$erledigt_filter    = rex_request('erledigt_filter', 'string');
+$filter_kategorien  = rex_request('filter_kategorien', 'string');
+$filter_eigentuemer = rex_request('filter_eigentuemer', 'string');
+$filter_prio        = rex_request('filter_prio', 'string');
+$filter_status      = rex_request('filter_status', 'string');
+$filter_erledigt    = rex_request('filter_erledigt', 'string');
 $current_user       = rex::getUser()->getId();
-
 
 $no_rows    = '';
 
-// --------------------
-//  E-Mail senden
-// --------------------
+// *************************************
+//  E-Mails senden
+// *************************************
 if ($aufgabe == 'new' OR $aufgabe == 'edit' AND $func == '') {
 
   $sql = rex_sql::factory();
@@ -76,9 +75,9 @@ if ($aufgabe == 'new' OR $aufgabe == 'edit' AND $func == '') {
   }
 }
 
-// --------------------
+// *************************************
 //  Erledigtschalter
-// --------------------
+// *************************************
 if ($func == 'erledigtfilter') {
 
     $sql = rex_sql::factory();
@@ -87,38 +86,31 @@ if ($func == 'erledigtfilter') {
     $sql->setWhere('user = '.$current_user);
     $sql->select();
     if ($sql->getRows() > 0) {
-
-      if ($erledigt_filter == '') {
-          $erledigt_filter = '0';
+      if ($filter_erledigt == '') {
+          $filter_erledigt = '0';
       }
-
       $sql = rex_sql::factory();
       // $sql->setDebug();
       $sql->setTable('rex_aufgaben_filter');
       $sql->setWhere('user = '.$current_user);
-      $sql->setValue('erledigt', $erledigt_filter);
+      $sql->setValue('erledigt', $filter_erledigt);
       $sql->update();
-
-    } else {
-
-      if ($erledigt_filter == '') {
-        $erledigt_filter = '0';
-      }
-
+     } else {
+       if ($filter_erledigt == '') {
+         $filter_erledigt = '0';
+       }
       $sql = rex_sql::factory();
       // $sql->setDebug();
       $sql->setTable('rex_aufgaben_filter');
       $sql->setValue('erledigt', '1');
-
       $sql->insert();
     }
-
     $func = '';
 }
 
-// --------------------
-//  set Status
-// --------------------
+// *************************************
+//  Status
+// *************************************
 if ($func == 'setstatus') {
   $new_status = (rex_request('neuerstatus', 'int'));
   $id = (rex_request('id', 'int'));
@@ -135,9 +127,10 @@ if ($func == 'setstatus') {
   $func = '';
 }
 
-// --------------------
-//  set Prio
-// --------------------
+
+// *************************************
+//  Set Prio
+// *************************************
 if ($func == 'setprio') {
   $new_prio = (rex_request('neueprio', 'int'));
   $id = (rex_request('id', 'int'));
@@ -168,67 +161,67 @@ if ($func == '' || $func == 'filter') {
     $sql->select();
     if ($sql->getRows() > 0) {
 
-      if ($filter_kat == '') {
-          $filter_kat = $sql->getValue('kategorie');
+      if ($filter_kategorien == '') {
+          $filter_kategorien = $sql->getValue('kategorie');
       }
-      if ($eigentuemer_filter == '') {
-          $eigentuemer_filter = $sql->getValue('eigentuemer');
+      if ($filter_eigentuemer == '') {
+          $filter_eigentuemer = $sql->getValue('eigentuemer');
       }
-      if ($prio_filter == '') {
-          $prio_filter = $sql->getValue('prio');
+      if ($filter_prio == '') {
+          $filter_prio = $sql->getValue('prio');
       }
-      if ($status_filter == '') {
-          $status_filter = $sql->getValue('status');
+      if ($filter_status == '') {
+          $filter_status = $sql->getValue('status');
       }
 
       $sql = rex_sql::factory();
-     $sql->setDebug();
+      // $sql->setDebug();
       $sql->setTable('rex_aufgaben_filter');
-      $sql->setValue('kategorie', $filter_kat);
-      $sql->setValue('eigentuemer', $eigentuemer_filter);
-      $sql->setValue('prio', $prio_filter);
-      $sql->setValue('status', $status_filter);
+      $sql->setValue('kategorie', $filter_kategorien);
+      $sql->setValue('eigentuemer', $filter_eigentuemer);
+      $sql->setValue('prio', $filter_prio);
+      $sql->setValue('status', $filter_status);
       $sql->setWhere('user = '.$current_user);
       $sql->update();
 
     } else {
 
-      if ($filter_kat == '') {
-        $filter_kat = '0';
+      if ($filter_kategorien == '') {
+        $filter_kategorien = '0';
       }
-      if ($eigentuemer_filter == '') {
-        $eigentuemer_filter = '0';
+      if ($filter_eigentuemer == '') {
+        $filter_eigentuemer = '0';
       }
-      if ($prio_filter == '') {
-        $prio_filter = '0';
+      if ($filter_prio == '') {
+        $filter_prio = '0';
       }
-      if ($status_filter == '') {
-        $status_filter = '0';
+      if ($filter_status == '') {
+        $filter_status = '0';
       }
 
       $sql = rex_sql::factory();
       // $sql->setDebug();
       $sql->setTable('rex_aufgaben_filter');
       $sql->setValue('user',$current_user);
-      $sql->setValue('kategorie', $filter_kat);
-      $sql->setValue('eigentuemer', $eigentuemer_filter);
-      $sql->setValue('prio', $prio_filter);
-      $sql->setValue('status', $status_filter);
+      $sql->setValue('kategorie', $filter_kategorien);
+      $sql->setValue('eigentuemer', $filter_eigentuemer);
+      $sql->setValue('prio', $filter_prio);
+      $sql->setValue('status', $filter_status);
 
       $sql->insert();
     }
 
-  if ($filter_kat != '0') {
-    $addsql .= ' AND a.kategorie IN ('.$filter_kat.')';
+  if ($filter_kategorien != '0') {
+    $addsql .= ' AND a.kategorie IN ('.$filter_kategorien.')';
   }
-  if ($eigentuemer_filter != '0') {
-    $addsql .= ' AND a.eigentuemer IN ('.$eigentuemer_filter.')';
+  if ($filter_eigentuemer != '0') {
+    $addsql .= ' AND a.eigentuemer IN ('.$filter_eigentuemer.')';
   }
-  if ($prio_filter != '0') {
-    $addsql .= ' AND a.prio IN ('.$prio_filter.')';
+  if ($filter_prio != '0') {
+    $addsql .= ' AND a.prio IN ('.$filter_prio.')';
   }
-  if ($status_filter != '0') {
-    $addsql .= ' AND a.status IN ('.$status_filter.')';
+  if ($filter_status != '0') {
+    $addsql .= ' AND a.status IN ('.$filter_status.')';
   }
 
   $sql = rex_sql::factory();
@@ -415,7 +408,7 @@ if ($func == '' || $func == 'filter') {
   $kategoriefilter = "<select id='kategoriefilter' multiple>";
   for($i=0; $i<$sql->getRows(); $i++) {
 
-    $kat_ids = explode(',', $filter_kat);
+    $kat_ids = explode(',', $filter_kategorien);
 
 
     if(in_array($sql->getValue('id'), $kat_ids)) {
@@ -461,10 +454,10 @@ if ($func == '' || $func == 'filter') {
   for($i=0; $i<$sql->getRows(); $i++) {
 
 
-    $eigentuemer_filter_ids = explode(',', $eigentuemer_filter);
+    $filter_eigentuemer_ids = explode(',', $filter_eigentuemer);
 
 
-    if(in_array($sql->getValue('id'), $eigentuemer_filter_ids)) {
+    if(in_array($sql->getValue('id'), $filter_eigentuemer_ids)) {
       $selected  = 'selected';
     } else {
       $selected  = '';
@@ -497,9 +490,11 @@ if ($func == '' || $func == 'filter') {
   //  Priofilter
   //
   // --------------------
+  $filter_prio_arr = str_split($filter_prio);
+
   $priofilter = "<select id='priofilter' multiple>";
   for($i=1; $i<=3; $i++) {
-    if($i == $prio_filter) {
+    if(in_array($i, $filter_prio_arr)) {
       $selected  = 'selected';
     } else {
       $selected  = '';
@@ -554,10 +549,10 @@ if ($func == '' || $func == 'filter') {
   $statusfilter = "<select id='statusfilter' multiple>";
   for($i=0; $i<$sql->getRows(); $i++) {
 
-   $status_filter_ids = explode(',', $status_filter);
+   $filter_status_ids = explode(',', $filter_status);
 
 
-    if(in_array($sql->getValue('id'), $status_filter_ids)) {
+    if(in_array($sql->getValue('id'), $filter_status_ids)) {
       $selected  = 'selected';
     } else {
       $selected  = '';
@@ -727,36 +722,33 @@ $('#statusfilter').SumoSelect({ okCancelInMulti: true });
 $("#kategoriefilter").change(function(){
      $value_k = $("#kategoriefilter").val();
      if ($value_k == null) {$value_k = '0'};
-     location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_kat="+$value_k );
+     location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_kategorien="+$value_k );
 });
 $("#eigentuemerfilter").change(function(){
      $value_e = $("#eigentuemerfilter").val();
      if ($value_e == null) $value_e = '0';
-     location.replace("index.php?page=aufgaben/aufgaben&func=filter&eigentuemer_filter="+$value_e );
+     location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_eigentuemer="+$value_e );
 });
 $("#priofilter").change(function(){
      $value_p = $("#priofilter").val();
      if ($value_p == null) {$value_p = '0'};
-     location.replace("index.php?page=aufgaben/aufgaben&func=filter&prio_filter="+$value_p );
+     location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_prio="+$value_p );
 });
 $("#statusfilter").change(function(){
      $value_s = $("#statusfilter").val();
      if ($value_s == null) {$value_s = '0'};
-     location.replace("index.php?page=aufgaben/aufgaben&func=filter&status_filter="+$value_s );
+     location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_status="+$value_s );
 });
-
-
-
 
 $("#erledigtverbergen").click(function(){
-  location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&erledigt_filter=1" );
+  location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&filter_erledigt=1" );
 });
 $("#erledigtanzeigen").click(function(){
-  location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&erledigt_filter=0" );
+  location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&filter_erledigt=0" );
 });
 
 $(".watch").click(function(){
-  // location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&erledigt_filter=0" );
+  // location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&filter_erledigt=0" );
   $(this).toggleClass( "enabled" );
 });
 
@@ -780,14 +772,13 @@ var $input = $('.datepicker input').pickadate({
 
 </script>
 
-
+<h4>Todo</h4>
 <ul>
-<li>filter prio noch anpassen</li>
-<li>sumoselect stylen / eindeutschen</li>
+<li>JS auslagern</li>
 <li>int raus aus den tabellen</li>
-<li>auf Version 2.0 und Rex 5.1 umstellen wenn fertig</li>
+<li>Mails!</li>
 <li>responsive?</li>
-<li>schönerer Datepicker</li>
-<li>CSS Auslagern</li>
+<li>schönerer Datepicker - gibt es einen bevorzugten?</li>
+<li>Beobachten: alle einem zugewiesenen Aufgaben.</li>
 </ul>
 

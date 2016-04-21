@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+### 21.04.2016 Version 2.0 ###
+
+- Filter neu gebaut (Multiselect)
+- Nutzung von SCSS
+
 ### 18.04.2016 Version 1.9.5 ###
 
 - E-Mail Benachrichtigung bei geänderten Aufgaben

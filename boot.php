@@ -10,9 +10,28 @@ if (rex::isBackend() && rex::getUser()) {
   rex_view::addJSFile($this->getAssetsUrl('picker.date.js'));
 
   // SumoSelect
-  rex_view::addCssFile($this->getAssetsUrl('sumoselect.css'));
   rex_view::addJSFile($this->getAssetsUrl('jquery.sumoselect.js'));
 
+
+  rex_extension::register('PACKAGES_INCLUDED', function () {
+    if (rex::getUser() && $this->getProperty('compile')) {
+      $compiler = new rex_scss_compiler();
+
+      $scss_files = rex_extension::registerPoint(new rex_extension_point('BE_STYLE_SCSS_FILES', [$this->getPath('scss/master.scss')]));
+      $compiler->setScssFile($scss_files);
+      // $compiler->setScssFile($this->getPath('scss/master.scss'));
+
+      // Compile in backend assets dir
+      $compiler->setCssFile($this->getPath('assets/css/styles.css'));
+
+      $compiler->compile();
+
+      // Compiled file to copy in frontend assets dir
+      rex_file::copy($this->getPath('assets/css/styles.css'), $this->getAssetsPath('css/styles.css'));
+        }
+    });
+
+    rex_view::addCssFile($this->getAssetsUrl('css/styles.css'));
 
 function show_counter()
 {
