@@ -1,11 +1,12 @@
 @import "../aufgaben/scss/sumoselect";
-@import "../aufgaben/scss/datepicker";
+@import "../aufgaben/scss/pickaday";
 
 
 // Status
 #aufgaben {
   .status {
     display: inline-block;
+    min-width: 156px;
     a i {
       float: left;
       display: inline-block;
@@ -21,22 +22,22 @@
         border: 1px solid #000;
         color: #000;
       }
-      .current {
-        color: #555;
-        .fa-check  {
-          border: 1px solid #3CB594;
-          color: #3CB594;
-        }
+    }
+    .current {
+      color: #555;
+      .fa-check  {
+        border: 1px solid #3CB594;
+        color: #3CB594;
       }
     }
   }
 }
 
-
 // Prio
 #aufgaben {
   .priowrapper {
     display: inline-block;
+    min-width: 110px;
     a i {
       float: left;
       display: inline-block;
@@ -111,7 +112,7 @@
     font-size: 12px;
   }
   .td_status {
-    width: 175px;
+    width: 156px;
   }
   .td_edit {
     width: 35px;
@@ -184,11 +185,5 @@
     }
   }
 }
-
-
-
-
-
-
 
 

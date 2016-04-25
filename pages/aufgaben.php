@@ -19,6 +19,21 @@ $no_rows    = '';
 // *************************************
 if ($aufgabe == 'new' OR $aufgabe == 'edit' AND $func == '') {
 
+  // Alle Admins
+    $mail_receiver = array();
+    $sql_admin = rex_sql::factory();
+    // $sql_admin->setDebug();
+    $sql_admin->setTable('rex_user');
+    $sql_admin->setWhere('admin = 1 AND email !=""');
+    $sql_admin->select();
+    if ($sql_admin->getRows()) {
+      for($i=0; $i<$sql_admin->getRows(); $i++) {
+        $mail_receiver[] = $sql_admin->getValue('email');
+        $sql_admin->next();
+      }
+
+    }
+
   $sql = rex_sql::factory();
   $sql->setQuery('SELECT * FROM rex_aufgaben_aufgaben ORDER BY id DESC LIMIT 1');
 
@@ -39,40 +54,65 @@ if ($aufgabe == 'new' OR $aufgabe == 'edit' AND $func == '') {
     $text_beschreibung = str_replace(PHP_EOL,'<br/>', $mail_beschreibung );
   }
 
-  $sql_email = rex_sql::factory();
-  // $sql_email->setDebug();
-  $sql_email->setQuery('SELECT email FROM rex_user WHERE id = '.$sql->getValue('eigentuemer'));
-  $email_adresse = $sql_email->getValue('email');
+  // Eigentümer
+  $sql_email_eigentuemer = rex_sql::factory();
+  // $sql_email_eigentuemer->setDebug();
+  $sql_email_eigentuemer->setQuery('SELECT email FROM rex_user WHERE id = '.$sql->getValue('eigentuemer').' AND email != ""');
+  $mail_receiver[] = $sql_email_eigentuemer->getValue('email');
 
-  $mail = new rex_mailer();
+  // Updateuser
+  $sql_email_updateuser = rex_sql::factory();
+  // $sql_email_updateuser->setDebug();
+  $sql_email_updateuser->setQuery('SELECT email FROM rex_user WHERE login = "'.$sql->getValue('updateuser').'" AND email != ""');
+  $mail_receiver[] = $sql_email_updateuser->getValue('email');
 
-  $body  = "<h3>".$mail_titel."</h3>";
-  $body  .= "<p>".$text_beschreibung."</b>";
+  // Createuser
+  $sql_email_createuser = rex_sql::factory();
+  // $sql_email_updateuser->setDebug();
+  $sql_email_createuser->setQuery('SELECT email FROM rex_user WHERE login = "'.$sql->getValue('createuser').'" AND email != ""');
+  $mail_receiver[] = $sql_email_createuser->getValue('email');
 
-  $text_body = $mail_titel."\n\n";
-  $text_body .= $mail_beschreibung."\n\n";
+  $mails = '';
+  $mails = array_unique($mail_receiver);
 
-  $mail->From = "no-reply@".$_SERVER['SERVER_NAME'];
-  $mail->FromName = $_SERVER['SERVER_NAME'];
+  //echo implode('',$mails);
 
-  if ($aufgabe == 'new') {
-    $mail->Subject = "(".$_SERVER['SERVER_NAME'].") Neue Aufgabe: ".$mail_titel;
-  } else if ($aufgabe == 'edit') {
-    $mail->Subject = "(".$_SERVER['SERVER_NAME'].") Aufgabe geändert: ".$mail_titel;
-  }
+  if (count($mails) ==0){
+      echo "<div class='alert alert-success'>Es wurde keine E-Mail versendet.</div>";
+    } else {
+      foreach($mails as $email) {
 
-  $mail->Body    = $body;
-  $mail->AltBody = $text_body;
+          $mail = new rex_mailer();
 
-  if ($email_adresse != '') {
-    $mail->AddAddress($email_adresse, $email_adresse);
-  } else {
-    $mail->AddAddress(rex::getErrorEmail(), rex::getErrorEmail());
-  }
+          $body  = "<h3>".$mail_titel."</h3>";
+          $body  .= "<p>".$text_beschreibung."</b>";
 
-  if(!$mail->Send()) {
-    echo "E-Mail konnte nicht gesendet werden.<br/>";
-  }
+          $text_body = $mail_titel."\n\n";
+          $text_body .= $mail_beschreibung."\n\n";
+
+          $mail->From = "no-reply@".$_SERVER['SERVER_NAME'];
+          $mail->FromName = $_SERVER['SERVER_NAME'];
+
+          if ($aufgabe == 'new') {
+            $mail->Subject = "(".$_SERVER['SERVER_NAME'].") Neue Aufgabe: ".$mail_titel;
+          } else if ($aufgabe == 'edit') {
+            $mail->Subject = "(".$_SERVER['SERVER_NAME'].") Aufgabe geändert: ".$mail_titel;
+          }
+
+          $mail->Body    = $body;
+          $mail->AltBody = $text_body;
+
+          $mail->AddAddress($email, $email);
+
+
+          if(!$mail->Send()) {
+            echo "<div class='alert alert-danger'>E-Mail konnte nicht gesendet werden.</div>";
+          } else {
+            echo "<div class='alert alert-success'>E-Mail an <b>".$email."</b> wurde gesendet.</div>";
+          }
+      } }
+      $mails = '';
+      $mail_receiver = '';
 }
 
 // *************************************
@@ -281,7 +321,8 @@ if ($func == '' || $func == 'filter') {
   // --------------------
   $tdIcon = '<i class="rex-icon rex-icon-edit"></i>';
   $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '"><i class="rex-icon rex-icon-add"></i></a>';
-  $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon" style="border-left: 5px solid ###farbe###">###VALUE###<a class="watch" href="javascript:void(0);"><i class="rex-icon fa-eye-slash"></i></a></td>']);
+  // $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon" style="border-left: 5px solid ###farbe###">###VALUE###<a class="watch" href="javascript:void(0);"><i class="rex-icon fa-eye-slash"></i></a></td>']);
+  $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon" style="border-left: 5px solid ###farbe###">###VALUE###</td>']);
   $list->setColumnParams($thIcon, ['func' => 'edit', 'id' => '###id###']);
   // --------------------
   //  remove Colums
@@ -295,6 +336,7 @@ if ($func == '' || $func == 'filter') {
   $list->removeColumn('createdate');
   $list->removeColumn('createuser');
   $list->removeColumn('updateuser');
+  $list->removeColumn('observer');
   // --------------------
   //  set Sortable
   // --------------------
@@ -407,9 +449,7 @@ if ($func == '' || $func == 'filter') {
   $sql->setQuery('SELECT k.* FROM rex_aufgaben_kategorien k INNER JOIN rex_aufgaben_aufgaben a ON (a.kategorie = k.id) GROUP BY k.id ORDER BY k.kategorie');
   $kategoriefilter = "<select id='kategoriefilter' multiple>";
   for($i=0; $i<$sql->getRows(); $i++) {
-
     $kat_ids = explode(',', $filter_kategorien);
-
 
     if(in_array($sql->getValue('id'), $kat_ids)) {
       $selected  = 'selected';
@@ -418,8 +458,6 @@ if ($func == '' || $func == 'filter') {
     }
 
     $kategoriefilter .= '<option value="'.$sql->getValue('id').'" '.$selected.'>'.$sql->getValue('kategorie').'</option>';
-
-
 
 
     $sql->next();
@@ -637,12 +675,10 @@ if ($func == '' || $func == 'filter') {
 
 
   $field = $form->addTextField('finaldate');
-  $field->setPrefix('<div class="datepicker">');
-  $field->setSuffix('</div>');
+  $field->setAttribute('id','datepicker');
   $field->setLabel('Fälligkeitsdatum');
 
 // date('d.m.Y H:i:s'
-
 
   $query = 'SELECT name as label, id FROM rex_user';
   $select->addOption('Bitte wählen','');
@@ -711,8 +747,6 @@ if ($func == '' || $func == 'filter') {
 }
 ?>
 <script>
-
-
 $('#kategoriefilter').SumoSelect({okCancelInMulti: true });
 
 $('#priofilter').SumoSelect({ okCancelInMulti: true });
@@ -756,26 +790,17 @@ $("select.form-control").on('change', function () {
   $(this).blur();
 });
 
-
-$('.datepicker input').datepicker({
-    language: "de",
-    keyboardNavigation: false,
-    forceParse: false,
-    calendarWeeks: true,
-    todayHighlight: true
-});
-
-
-
+ var picker = new Pikaday(
+    {
+      field: $('#datepicker')[0] ,
+      format: 'DD.MM.YYYY',
+      i18n: {
+        previousMonth : 'Nächster Monat',
+        nextMonth     : 'Vorheriger Monat',
+        months        : ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+        weekdays      : ['Sonntag','Montag','Dienstag','Mittwoch','Donjnerstag','Freitag','Samstag'],
+        weekdaysShort : ['So','Mo','Di','Mi','Do','Fr','Sa']
+      }
+    }
+);
 </script>
-
-<h4>Todo</h4>
-<ul>
-<li>JS auslagern</li>
-<li>int raus aus den tabellen</li>
-<li>Mails!</li>
-<li>responsive?</li>
-<li>Datepicker CSS / Funktion prüfen)</li>
-<li>Beobachten: alle einem zugewiesenen Aufgaben.</li>
-</ul>
-

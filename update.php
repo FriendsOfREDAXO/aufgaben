@@ -11,6 +11,7 @@ rex_sql_table::get("rex_aufgaben_aufgaben")
 ->ensureColumn(new rex_sql_column('updatedate', 'DATETIME'))
 ->ensureColumn(new rex_sql_column('createuser', 'varchar(255)'))
 ->ensureColumn(new rex_sql_column('updateuser', 'varchar(255)'))
+->ensureColumn(new rex_sql_column('observer', 'varchar(255)'))
 ->ensureColumn(new rex_sql_column('finaldate', 'varchar(255)'))
 ->alter();
 
@@ -37,7 +38,6 @@ rex_sql_table::get("rex_aufgaben_filter")
 
 rex_sql_table::get("rex_aufgaben_user_settings")
 ->ensureColumn(new rex_sql_column('user', 'int(10)'))
-->ensureColumn(new rex_sql_column('watch', 'int(10)'))
 ->ensureColumn(new rex_sql_column('counter', 'int(10)'))
 ->ensureColumn(new rex_sql_column('filter', 'int(20)'))
 ->alter();

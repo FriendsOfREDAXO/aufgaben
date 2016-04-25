@@ -4,6 +4,12 @@
 
 ### Changelog ###
 
+### 25.04.2016 Version 2.0 ###
+
+- Benachrichtigungsmails erweitert
+- Datepicker ausgetauscht :-)
+
+
 ### 21.04.2016 Version 2.0 ###
 
 - Filter neu gebaut (Multiselect)

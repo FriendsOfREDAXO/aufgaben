@@ -10,6 +10,14 @@
 * durch Klick auf das Wort "Aufgaben" können die erledigten Aufgaben dauerhaft ein- bzw. ausgeblendet werden.
 * Kategorien werden durch den Admin gepflegt.
 
+* bei einer neuen Aufgabe oder bei der Änderung einer Aufgabe werden folgende Nutzer per E-Mail (sofern bei dem Benutzer eine E-Mail Adresse eingetragen ist) informiert:
+
+  * alle Administratoren
+  * der Ersteller der Aufgabe
+  * der Zuständige
+  * derjenige, der die Änderung vorgenommen hat
+
+
 <br/>
 
 ---
@@ -17,6 +25,11 @@
 ### Credits ###
 
 * [Thomas Blum](https://github.com/tbaddade), [Gregor Harlan](https://github.com/gharlan) und [Thomas Kaegi](https://github.com/phoebusryan) für die Mithilfe, den zahlreichen Tipps und die unendliche Geduld
-* [RexDude](https://github.com/RexDude) für seine zahlreichen inspirierenden Addons
-* [Parsedown](http://parsedown.org/) Class by Emanuil Rusev
+* [Parsedown](http://parsedown.org/) von Emanuil Rusev
+* [Jquery.sumoselect](https://github.com/HemantNegi/jquery.sumoselect) von Hemant Negi
+* [Pikaday](https://github.com/dbushell/Pikaday) von David Bushell
+* [Moment.js](https://github.com/moment/moment/)
+
+
+
 

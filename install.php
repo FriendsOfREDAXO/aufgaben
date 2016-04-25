@@ -14,11 +14,11 @@ $sql->setQuery('
     `updatedate` DATETIME DEFAULT NULL,
     `createuser` varchar(255) DEFAULT NULL,
     `updateuser` varchar(255) DEFAULT NULL,
+    `observer` varchar(255) DEFAULT NULL,
     `finaldate` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ');
-
 
 $sql = rex_sql::factory();
 $sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_kategorien` (
@@ -55,7 +55,6 @@ $sql = rex_sql::factory();
 $sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_user_settings` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `user` int(10) DEFAULT NULL,
-    `watch` int(10)  DEFAULT NULL,
     `counter` int(10)  DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -87,7 +86,6 @@ rex_sql_table::get("rex_aufgaben_kategorien")
 
 rex_sql_table::get("rex_aufgaben_user_settings")
 ->ensureColumn(new rex_sql_column('user', 'int(10)'))
-->ensureColumn(new rex_sql_column('watch', 'int(10)'))
 ->ensureColumn(new rex_sql_column('counter', 'int(10)'))
 ->ensureColumn(new rex_sql_column('filter', 'int(20)'))
 ->alter();
@@ -111,6 +109,7 @@ rex_sql_table::get("rex_aufgaben_filter")
 $error = '';
 // Überprüfungen
 
-if(!$error)
+if(!$error) {
   $this->setConfig('install', true);
+}
 

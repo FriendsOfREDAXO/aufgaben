@@ -1,5 +1,3 @@
-alert('sdfgsdF');
-
 $('#kategoriefilter').SumoSelect({okCancelInMulti: true });
 
 $('#priofilter').SumoSelect({ okCancelInMulti: true });
@@ -43,11 +41,16 @@ $("select.form-control").on('change', function () {
   $(this).blur();
 });
 
-
-$('.datepicker input').datepicker({
-    language: "de",
-    keyboardNavigation: false,
-    forceParse: false,
-    calendarWeeks: true,
-    todayHighlight: true
-});
+ var picker = new Pikaday(
+    {
+      field: $('#datepicker')[0] ,
+      format: 'DD.MM.YYYY',
+      i18n: {
+        previousMonth : 'Nächster Monat',
+        nextMonth     : 'Vorheriger Monat',
+        months        : ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+        weekdays      : ['Sonntag','Montag','Dienstag','Mittwoch','Donjnerstag','Freitag','Samstag'],
+        weekdaysShort : ['So','Mo','Di','Mi','Do','Fr','Sa']
+      }
+    }
+);
