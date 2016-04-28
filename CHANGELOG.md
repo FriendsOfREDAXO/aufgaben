@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+### 25.04.2016 Version 2.1.5 ###
+
+- simplecolorpicker eingebaut
+
+
 ### 25.04.2016 Version 2.1 ###
 
 - Fehler beseitigt

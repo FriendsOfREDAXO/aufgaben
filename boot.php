@@ -5,6 +5,7 @@ if (rex::isBackend() && rex::getUser()) {
   rex_view::addJSFile($this->getAssetsUrl('js/moments.js'));
   rex_view::addJSFile($this->getAssetsUrl('js/pikaday.js'));
   rex_view::addJSFile($this->getAssetsUrl('js/jquery.sumoselect.js'));
+  rex_view::addJSFile($this->getAssetsUrl('js/jquery.simplecolorpicker.js'));
   rex_view::addJSFile($this->getAssetsUrl('js/custom.js'));
 
   rex_extension::register('PACKAGES_INCLUDED', function () {

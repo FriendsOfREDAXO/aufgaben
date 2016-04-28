@@ -26,10 +26,7 @@
 
 * [Thomas Blum](https://github.com/tbaddade), [Gregor Harlan](https://github.com/gharlan) und [Thomas Kaegi](https://github.com/phoebusryan) für die Mithilfe, den zahlreichen Tipps und die unendliche Geduld
 * [Parsedown](http://parsedown.org/) von Emanuil Rusev
-* [Jquery.sumoselect](https://github.com/HemantNegi/jquery.sumoselect) von Hemant Negi
+* [jquery.sumoselect](https://github.com/HemantNegi/jquery.sumoselect) von Hemant Negi
 * [Pikaday](https://github.com/dbushell/Pikaday) von David Bushell
-* [Moment.js](https://github.com/moment/moment/)
-
-
-
-
+* [moment.js](https://github.com/moment/moment/)
+* [jquery-simplecolorpicker](https://github.com/tkrotoff/jquery-simplecolorpicker) von Tanguy Krotoff
