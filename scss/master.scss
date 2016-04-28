@@ -25,8 +25,7 @@
     }
     .current {
       color: #555;
-      .fa-check  {
-        border: 1px solid #3CB594;
+      &.fa-check  {
         color: #3CB594;
       }
     }
@@ -186,4 +185,18 @@
   }
 }
 
+#aufgaben {
+  .rex-nav-pagination {
+    font-size: 10px;
+    padding: 10px;
+    ul {
+      font-size: 10px;
+        li {
+          a {
+            padding: 6px 8px 6px 8px;
+          }
+        }
+    }
+  }
 
+}

@@ -1,7 +1,6 @@
 <?php
-
- $file = rex_file::get(rex_path::addon('aufgaben','LICENSE.md'));
- $Parsedown = new Parsedown();
+$file = rex_file::get(rex_path::addon('aufgaben','LICENSE.md'));
+$Parsedown = new Parsedown();
 
 $content =  '<div id="aufgaben">'.$Parsedown->text($file).'</div>';
 

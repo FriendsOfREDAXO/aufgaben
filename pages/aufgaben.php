@@ -3,6 +3,7 @@
 // *************************************
 //  Vars
 // *************************************
+
 $func               = rex_request('func', 'string');
 $aufgabe            = rex_request('aufgabe', 'string');
 $filter_kategorien  = rex_request('filter_kategorien', 'string');
@@ -12,108 +13,6 @@ $filter_status      = rex_request('filter_status', 'string');
 $filter_erledigt    = rex_request('filter_erledigt', 'string');
 $current_user       = rex::getUser()->getId();
 
-$no_rows    = '';
-
-// *************************************
-//  E-Mails senden
-// *************************************
-if ($aufgabe == 'new' OR $aufgabe == 'edit' AND $func == '') {
-
-  // Alle Admins
-    $mail_receiver = array();
-    $sql_admin = rex_sql::factory();
-    // $sql_admin->setDebug();
-    $sql_admin->setTable('rex_user');
-    $sql_admin->setWhere('admin = 1 AND email !=""');
-    $sql_admin->select();
-    if ($sql_admin->getRows()) {
-      for($i=0; $i<$sql_admin->getRows(); $i++) {
-        $mail_receiver[] = $sql_admin->getValue('email');
-        $sql_admin->next();
-      }
-
-    }
-
-  $sql = rex_sql::factory();
-  $sql->setQuery('SELECT * FROM rex_aufgaben_aufgaben ORDER BY id DESC LIMIT 1');
-
-  $mail_titel         = $sql->getValue('titel');
-  $mail_beschreibung  = $sql->getValue('beschreibung');
-  $mail_eigentuemer   = $sql->getValue('eigentuemer');
-  $mail_prio          = $sql->getValue('prio');
-  $mail_status        = $sql->getValue('status');
-  $mail_creatuser     = $sql->getValue('createuser');
-  $mail_updateuser    = $sql->getValue('updateuser');
-  $mail_finaldate     = $sql->getValue('finaldate');
-
-  if(rex_addon::get('textile')->isAvailable()) {
-    $text_beschreibung = str_replace('<br />', '', $mail_beschreibung);
-    $text_beschreibung = rex_textile::parse($text_beschreibung);
-    $text_beschreibung = str_replace('###', '&#x20;', $text_beschreibung);
-  } else {
-    $text_beschreibung = str_replace(PHP_EOL,'<br/>', $mail_beschreibung );
-  }
-
-  // Eigentümer
-  $sql_email_eigentuemer = rex_sql::factory();
-  // $sql_email_eigentuemer->setDebug();
-  $sql_email_eigentuemer->setQuery('SELECT email FROM rex_user WHERE id = '.$sql->getValue('eigentuemer').' AND email != ""');
-  $mail_receiver[] = $sql_email_eigentuemer->getValue('email');
-
-  // Updateuser
-  $sql_email_updateuser = rex_sql::factory();
-  // $sql_email_updateuser->setDebug();
-  $sql_email_updateuser->setQuery('SELECT email FROM rex_user WHERE login = "'.$sql->getValue('updateuser').'" AND email != ""');
-  $mail_receiver[] = $sql_email_updateuser->getValue('email');
-
-  // Createuser
-  $sql_email_createuser = rex_sql::factory();
-  // $sql_email_updateuser->setDebug();
-  $sql_email_createuser->setQuery('SELECT email FROM rex_user WHERE login = "'.$sql->getValue('createuser').'" AND email != ""');
-  $mail_receiver[] = $sql_email_createuser->getValue('email');
-
-  $mails = '';
-  $mails = array_unique($mail_receiver);
-
-  //echo implode('',$mails);
-
-  if (count($mails) ==0){
-      echo "<div class='alert alert-success'>Es wurde keine E-Mail versendet.</div>";
-    } else {
-      foreach($mails as $email) {
-
-          $mail = new rex_mailer();
-
-          $body  = "<h3>".$mail_titel."</h3>";
-          $body  .= "<p>".$text_beschreibung."</b>";
-
-          $text_body = $mail_titel."\n\n";
-          $text_body .= $mail_beschreibung."\n\n";
-
-          $mail->From = "no-reply@".$_SERVER['SERVER_NAME'];
-          $mail->FromName = $_SERVER['SERVER_NAME'];
-
-          if ($aufgabe == 'new') {
-            $mail->Subject = "(".$_SERVER['SERVER_NAME'].") Neue Aufgabe: ".$mail_titel;
-          } else if ($aufgabe == 'edit') {
-            $mail->Subject = "(".$_SERVER['SERVER_NAME'].") Aufgabe geändert: ".$mail_titel;
-          }
-
-          $mail->Body    = $body;
-          $mail->AltBody = $text_body;
-
-          $mail->AddAddress($email, $email);
-
-
-          if(!$mail->Send()) {
-            echo "<div class='alert alert-danger'>E-Mail konnte nicht gesendet werden.</div>";
-          } else {
-            echo "<div class='alert alert-success'>E-Mail an <b>".$email."</b> wurde gesendet.</div>";
-          }
-      } }
-      $mails = '';
-      $mail_receiver = '';
-}
 
 // *************************************
 //  Erledigtschalter
@@ -378,7 +277,7 @@ if ($func == '' || $func == 'filter') {
       } else {
         $text = str_replace(PHP_EOL,'<br/>', $text );
       }
-      $user_name = rex::getUser()->getValue('name') != '' ? rex::getUser()->getValue('name') : rex::getUser()->getValue('login');
+      $user_name = rex::getUser()->getValue('login');
       $text = str_replace('*****', '<div class="aufgabentrenner">'.date("d.m.y").' - '. htmlspecialchars($user_name).'</div>', $text);
       $beschreibung = '<div id="collapse###id###" class="collapse"><br/>'.$text.'</div>';
     } else {
@@ -487,21 +386,17 @@ if ($func == '' || $func == 'filter') {
   // --------------------
   $sql = rex_sql::factory();
   // $sql->setDebug();
-  $sql->setQuery('SELECT * FROM rex_user ORDER BY name');
+  $sql->setQuery('SELECT * FROM rex_user ORDER BY login');
   $eigentuemerfilter = "<select id='eigentuemerfilter' multiple>";
   for($i=0; $i<$sql->getRows(); $i++) {
-
-
     $filter_eigentuemer_ids = explode(',', $filter_eigentuemer);
-
-
     if(in_array($sql->getValue('id'), $filter_eigentuemer_ids)) {
       $selected  = 'selected';
     } else {
       $selected  = '';
     }
 
-    $eigentuemerfilter .= '<option value="'.$sql->getValue('id').'" '.$selected.'>'.$sql->getValue('name').'</option>';
+    $eigentuemerfilter .= '<option value="'.$sql->getValue('id').'" '.$selected.'>'.$sql->getValue('login').'</option>';
     $sql->next();
   }
   $eigentuemerfilter .= "</select>";
@@ -520,7 +415,7 @@ if ($func == '' || $func == 'filter') {
    $sql->setTable('rex_user');
    $sql->setWhere(['id'=>$list->getValue('eigentuemer')]);
    $sql->select();
-   $eigentuemer = $sql->getValue('name');
+   $eigentuemer = $sql->getValue('login');
    return $eigentuemer;
   });
   // --------------------
@@ -629,6 +524,9 @@ if ($func == '' || $func == 'filter') {
     return $status;
   });
 
+  // E-Mail senden
+  $aktuelle_id = rex_request('id', 'int');
+  send_mails($aktuelle_id, $aufgabe);
 
   $content = '<div id="aufgaben">'.$list->get().'</div>';
 
@@ -680,7 +578,7 @@ if ($func == '' || $func == 'filter') {
 
 // date('d.m.Y H:i:s'
 
-  $query = 'SELECT name as label, id FROM rex_user';
+  $query = 'SELECT login as label, id FROM rex_user';
   $select->addOption('Bitte wählen','');
   $select->addSqlOptions($query);
 
@@ -742,7 +640,6 @@ if ($func == '' || $func == 'filter') {
   $fragment->setVar('title', "$fieldset");
   $fragment->setVar('body', $content, false);
   $content = $fragment->parse('core/page/section.php');
-
   echo $content;
 }
 ?>

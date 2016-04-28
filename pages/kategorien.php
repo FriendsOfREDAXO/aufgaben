@@ -22,7 +22,6 @@ if ($func == '') {
     $list->setNoRowsMessage('<div class="alert alert-info" role="alert"><strong>Keine Kategorie vorhanden.</strong><br/>Bitte legen Sie eine Kategroie an bzw. Ifnormieren Ihren Administrator.</div>');
 
     // icon column
-
     $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '" title="Kategorie hinzufÃ¼gen"><i class="rex-icon rex-icon-add-action"></i></a>';
     $tdIcon = '<i class="rex-icon fa-file-text-o"></i>';
     $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon">###VALUE###</td>']);

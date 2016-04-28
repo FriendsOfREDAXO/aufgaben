@@ -1,6 +1,5 @@
 <?php
 
-
 $func = rex_request('func', 'string');
 
 if ($func == 'import_beispieldaten') {
@@ -47,10 +46,9 @@ if ($func == 'import_beispieldaten') {
   $func = '';
 }
 
-  $file = rex_file::get(rex_path::addon('aufgaben','README.md'));
-  $Parsedown = new Parsedown();
-  $content =  '<div id="aufgaben">'.$Parsedown->text($file);
-
+$file = rex_file::get(rex_path::addon('aufgaben','README.md'));
+$Parsedown = new Parsedown();
+$content =  '<div id="aufgaben">'.$Parsedown->text($file);
 
 $content .= '
 <hr/>
@@ -62,5 +60,3 @@ $fragment = new rex_fragment();
 $fragment->setVar('title', 'Hilfe');
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');
-
-

@@ -4,6 +4,12 @@
 
 ### Changelog ###
 
+### 25.04.2016 Version 2.1 ###
+
+- Fehler beseitigt
+- Überall "name" durch "login" getauscht ("name" ist kein Pflichtfeld in der rex_user Tabelle)
+- Paginierung angepasst
+
 ### 25.04.2016 Version 2.0 ###
 
 - Benachrichtigungsmails erweitert

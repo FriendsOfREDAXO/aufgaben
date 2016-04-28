@@ -1,9 +1,9 @@
 <?php
 
- $file = rex_file::get(rex_path::addon('aufgaben','CHANGELOG.md'));
- $Parsedown = new Parsedown();
+$file = rex_file::get(rex_path::addon('aufgaben','CHANGELOG.md'));
+$Parsedown = new Parsedown();
 
- $content =  '<div id="aufgaben">'.$Parsedown->text($file).'</div>';
+$content =  '<div id="aufgaben">'.$Parsedown->text($file).'</div>';
 
 $fragment = new rex_fragment();
 $fragment->setVar('title', 'Changelog');
