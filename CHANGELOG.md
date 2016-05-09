@@ -4,6 +4,12 @@
 
 ### Changelog ###
 
+
+### 09.05.2016 Version 2.1.6 ###
+
+- Neue Kategoriefarben vergeben
+
+
 ### 25.04.2016 Version 2.1.5 ###
 
 - simplecolorpicker eingebaut
