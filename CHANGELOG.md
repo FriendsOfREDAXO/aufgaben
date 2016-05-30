@@ -5,6 +5,11 @@
 ### Changelog ###
 
 
+### 30.05.2016 Version 2.1.7 ###
+
+- Export himzugefügt
+
+
 ### 09.05.2016 Version 2.1.6 ###
 
 - Neue Kategoriefarben vergeben
