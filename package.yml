@@ -16,6 +16,7 @@ page:
       kategorien: { title: 'Kategorien', perm: aufgaben[kategorien]}
       exim:
         title: 'Export'
+        perm: 'admin[]'
         subpages:
           export: { title: 'Export'}
           #import: { title: 'Import'}
