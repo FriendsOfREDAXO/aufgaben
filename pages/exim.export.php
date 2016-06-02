@@ -7,6 +7,61 @@ $qry->select('*');
 if (rex_post('export', 'bool'))
 {
     $filename = 'aufgaben_' . date('Ymd_Hi');
+    
+    //kategorie
+    $sql = rex_sql::factory();
+    $sql->setTable('rex_aufgaben_kategorien');
+    $sql->select("*");
+    $kategorien = $sql->getArray();
+    $kategorienArray = [];
+
+    foreach ($kategorien as $kategorie)
+    {
+        $kategorienArray[$kategorie["id"]] = $kategorie["kategorie"];
+    }
+
+    //user
+    $sql->setTable('rex_user');
+    $sql->select("*");
+    $eigentuemer = $sql->getArray();
+    $eigentuemerArray = [];
+
+    foreach ($eigentuemer as $eigentuem)
+    {
+        $eigentuemerArray[$eigentuem["id"]] = $eigentuem["login"];
+    }
+
+    //status
+    $sql->setTable('rex_aufgaben_status');
+    $sql->select("*");
+    $stati = $sql->getArray();
+    $statiArray = [];
+
+    foreach ($stati as $status)
+    {
+        $statiArray[$status["id"]] = $status["status"];
+    }
+    
+    //get all todos    
+    $qryArray = [];
+    $firstLineKeys = false;
+
+    foreach ($qry->getArray() as $line)
+    {
+        if (empty($firstLineKeys))
+        {
+            $firstLineKeys = array_keys($line);
+            $firstLineKeys = array_flip($firstLineKeys);
+        }
+
+        //-----set values
+        $line["kategorie"] = $kategorienArray[$line["kategorie"]];
+        $line["eigentuemer"] = $eigentuemerArray[$line["eigentuemer"]];
+        $line["prio"] = "Prio: " . $line["prio"];
+        $line["status"] = $statiArray[$line["status"]];
+
+        array_push($qryArray, array_merge($firstLineKeys, $line));
+    }
 
     if (rex_post('type') === "json")
     {
@@ -16,7 +71,7 @@ if (rex_post('export', 'bool'))
         header('Content-Type: application/json');
         header('Content-Disposition: attachment; filename="' . $filename . '.json"');
 
-        echo json_encode($qry->getArray());
+        echo json_encode($qryArray, JSON_UNESCAPED_UNICODE);
 
         exit;
         //-----/JSON EXPORT
@@ -32,7 +87,25 @@ if (rex_post('export', 'bool'))
 
         $file = fopen('php://output', 'w');
         $firstLineKeys = false;
-        foreach ($qry->getArray() as $line)
+        
+        function encode_items($array)
+        {
+            foreach ($array as $key => $value)
+            {
+                if (is_array($value))
+                {
+                    $array[$key] = encode_items($value);
+                }
+                else
+                {
+                    $array[$key] = mb_convert_encoding($value, 'Windows-1252', 'UTF-8');
+                }
+            }
+
+            return $array;
+        }
+        
+        foreach (encode_items($qryArray) as $line)
         {
             if (empty($firstLineKeys))
             {
@@ -40,7 +113,6 @@ if (rex_post('export', 'bool'))
                 fputcsv($file, $firstLineKeys);
                 $firstLineKeys = array_flip($firstLineKeys);
             }
-
             fputcsv($file, array_merge($firstLineKeys, $line));
         }
         fclose($file);
