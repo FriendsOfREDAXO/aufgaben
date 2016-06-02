@@ -2,8 +2,9 @@
 
 package: aufgaben
 version: '2.1.7'
-author: Oliver Kreischer
-supportpage: www.redaxo.org/de/forum/
+author: Friends Of REDAXO
+supportpage: https://github.com/FriendsOfREDAXO/aufgaben
+info: Idee und Realisierung der ersten Version concedra.de / Oliver Kreischer
 compile: 1
 
 page:
