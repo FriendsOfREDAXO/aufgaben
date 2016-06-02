@@ -33,4 +33,4 @@
 
 ---
 
-Idee und Realisierung der ersten Version [concedra.de / Oliver Kreischer](http://concedra.de)
+Idee und Realisierung der ersten Version: [concedra.de / Oliver Kreischer](http://concedra.de)
