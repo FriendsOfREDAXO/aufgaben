@@ -30,3 +30,7 @@
 * [Pikaday](https://github.com/dbushell/Pikaday) von David Bushell
 * [moment.js](https://github.com/moment/moment/)
 * [jquery-simplecolorpicker](https://github.com/tkrotoff/jquery-simplecolorpicker) von Tanguy Krotoff
+
+---
+
+Idee und Realisierung der ersten Version [concedra.de / Oliver Kreischer](http://concedra.de)
