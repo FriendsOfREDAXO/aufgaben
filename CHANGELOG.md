@@ -4,6 +4,10 @@
 
 ### Changelog ###
 
+### 02.06.2016 Version 3.0 ###
+
+- Versionsupdate - Umzug zu FOR
+
 
 ### 30.05.2016 Version 2.1.7 ###
 
