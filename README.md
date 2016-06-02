@@ -2,7 +2,7 @@
 
 ##### Eine ToDo Verwaltung für das Redaxo Backend. #####
 
-<br/>
+![Screenshot](https://raw.githubusercontent.com/FriendsOfREDAXO/aufgaben/assets/aufgaben_01.png)
 
 * im Beschreibungsfeld kann mit der Eingabe von ***** (5 Sterne) ein Trenner hinzugefügt werden.</li>
 * durch Klick auf "blaue" Aufgaben wird die Beschreibung angezeigt.</li>
@@ -17,8 +17,7 @@
   * der Zuständige
   * derjenige, der die Änderung vorgenommen hat
 
-
-<br/>
+![Screenshot](https://raw.githubusercontent.com/FriendsOfREDAXO/aufgaben/assets/aufgaben_02.png)
 
 ---
 
