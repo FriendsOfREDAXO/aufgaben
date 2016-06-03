@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+### 03.06.2016 Version 3.1 ###
+
+- Kanban Ansicht hinzugefügt
+
+
 ### 03.06.2016 Version 3.0 ###
 
 - Readme aktualisiert
