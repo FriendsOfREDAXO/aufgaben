@@ -4,14 +4,22 @@
 
 ### Changelog ###
 
+### 03.06.2016 Version 3.0 ###
+
+- Readme aktualisiert
+
+
+### Changelog ###
+
 ### 02.06.2016 Version 3.0 ###
 
 - Versionsupdate - Umzug zu FOR
+- Lizenz angepasst -> MIT
 
 
 ### 30.05.2016 Version 2.1.7 ###
 
-- Export himzugefügt
+- Export hinzugefügt
 
 
 ### 09.05.2016 Version 2.1.6 ###

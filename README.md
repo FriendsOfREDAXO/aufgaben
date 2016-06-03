@@ -2,7 +2,7 @@
 
 ##### Eine ToDo Verwaltung für das Redaxo Backend. #####
 
-![Screenshot](https://raw.githubusercontent.com/FriendsOfREDAXO/aufgaben/assets/aufgaben_01.png)
+<img src="https://raw.githubusercontent.com/FriendsOfREDAXO/aufgaben/assets/aufgaben_01.png" style="max-width: 888px" />
 
 * im Beschreibungsfeld kann mit der Eingabe von ***** (5 Sterne) ein Trenner hinzugefügt werden.</li>
 * durch Klick auf "blaue" Aufgaben wird die Beschreibung angezeigt.</li>
@@ -17,13 +17,15 @@
   * der Zuständige
   * derjenige, der die Änderung vorgenommen hat
 
-![Screenshot](https://raw.githubusercontent.com/FriendsOfREDAXO/aufgaben/assets/aufgaben_02.png)
+
+<img src="https://raw.githubusercontent.com/FriendsOfREDAXO/aufgaben/assets/aufgaben_02.png" style="max-width: 888px" />
+
 
 ---
 
 ### Credits ###
 
-* [Thomas Blum](https://github.com/tbaddade), [Gregor Harlan](https://github.com/gharlan) und [Thomas Kaegi](https://github.com/phoebusryan) für die Mithilfe, den zahlreichen Tipps und die unendliche Geduld
+* [Friends Of REDAXO](https://github.com/FriendsOfREDAXO) Gemeinsame REDAXO-Entwicklung!
 * [Parsedown](http://parsedown.org/) von Emanuil Rusev
 * [jquery.sumoselect](https://github.com/HemantNegi/jquery.sumoselect) von Hemant Negi
 * [Pikaday](https://github.com/dbushell/Pikaday) von David Bushell
