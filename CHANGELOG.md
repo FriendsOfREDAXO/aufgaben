@@ -4,6 +4,13 @@
 
 ### Changelog ###
 
+### 05.06.2016 Version 3.1.1 ###
+
+- Kanban erweitert um Edit Funktion
+- Code aufgeräumt
+- Bootstrap Modal issue gelöst
+
+
 ### 03.06.2016 Version 3.1 ###
 
 - Kanban Ansicht hinzugefügt

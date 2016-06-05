@@ -7,6 +7,7 @@ if (rex::isBackend() && rex::getUser()) {
   rex_view::addJSFile($this->getAssetsUrl('js/jquery.sumoselect.js'));
   rex_view::addJSFile($this->getAssetsUrl('js/jquery.simplecolorpicker.js'));
   rex_view::addJSFile($this->getAssetsUrl('js/custom.js'));
+  rex_view::addJSFile($this->getAssetsUrl('js/kanban.js'));
 
   rex_extension::register('PACKAGES_INCLUDED', function () {
     if (rex::getUser() && $this->getProperty('compile')) {
