@@ -4,6 +4,10 @@
 
 ### Changelog ###
 
+### 06.06.2016 Version 3.1.2 ###
+
+- Löschen von benutzten Kategorien wird verhindert
+
 ### 05.06.2016 Version 3.1.1 ###
 
 - Kanban erweitert um Edit Funktion

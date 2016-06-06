@@ -7,10 +7,21 @@ if ($func == 'delete') {
 
     // $sql->setDebug();
 
-    $sql->setTable('rex_aufgaben_kategorien');
-    $sql->setWhere('id = ' . $id);
-    if ($sql->delete()) {
-        echo '<div class="alert alert-success">Die Kategorie wurde gelöscht.</div>';
+    $sql->setQuery('SELECT * FROM rex_aufgaben_aufgaben WHERE kategorie =' . $id);
+
+    if ($sql->getRows() > 0)
+    {
+        echo '<div class="alert alert-danger">Dieser Kategorie sind noch Aufgaben zugeordnet. Die Kategorie wurde <strong>nicht</strong> gelöscht.</div>';
+    }
+    else
+    {
+        $sql->setTable('rex_aufgaben_kategorien');
+        $sql->setWhere('id = ' . $id);
+
+        if ($sql->delete())
+        {
+            echo '<div class="alert alert-success">Die Kategorie wurde gelöscht.</div>';
+        }
     }
 
     $func = '';
