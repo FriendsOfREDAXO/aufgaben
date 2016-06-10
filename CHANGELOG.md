@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+
+### 10.06.2016 Version 3.1.3 ###
+
+- Schreibfehler beseitigt
+
 ### 06.06.2016 Version 3.1.2 ###
 
 - Löschen von benutzten Kategorien wird verhindert

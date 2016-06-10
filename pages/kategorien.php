@@ -30,7 +30,7 @@ if ($func == 'delete') {
 if ($func == '') {
     $list = rex_list::factory("SELECT * FROM " . rex::getTablePrefix() . "aufgaben_kategorien ORDER BY kategorie ASC");
     $list->addTableAttribute('class', 'table-striped');
-    $list->setNoRowsMessage('<div class="alert alert-info" role="alert"><strong>Keine Kategorie vorhanden.</strong><br/>Bitte legen Sie eine Kategroie an bzw. Ifnormieren Ihren Administrator.</div>');
+    $list->setNoRowsMessage('<div class="alert alert-info" role="alert"><strong>Keine Kategorie vorhanden.</strong><br/>Bitte legen Sie eine Kategorie an bzw. informieren Ihren Administrator.</div>');
 
     // icon column
     $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '" title="Kategorie hinzufügen"><i class="rex-icon rex-icon-add-action"></i></a>';
