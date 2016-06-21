@@ -404,21 +404,25 @@ if ($func == '' || $func == 'filter') {
   // $sql->setDebug();
 
   $sql->setQuery('SELECT k.* FROM rex_aufgaben_kategorien k INNER JOIN rex_aufgaben_aufgaben a ON (a.kategorie = k.id) GROUP BY k.id ORDER BY k.kategorie');
-  $kategoriefilter = "<select id='kategoriefilter' multiple>";
-  for ($i = 0; $i < $sql->getRows(); $i++) {
-    $kat_ids = explode(',', $filter_kategorien);
-    if (in_array($sql->getValue('id') , $kat_ids)) {
-      $selected = 'selected';
-    }
-    else {
-      $selected = '';
-    }
 
-    $kategoriefilter.= '<option value="' . $sql->getValue('id') . '" ' . $selected . '>' . $sql->getValue('kategorie') . '</option>';
-    $sql->next();
+  if ($sql->getRows() > 1) {
+    $kategoriefilter = "<select id='kategoriefilter' multiple>";
+    for ($i = 0; $i < $sql->getRows(); $i++) {
+      $kat_ids = explode(',', $filter_kategorien);
+      if (in_array($sql->getValue('id') , $kat_ids)) {
+        $selected = 'selected';
+      }
+      else {
+        $selected = '';
+      }
+
+      $kategoriefilter.= '<option value="' . $sql->getValue('id') . '" ' . $selected . '>' . $sql->getValue('kategorie') . '</option>';
+      $sql->next();
+    }
+    $kategoriefilter.= "</select>";
+  } else {
+    $kategoriefilter = '';
   }
-
-  $kategoriefilter.= "</select>";
 
   // --------------------
   //
@@ -454,21 +458,25 @@ if ($func == '' || $func == 'filter') {
   // $sql->setDebug();
 
   $sql->setQuery('SELECT * FROM rex_user ORDER BY login');
-  $eigentuemerfilter = "<select id='eigentuemerfilter' multiple>";
-  for ($i = 0; $i < $sql->getRows(); $i++) {
-    $filter_eigentuemer_ids = explode(',', $filter_eigentuemer);
-    if (in_array($sql->getValue('id') , $filter_eigentuemer_ids)) {
-      $selected = 'selected';
-    }
-    else {
-      $selected = '';
+  if ($sql->getRows() > 1) {
+    $eigentuemerfilter = "<select id='eigentuemerfilter' multiple>";
+    for ($i = 0; $i < $sql->getRows(); $i++) {
+      $filter_eigentuemer_ids = explode(',', $filter_eigentuemer);
+      if (in_array($sql->getValue('id') , $filter_eigentuemer_ids)) {
+        $selected = 'selected';
+      }
+      else {
+        $selected = '';
+      }
+
+      $eigentuemerfilter.= '<option value="' . $sql->getValue('id') . '" ' . $selected . '>' . $sql->getValue('login') . '</option>';
+      $sql->next();
     }
 
-    $eigentuemerfilter.= '<option value="' . $sql->getValue('id') . '" ' . $selected . '>' . $sql->getValue('login') . '</option>';
-    $sql->next();
+    $eigentuemerfilter.= "</select>";
+  } else {
+    $eigentuemerfilter = '';
   }
-
-  $eigentuemerfilter.= "</select>";
 
   // --------------------
   //

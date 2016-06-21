@@ -4,7 +4,12 @@
 
 ### Changelog ###
 
-### 20.06.2016 Version 3.1.5 ###
+
+### 21.06.2016 Version 3.1.6 ###
+
+- Bei nur einer Kategorie bzw nur einem Benutzer werden die Select Felder nicht mehr angezeigt
+
+### 21.06.2016 Version 3.1.5 ###
 
 - aufgaben_functions.php angelegt
 
