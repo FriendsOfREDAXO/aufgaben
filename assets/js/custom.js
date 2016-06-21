@@ -33,7 +33,9 @@ $("#erledigtanzeigen").click(function(){
 });
 
 $(".watch").click(function(){
+
   // location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&filter_erledigt=0" );
+
   $(this).toggleClass( "enabled" );
 });
 

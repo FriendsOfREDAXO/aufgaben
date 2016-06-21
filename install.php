@@ -109,7 +109,8 @@ rex_sql_table::get("rex_aufgaben_filter")
 $error = '';
 // Überprüfungen
 
-if(!$error) {
+if(!$error AND !$this->hasConfig()) {
   $this->setConfig('install', true);
+  $this->setConfig('kanban',  'aktiviert');
 }
 

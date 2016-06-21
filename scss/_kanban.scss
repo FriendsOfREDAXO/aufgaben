@@ -1,4 +1,4 @@
-#drag-helper
+#kanban-drag-helper
 {
     -moz-transition-property: color;
     -o-transition-property: color;
@@ -30,21 +30,21 @@
     h4
     {
         color: #324050;
-        
+
         a
         {
             color: #324050;
             display: block;
-            position:relative; 
+            position:relative;
             padding-left: 17px;
-            
+
             &:hover, &:focus, &:active
             {
                 text-decoration: none;
             }
-            
+
             &.expand
-            {            
+            {
                 &:after
                 {
                     content: "\f139";
@@ -70,27 +70,27 @@
 
     .kanban-heading
     {
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
     }
 
-    .kanban-centered 
+    .kanban-centered
     {
         position: relative;
         margin-bottom: 30px;
-        
+
         &:before, &:after
         {
             content: " ";
-            display: table;            
+            display: table;
         }
-        
+
         &:after
         {
             clear: both;
         }
-        
-        &:before 
+
+        &:before
         {
             content: '';
             position: absolute;
@@ -102,7 +102,7 @@
     }
 
 
-    .kanban-entry 
+    .kanban-entry
     {
         position: relative;
         margin: 10px 8px;
@@ -110,11 +110,11 @@
         -moz-box-shadow: rgba(50, 50, 50, 0.5) 1px 1px 2px;
         -webkit-box-shadow: rgba(50, 50, 50, 0.5) 1px 1px 2px;
         box-shadow: rgba(50, 50, 50, 0.5) 1px 1px 2px;
-        
+
         &:before, &:after
         {
             content: " ";
-            display: table;         
+            display: table;
         }
 
         &:after
@@ -122,7 +122,7 @@
             clear: both;
         }
 
-        &:before 
+        &:before
         {
             content: '';
             position: absolute;
@@ -131,17 +131,17 @@
             top: 20px;
             bottom: 20px;
         }
-        
-        &.begin 
+
+        &.begin
         {
             margin-bottom: 0;
         }
-        
-        &.left-aligned 
+
+        &.left-aligned
         {
             float: left;
-            
-            .kanban-entry-inner 
+
+            .kanban-entry-inner
             {
                 margin-left: 0;
                 margin-right: -18px;
@@ -149,12 +149,12 @@
         }
     }
 
-    .kanban-label 
+    .kanban-label
     {
         margin-left: 0;
         width: 100%;
-        
-        &:after 
+
+        &:after
         {
             left: auto;
             right: 0;
@@ -168,14 +168,14 @@
         }
     }
 
-    .kanban-entry-inner 
+    .kanban-entry-inner
     {
         position: relative;
-        
+
         &:before, &:after
         {
             content: " ";
-            display: table;      
+            display: table;
         }
 
         &:after
@@ -183,7 +183,7 @@
             clear: both;
         }
 
-        &:before 
+        &:before
         {
             content: '';
             position: absolute;
@@ -192,7 +192,7 @@
             top: 20px;
             bottom: 20px;
         }
-        
+
         .kanban-label
         {
             position: relative;
@@ -222,12 +222,12 @@
         margin-bottom: 10px;
     }
 
-    .kanban-centered .kanban-entry .kanban-entry-inner .kanban-label h2 a 
+    .kanban-centered .kanban-entry .kanban-entry-inner .kanban-label h2 a
     {
         color: #303641;
     }
 
-    .kanban-centered .kanban-entry .kanban-entry-inner .kanban-label h2 span 
+    .kanban-centered .kanban-entry .kanban-entry-inner .kanban-label h2 span
     {
         -webkit-opacity: .6;
         -moz-opacity: .6;
@@ -236,25 +236,25 @@
         filter: alpha(opacity=60);
     }
 
-    .kanban-col 
+    .kanban-col
     {
         width: 300px;
         margin-right: 20px;
         float: left;
     }
 
-    .panel-body 
+    .panel-body
     {
         padding: 15px 0 0 0;
         overflow-y: auto;
     }
 
 
-    .panel-heading 
+    .panel-heading
     {
         cursor: context-menu;
-        
-        i 
+
+        i
         {
             cursor: pointer;
         }
@@ -265,7 +265,7 @@
         display: table;
         width: 100%;
 
-        .change-status 
+        .change-status
         {
             text-align: center;
             display: table-cell;
@@ -358,7 +358,7 @@
                 }
             }
         }
-        
+
         .edit-kanban-entry
         {
             position:absolute;

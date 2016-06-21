@@ -2,9 +2,9 @@ var redaxo = redaxo || {};
 redaxo.Kanban = redaxo.Kanban || (function (jQuery)
 {
     var jRexLoader;
-    
+
     var Kanban = function ()
-    {       
+    {
         var jKanbanStage = jQuery('.kanban-stage');
         var jKanbanCol = jQuery('.panel-body');
         var jChangePrioTrigger = jQuery(".change-prio");
@@ -14,7 +14,7 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
         var jEditEntryTrigger = jQuery(".edit-kanban-entry");
         var jDraggableContainer = jQuery(".grab");
         var jDropContainer = jQuery(".panel-body");
-        
+
         jQuery.extend(true, this,
         {
             jKanbanStage: jKanbanStage,
@@ -30,11 +30,11 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
 
         initView.call(this);
     };
-    
+
     var getRexLoader = function getRexLoader()
     {
         var that = this;
-        
+
         var checkExist = setInterval(function ()
         {
             if (jQuery('#rex-js-ajax-loader').length)
@@ -46,14 +46,14 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
         }, 100);
     };
 
-    
+
     var initView = function initView()
     {
         getRexLoader.call(this);
         initKanban.call(this);
     };
-        
-    
+
+
     // init kanban view
     var initKanban = function initKanban()
     {
@@ -62,7 +62,7 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
         this.jKanbanCol.css('max-height', (window.innerHeight - 150) + 'px');
         this.jKanbanStage.css('min-width', (kanbanColCount * 325) + 'px');
     };
-    
+
     var kanbanAjax = function kanbanAjax(postData, successCallback)
     {
         jQuery.ajax(
@@ -123,8 +123,8 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
 
         kanbanAjax({"updateprio": "true", "prioid": prioId, "id": id}, postSuccessCallback);
     };
-    
-    
+
+
     // change kanban entry status
     var changeStatusHandler = function changeStatusHandler()
     {
@@ -153,8 +153,8 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
 
         kanbanAjax({"updatestatus": "true", "statusid": statusId, "id": id}, postSuccessCallback);
     };
-    
-    
+
+
     // delete kanban entry
     var deleteEntryHandler = function deleteEntryHandler(event)
     {
@@ -185,8 +185,8 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
             kanbanAjax({"deletetodo": "true", "id": id}, postSuccessCallback);
         });
     };
-    
-    
+
+
     // add kanban entry
     var addEntryHandler = function addEntryHandler(event)
     {
@@ -238,8 +238,8 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
 
         jAddEntryModal.modal().one('click', '#save-add-entry', checkForm);
     };
-        
-    
+
+
     // edit kanban entry
     var editEntryHandler = function editEntryHandler(event)
     {
@@ -300,8 +300,8 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
 
         jEditEntryModal.modal().one('click', '#save-edit-entry', checkForm);
     };
-    
-    
+
+
     // draggable settings
     var draggableSettings = {
         appendTo: 'body',
@@ -311,15 +311,15 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
             var jThis = jQuery(this);
             var color = jThis.data("color");
 
-            dom.push('<div id="drag-helper" style="font-size: 40px; color: ' + color + ';"><i class="fa fa-sticky-note" aria-hidden="true"></i></div>');
+            dom.push('<div id="kanban-drag-helper" style="font-size: 40px; color: ' + color + ';"><i class="fa fa-sticky-note" aria-hidden="true"></i></div>');
 
             return $(dom.join(''));
         },
         cursorAt: {right: 15, bottom: 20},
         cursor: "move"
     };
-    
-    
+
+
     // droppable settings
     var droppableSettings = {
         activeClass: "ui-state-default",
@@ -359,8 +359,8 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
             kanbanAjax({"updatekategorie": "true", "id": id, "kategorieid": kategorieid}, postSuccessCallback);
         }
     };
-    
-    
+
+
     var attachEventHandler = function attachEventHandler()
     {
         this.jChangePrioTrigger.on("click", changePrioHandler);

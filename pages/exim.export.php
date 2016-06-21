@@ -7,7 +7,7 @@ $qry->select('*');
 if (rex_post('export', 'bool'))
 {
     $filename = 'aufgaben_' . date('Ymd_Hi');
-    
+
     //kategorie
     $sql = rex_sql::factory();
     $sql->setTable('rex_aufgaben_kategorien');
@@ -41,8 +41,8 @@ if (rex_post('export', 'bool'))
     {
         $statiArray[$status["id"]] = $status["status"];
     }
-    
-    //get all todos    
+
+    //get all todos
     $qryArray = [];
     $firstLineKeys = false;
 
@@ -87,7 +87,7 @@ if (rex_post('export', 'bool'))
 
         $file = fopen('php://output', 'w');
         $firstLineKeys = false;
-        
+
         function encode_items($array)
         {
             foreach ($array as $key => $value)
@@ -104,7 +104,7 @@ if (rex_post('export', 'bool'))
 
             return $array;
         }
-        
+
         foreach (encode_items($qryArray) as $line)
         {
             if (empty($firstLineKeys))
@@ -121,8 +121,8 @@ if (rex_post('export', 'bool'))
         //-----/CSV EXPORT
     }
 }
-
-$content = '<form action="' . rex_url::currentBackendPage() . '" data-pjax="false" method="post">';
+$content = '<div id="aufgabenexim';
+$content .= '<form action="' . rex_url::currentBackendPage() . '" data-pjax="false" method="post">';
 $content .= '<fieldset>';
 $content .= '<dl class="rex-form-group form-group">
     <dt>Dateityp wählen</dt>
@@ -153,6 +153,7 @@ $content .= '<dl class="rex-form-group form-group">
     </dl>';
 $content .= '</fieldset>';
 $content .= '</form>';
+$content .= '</div>';
 $fragment = new rex_fragment();
 $fragment->setVar('class', 'edit', false);
 $fragment->setVar('title', 'Export');

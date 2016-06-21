@@ -4,6 +4,13 @@
 
 ### Changelog ###
 
+### 20.06.2016 Version 3.1.5 ###
+
+- aufgaben_functions.php angelegt
+
+### 20.06.2016 Version 3.1.4 ###
+
+- SCSS Datei für den Export entfernt
 
 ### 10.06.2016 Version 3.1.3 ###
 

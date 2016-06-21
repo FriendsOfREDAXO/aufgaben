@@ -1,7 +1,7 @@
 # Alle hier gesetzten Werte können über $addon->getProperty($key) abgefragt werden
 
 package: aufgaben
-version: '3.1.3'
+version: '3.1.5'
 author: Friends Of REDAXO
 supportpage: https://github.com/FriendsOfREDAXO/aufgaben
 info: Idee und Realisierung der ersten Version concedra.de / Oliver Kreischer
@@ -16,6 +16,7 @@ page:
       aufgaben: { title: 'Aufgaben',perm: aufgaben[] }
       kategorien: { title: 'Kategorien', perm: aufgaben[kategorien]}
       kanban: { title: 'Kanban Ansicht', perm: aufgaben[]}
+      settings: { title: 'Einstellungen',perm: aufgaben[Einstellungen] }
       exim:
         title: 'Export'
         perm: 'admin[]'

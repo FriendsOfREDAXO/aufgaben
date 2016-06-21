@@ -6,7 +6,7 @@ $qry->select('*');
 if (rex_post('addtodo') == "true")
 {
     ob_end_clean();
-    
+
     $sql_add = rex_sql::factory();
     $sql_add->setTable('rex_aufgaben_aufgaben');
     $sql_add->setWhere('id = ' . rex_post('id'));
@@ -21,7 +21,7 @@ if (rex_post('addtodo') == "true")
     $sql_add->setValue('observer', '');
     $sql_add->setValue('finaldate', '');
     $sql_add->setValue('status', rex_post('status'));
-    
+
     if ($sql_add->insert())
     {
         http_response_code(200);
@@ -36,7 +36,7 @@ if (rex_post('addtodo') == "true")
 if (rex_post('edittodo') == "true")
 {
     ob_end_clean();
-    
+
     $sql_edit = rex_sql::factory();
     $sql_edit->setTable('rex_aufgaben_aufgaben');
     $sql_edit->setValue('status', rex_post('status'));
@@ -46,8 +46,8 @@ if (rex_post('edittodo') == "true")
     $sql_edit->setValue('eigentuemer', rex_post('eigentuemer'));
     $sql_edit->setValue('updatedate', date('Y-m-d H:i:s'));
     $sql_edit->setValue('updateuser', rex::getUser()->getName());
-    $sql_edit->setWhere('id=' . rex_post('entry-id'));  
-    
+    $sql_edit->setWhere('id=' . rex_post('entry-id'));
+
     if ($sql_edit->update())
     {
         http_response_code(200);
@@ -67,7 +67,7 @@ if (rex_post('deletetodo') == "true")
     $sql_delete = rex_sql::factory();
     $sql_delete->setTable('rex_aufgaben_aufgaben');
     $sql_delete->setWhere('id = ' . rex_post('id'));
-    
+
     if ($sql_delete->delete())
     {
         http_response_code(200);
@@ -127,34 +127,34 @@ if (rex_post('updateprio') == "true")
             $sql_kategorien = rex_sql::factory();
             $sql_kategorien->setTable('rex_aufgaben_kategorien');
             $sql_kategorien->select('*');
-            
+
             $sql_zustaendig = rex_sql::factory();
             $sql_zustaendig->setTable('rex_user');
             $sql_zustaendig->select('*');
-            
+
             $sql_status = rex_sql::factory();
             $sql_status->setTable('rex_aufgaben_status');
             $sql_status->select('*');
-            
+
             function getEigentuemer($eigentuemerId)
             {
                 $sql_eigentuemer = rex_sql::factory();
                 $sql_eigentuemer->setTable('rex_user');
                 $sql_eigentuemer->setWhere('id = ' . $eigentuemerId);
                 $sql_eigentuemer->select('*');
-                
+
                 return $sql_eigentuemer->getValue('login');
             }
-            
+
             function getStatusLinks($currentid, $itemid)
             {
                 $statussql = rex_sql::factory();
                 //$sql->setDebug();
                 $statussql->setTable(rex::getTablePrefix() . 'aufgaben_status');
                 $statussql->select();
-                
+
                 $currentclass = "";
-                
+
                 $status = "<hr>";
                 $status .= "<div class='status'>";
                 for ($i = 0; $i < $statussql->getRows(); $i++)
@@ -167,21 +167,21 @@ if (rex_post('updateprio') == "true")
                     {
                         $currentclass = "";
                     }
-                    
+
                     if($statussql->getValue('id') == 6)
                     {
                         $currentclass .= " done";
                     }
-                    
+
                     $status .= "<a href='#' class='change-status ".$currentclass."' data-id='".$itemid."' data-statusid='".$statussql->getValue('id')."' title='".  $statussql->getValue('status') ."'><i class='rex-icon ".$statussql->getValue('icon')."'></i></a>";
                     $statussql->next();
                 }
                 $status .= "</div>";
-                
+
                 return $status;
             }
-            
-            
+
+
             function getPrioLinks($currentid, $itemid)
             {
                 $priosql = rex_sql::factory();
@@ -192,7 +192,7 @@ if (rex_post('updateprio') == "true")
                 $priosql->select('*');
                 $prioArray = $priosql->getArray();
                 $currentclass = "";
-                
+
                 $prio = "<div class='prio-wrapper'>";
                 $prio .= "<a href='#' class='change-prio' data-id='" . $itemid . "' data-prioid='0'><i class='fa fa-star-o' aria-hidden='true'></i></a>";
                 for ($i = 0; $i < 3; $i++)
@@ -230,7 +230,7 @@ if (rex_post('updateprio') == "true")
                             <?= $kategorie["kategorie"]; ?>
                         </span>
                     </div>
-                    <div class="panel-body" data-kategorieid="<?= $kategorie["id"]; ?>" data-color="<?= $kategorie["farbe"]; ?>"> 
+                    <div class="panel-body" data-kategorieid="<?= $kategorie["id"]; ?>" data-color="<?= $kategorie["farbe"]; ?>">
                         <div class="kanban-centered">
 
                             <?php
@@ -241,7 +241,7 @@ if (rex_post('updateprio') == "true")
                                 $aufgabe = $aufgaben_array[$i];
                                 $beschreibung = $aufgabe["beschreibung"];
                                 ?>
-                            <article class="kanban-entry grab" id="<?= $itemuid ?>" draggable="true" data-color="<?= $kategorie["farbe"]; ?>" data-id="<?= $aufgabe["id"]; ?>" data-kategorieid="<?= $kategorie["id"]; ?>" data-item="<?= $itemuid ?>" data-status="<?= $aufgabe["status"] ?>" data-eigentuemer="<?= $aufgabe["eigentuemer"] ?>" data-title="<?= $aufgabe["titel"] ?>" data-id="<?= $aufgabe["id"] ?>" data-beschreibung="<?= $aufgabe["beschreibung"] ?>" data-kategoriename="<?= $kategorie["kategorie"]; ?>">                                            
+                            <article class="kanban-entry grab" id="<?= $itemuid ?>" draggable="true" data-color="<?= $kategorie["farbe"]; ?>" data-id="<?= $aufgabe["id"]; ?>" data-kategorieid="<?= $kategorie["id"]; ?>" data-item="<?= $itemuid ?>" data-status="<?= $aufgabe["status"] ?>" data-eigentuemer="<?= $aufgabe["eigentuemer"] ?>" data-title="<?= $aufgabe["titel"] ?>" data-id="<?= $aufgabe["id"] ?>" data-beschreibung="<?= $aufgabe["beschreibung"] ?>" data-kategoriename="<?= $kategorie["kategorie"]; ?>">
                                 <?= getPrioLinks($aufgabe["prio"], $aufgabe["id"]); ?>
                                     <a href="#" class="delete-kanban-entry"><i class="fa fa-2x fa-trash-o pull-right"></i></a>
                                     <a href="#" class="edit-kanban-entry" ><i class="fa fa-2x fa-pencil-square-o pull-right"></i></a>
@@ -281,7 +281,7 @@ if (rex_post('updateprio') == "true")
 
                                             echo getStatusLinks($aufgabe["status"], $aufgabe["id"]);
                                             ?>
-                                            <hr>   
+                                            <hr>
                                             <span class="label label-default">
                                                 <?= getEigentuemer($aufgabe["eigentuemer"]); ?>
                                             </span>
@@ -300,7 +300,7 @@ if (rex_post('updateprio') == "true")
 
                 <?php
             }
-            
+
 ?>
 
 
@@ -515,21 +515,21 @@ if (rex_post('updateprio') == "true")
 
 <script>
     var kanbanAjaxUrl = "<?= rex_url::currentBackendPage()?>";
-    
+
     jQuery(document).ready(function ()
     {
         //prepend bootstrap modal mobile behaviour..
         var jBody = jQuery("body");
-        
+
         var jConfirmModal = jQuery("#confirm").detach();
         jBody.append(jConfirmModal);
-        
+
         var jEditModal = jQuery("#edit-modal").detach();
         jBody.append(jEditModal);
-        
+
         var jAddModal = jQuery("#add-modal").detach();
         jBody.append(jAddModal);
-        
+
         new redaxo.Kanban();
     });
 </script>
