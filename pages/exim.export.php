@@ -121,7 +121,7 @@ if (rex_post('export', 'bool'))
         //-----/CSV EXPORT
     }
 }
-$content = '<div id="aufgabenexim';
+$content = '<div id="aufgabenexim">';
 $content .= '<form action="' . rex_url::currentBackendPage() . '" data-pjax="false" method="post">';
 $content .= '<fieldset>';
 $content .= '<dl class="rex-form-group form-group">

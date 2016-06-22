@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+
+### 22.06.2016 Version 3.1.8 ###
+
+- Export Funktionalität gefixt :-)
+
 ### 22.06.2016 Version 3.1.7 ###
 
 - Einstellungsseite hinzugefügt
