@@ -4,6 +4,12 @@
 
 ### Changelog ###
 
+### 22.06.2016 Version 3.1.9 ###
+
+- Lizenz geändert
+- E-Mail Adressen in den Einstellungen auswählbar
+- Mailinhalt erweitert
+
 
 ### 22.06.2016 Version 3.1.8 ###
 

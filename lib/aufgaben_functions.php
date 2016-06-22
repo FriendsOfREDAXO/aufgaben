@@ -21,7 +21,7 @@ class rex_aufgaben {
   echo $aufgaben->zaehler; // ausgabe 11
   */
 
-
+  // SHOW COUNTER
   public function show_counter() {
 
     $counter        = 0;
@@ -50,23 +50,15 @@ class rex_aufgaben {
     }
   }
 
-  function send_mails($aktuelle_id, $aufgabe, $betreff) {
+
+  // MAILS
+  function send_mails($email_adressen, $aktuelle_id, $aufgabe, $betreff) {
 
     if ($aufgabe != '') {
 
-      // Alle Admins E-Mail Adressen holen
-      $mail_receiver = array();
-      $sql_admin = rex_sql::factory();
-      //$sql_admin->setDebug();
-      $sql_admin->setTable('rex_user');
-      $sql_admin->setWhere('admin = 1 AND email !=""');
-      $sql_admin->select();
-      if ($sql_admin->getRows()) {
-        for($i=0; $i<$sql_admin->getRows(); $i++) {
-          $mail_receiver[] = $sql_admin->getValue('email');
-          $sql_admin->next();
-        }
-      }
+      // var_dump($email_adressen);
+
+      $mail_receiver = $email_adressen;
 
       // Aufgabe holen
       if ($aktuelle_id == 0) {
@@ -82,6 +74,7 @@ class rex_aufgaben {
 
       if ($sql_aufgabe->getRows()) {
 
+        /*
         // Eigentümer holen
         $sql_email_eigentuemer = rex_sql::factory();
         // $sql_email_eigentuemer->setDebug();
@@ -99,7 +92,7 @@ class rex_aufgaben {
         // $sql_email_createuser->setDebug();
         $sql_email_createuser->setQuery('SELECT email FROM rex_user WHERE login = "'.$sql_aufgabe->getValue('createuser').'" AND email != ""');
         $mail_receiver[] = $sql_email_createuser->getValue('email');
-
+        */
         // Doppelte Mail Empfänger entfernen
         $mail_adressen = '';
         $mail_adressen = array_unique($mail_receiver);
@@ -116,6 +109,17 @@ class rex_aufgaben {
         $mail_updateuser    = $sql_aufgabe->getValue('updateuser');
         $mail_finaldate     = $sql_aufgabe->getValue('finaldate');
 
+        $sql_status_name = rex_sql::factory();
+        // $sql_status_name->setDebug();
+        $sql_status_name->setQuery('SELECT status FROM rex_aufgaben_status WHERE id = '.$mail_status);
+        $mail_status = $sql_status_name->getValue('status');
+
+
+        $sql_eigentuemer_name = rex_sql::factory();
+        $sql_eigentuemer_name->setQuery('SELECT login FROM rex_user WHERE id = '.$mail_eigentuemer);
+        $mail_eigentuemer = $sql_eigentuemer_name->getValue('login');
+
+
         if(rex_addon::get('textile')->isAvailable()) {
           $text_beschreibung = str_replace('<br />', '', $mail_beschreibung);
           $text_beschreibung = rex_textile::parse($text_beschreibung);
@@ -130,28 +134,39 @@ class rex_aufgaben {
         } else {
           foreach($mail_adressen as $email_adresse) {
 
-            $mail = new rex_mailer();
+            // E-Mail Adresse nochmal prüfen
+            $sql_email_pruefung = rex_sql::factory();
+            // $sql_email_pruefung->setDebug();
+            $sql_email_pruefung->setQuery('SELECT email FROM rex_user WHERE email = "'.$email_adresse.'"');
+            if ($sql_email_pruefung->getRows() > 0) {
 
-            $body  = "<h3>".$mail_titel."</h3>";
-            $body  .= "<p>".$text_beschreibung."</b>";
+              $mail = new rex_mailer();
 
-            $text_body = $mail_titel."\n\n";
-            $text_body .= $mail_beschreibung."\n\n";
+              $body  = "<h3>".$mail_titel."</h3>";
+              $body  .= '<hr/>';
+              $body  .= '<p>Status: <b>'.$mail_status.'</b> | Zuständig: <b>'.$mail_eigentuemer.'</b> | Prio: <b>'.$mail_prio.'</b>';
+              $body  .= '<p>Aktualisiert von: <b>'.$mail_updateuser.'</b> | Erstellt von: <b>'.$mail_creatuser.'</b> | Zieldatum: <b>'.$mail_finaldate.'</b>';
+              $body  .= '<hr/>';
+              $body  .= "<p><b></b>".$text_beschreibung."</b>";
 
-            $mail->From = "no-reply@".$_SERVER['SERVER_NAME'];
-            $mail->FromName = $_SERVER['SERVER_NAME'];
+              $text_body = $mail_titel."\n\n";
+              $text_body .= $mail_beschreibung."\n\n";
 
-            $mail->Subject = $betreff.' '.$mail_titel;
+              $mail->From = "no-reply@".$_SERVER['SERVER_NAME'];
+              $mail->FromName = $_SERVER['SERVER_NAME'];
 
-            $mail->Body    = $body;
-            $mail->AltBody = $text_body;
+              $mail->Subject = $betreff.$mail_titel;
 
-            $mail->AddAddress($email_adresse, $email_adresse);
+              $mail->Body    = $body;
+              $mail->AltBody = $text_body;
 
-            if(!$mail->Send()) {
-              echo "<div class='alert alert-danger'>E-Mail konnte nicht gesendet werden.</div>";
-            } else {
-              echo "<div class='alert alert-success'>E-Mail an <b>".$email_adresse."</b> wurde gesendet.</div>";
+              $mail->AddAddress($email_adresse, $email_adresse);
+
+              if(!$mail->Send()) {
+                echo "<div class='alert alert-danger'>E-Mail konnte nicht gesendet werden.</div>";
+              } else {
+                echo "<div class='alert alert-success'>E-Mail an <b>".$email_adresse."</b> wurde gesendet.</div>";
+              }
             }
           }
         }

@@ -15,6 +15,16 @@ $filter_erledigt = rex_request('filter_erledigt', 'string');
 $current_user = rex::getUser()->getId();
 
 
+  // Mails verschicken
+  $mailbetreff = '';
+  if ($aufgabe == 'edit' || $aufgabe == 'new' ) {
+    if ($aufgabe == 'edit') { $mailbetreff =  'Geänderte Aufgabe'; }
+    if ($aufgabe == 'new') { $mailbetreff =  'Neue Aufgabe Aufgabe'; }
+    $aktuelle_id = rex_request('id', 'int');
+    $mail = new rex_aufgaben();
+    $mail->send_mails($this->getConfig('mails'), $aktuelle_id, $aufgabe, $mailbetreff);
+  }
+
 // *************************************
 //  Erledigtschalter
 // *************************************
@@ -630,12 +640,6 @@ if ($func == '' || $func == 'filter') {
     return $status;
   });
 
-  // E-Mail senden
-  $aktuelle_id = rex_request('id', 'int');
-  $mail = new rex_aufgaben();
-  $mail->send_mails($aktuelle_id, $aufgabe, 'test');
-
-
   $content = '<div id="aufgaben">' . $list->get() . '</div>';
   $fragment = new rex_fragment();
   $fragment->setVar('content', $content, false);
@@ -732,6 +736,7 @@ elseif ($func == 'edit' || $func == 'add') {
   $fragment->setVar('body', $content, false);
   $content = $fragment->parse('core/page/section.php');
   echo $content;
+
 }
 
 ?>

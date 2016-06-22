@@ -4,17 +4,24 @@ $info = '';
 $warning = '';
 $content = '';
 
-
 $func = rex_request('func', 'string');
 if ($func == 'update') {
   $this->setConfig(rex_post('config', [
         ['ansicht', 'string'],
+        ['mails', 'array[string]'],
     ]));
 
   $content .= rex_view::info('Änderung gespeichert');
   header('Location: '.rex_getUrl(rex_url::currentBackendPage()));
   exit;
 }
+
+$content .=  '
+<div class="rex-form">
+    <form action="' . rex_url::currentBackendPage() . '" method="post">
+        <fieldset>
+          <input type="hidden" name="func" value="update" />';
+
 
 
 $sel_ansicht = new rex_select();
@@ -27,17 +34,41 @@ foreach (['beide' => 'Beide Ansichten', 'liste' => 'Liste', 'kanban' => 'Kanban'
     $sel_ansicht->addOption($name, $type);
 }
 
-$content .=  '
-<div class="rex-form">
-    <form action="' . rex_url::currentBackendPage() . '" method="post">
-        <fieldset>
-          <input type="hidden" name="func" value="update" />';
 
 $n = [];
 $formElements = [];
-$n = [];
+
 $n['label'] = '<label for="aufgaben-ansicht">Ansicht</label>';
 $n['field'] = $sel_ansicht->get();
+$formElements[] = $n;
+
+
+$tableSelect = new rex_select();
+$tableSelect->setMultiple();
+$tableSelect->setId('aufgabe-mails');
+$tableSelect->setName('config[mails][]');
+$tableSelect->setAttribute('class', 'form-control');
+
+// Alle  E-Mail Adressen holen
+$sql_mail = rex_sql::factory();
+//$sql_admin->setDebug();
+$sql_mail->setTable('rex_user');
+$sql_mail->setWhere('email !="" AND status = 1');
+$sql_mail->select();
+if ($sql_mail->getRows()) {
+  for($i=0; $i<$sql_mail->getRows(); $i++) {
+    $tableSelect->addOption($sql_mail->getValue('email'), $sql_mail->getValue('email'));
+    if (in_array($sql_mail->getValue('email'), $this->getConfig('mails'))) {
+        $tableSelect->setSelected($sql_mail->getValue('email'));
+    }
+    $sql_mail->next();
+  }
+}
+
+$n = [];
+$n['label'] = '<label for="aufgaben-mails">E-Mails an</label>';
+$n['field'] = $tableSelect->get();
+
 $formElements[] = $n;
 
 
