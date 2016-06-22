@@ -1,7 +1,7 @@
 # Alle hier gesetzten Werte können über $addon->getProperty($key) abgefragt werden
 
 package: aufgaben
-version: '3.1.6'
+version: '3.1.7'
 author: Friends Of REDAXO
 supportpage: https://github.com/FriendsOfREDAXO/aufgaben
 info: Idee und Realisierung der ersten Version concedra.de / Oliver Kreischer
@@ -12,23 +12,6 @@ page:
   perm: aufgaben[]
   pjax: true
   icon: rex-icon fa-calendar-check-o
-  subpages:
-      aufgaben: { title: 'Aufgaben',perm: aufgaben[] }
-      kategorien: { title: 'Kategorien', perm: aufgaben[kategorien]}
-      kanban: { title: 'Kanban Ansicht', perm: aufgaben[]}
-      settings: { title: 'Einstellungen',perm: aufgaben[Einstellungen] }
-      exim:
-        title: 'Export'
-        perm: 'admin[]'
-        subpages:
-          export: { title: 'Export'}
-          #import: { title: 'Import'}
-      info:
-        title: 'Info'
-        subpages:
-          hilfe: { title: 'Hilfe'}
-          changelog: { title: 'Changelog'}
-          lizenz: { title: 'Lizenz'}
 
 requires:
     packages:

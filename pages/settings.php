@@ -4,51 +4,72 @@ $info = '';
 $warning = '';
 $content = '';
 
-if (rex_post('config-submit', 'boolean')) {
-    $this->setConfig(rex_post('config', [
-        ['kanban', 'string'],
+
+$func = rex_request('func', 'string');
+if ($func == 'update') {
+  $this->setConfig(rex_post('config', [
+        ['ansicht', 'string'],
     ]));
 
-    $content .= rex_view::info('Änderung gespeichert');
+  $content .= rex_view::info('Änderung gespeichert');
+  header('Location: '.rex_getUrl(rex_url::currentBackendPage()));
+  exit;
 }
 
+
+$sel_ansicht = new rex_select();
+$sel_ansicht->setId('aufgaben-ansicht');
+$sel_ansicht->setName('config[ansicht]');
+$sel_ansicht->setSize(1);
+$sel_ansicht->setAttribute('class', 'form-control');
+$sel_ansicht->setSelected($this->getConfig('ansicht'));
+foreach (['beide' => 'Beide Ansichten', 'liste' => 'Liste', 'kanban' => 'Kanban'] as $type => $name) {
+    $sel_ansicht->addOption($name, $type);
+}
+
+$content .=  '
+<div class="rex-form">
+    <form action="' . rex_url::currentBackendPage() . '" method="post">
+        <fieldset>
+          <input type="hidden" name="func" value="update" />';
+
+$n = [];
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="aufgaben-ansicht">Ansicht</label>';
+$n['field'] = $sel_ansicht->get();
+$formElements[] = $n;
+
+
+$fragment = new rex_fragment();
+$fragment->setVar('elements', $formElements, false);
+$content .= $fragment->parse('core/form/form.php');
+
 $content .= '
-<div id="aufgaben_settings">
-<form action="index.php" method="post" id="aufgaben_settings">
+        </fieldset>
 
-  <input type="hidden" name="page" value="aufgaben/settings" />
-  <input type="hidden" name="func" value="update" />
+        <fieldset class="rex-form-action">';
 
-  <fieldset>
-    <legend>Ansichten</legend>
+$formElements = [];
 
-    <div class="row">
-      <div class="col-xs-12 col-sm-6 col-sm-push-6 abstand">
-        <input class="rex-form-text" type="checkbox" id="rex-form-auth" name="config[kanban]" value="aktiviert" ';
-        if($this->getConfig('kanban')== 'aktiviert') $content .= 'checked="checked"';
+$n = [];
+$n['field'] = '<div class="btn-toolbar"><button id="rex-out5-border-save" type="submit" name="config-submit" class="btn btn-save rex-form-aligned" value="1">Einstellungen speichern</button></div>';
+$formElements[] = $n;
 
-$content .= ' />
-        <label for="rex-form-auth">Kanban Ansicht anzeigen</label>
-      </div>
-    </div>
+$fragment = new rex_fragment();
+$fragment->setVar('elements', $formElements, false);
+$content .= $fragment->parse('core/form/submit.php');
 
+$content .= '
+        </fieldset>
 
-  </fieldset>
+    </form>
+</div>';
 
-  <div class="row">
-    <div class="col-xs-12 col-sm-6 col-sm-push-6">
-      <button class="btn btn-save right" type="submit" name="config-submit" value="1" title="Einstellungen speichern">Einstellungen speichern</button>
-    </div>
-  </div>
-
-  </form>
-
-  ';
-
-$content .= '</div>';
 $fragment = new rex_fragment();
 $fragment->setVar('class', 'edit');
 $fragment->setVar('title', 'Einstellungen');
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');
+
 

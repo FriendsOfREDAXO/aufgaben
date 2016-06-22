@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+### 22.06.2016 Version 3.1.7 ###
+
+- Einstellungsseite hinzugefügt
+- Export Funktionalität geschossen :-(
+- E-Mail Funktion ausgelagert (Muss noch optimiert werden :-)
 
 ### 21.06.2016 Version 3.1.6 ###
 

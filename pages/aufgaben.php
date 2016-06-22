@@ -631,9 +631,11 @@ if ($func == '' || $func == 'filter') {
   });
 
   // E-Mail senden
-
   $aktuelle_id = rex_request('id', 'int');
-  send_mails($aktuelle_id, $aufgabe);
+  $mail = new rex_aufgaben();
+  $mail->send_mails($aktuelle_id, $aufgabe, 'test');
+
+
   $content = '<div id="aufgaben">' . $list->get() . '</div>';
   $fragment = new rex_fragment();
   $fragment->setVar('content', $content, false);
