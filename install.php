@@ -111,6 +111,6 @@ $error = '';
 
 if(!$error AND !$this->hasConfig()) {
   $this->setConfig('install', true);
-  $this->setConfig('kanban',  'aktiviert');
+  $this->setConfig('ansicht',  'beide');
 }
 

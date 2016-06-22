@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+
+### 22.06.2016 Version 3.2.0 ###
+
+- Ansichten waren nach der Installtion nicht verfügbar
+
 ### 22.06.2016 Version 3.1.9 ###
 
 - Lizenz geändert
