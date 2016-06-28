@@ -4,10 +4,13 @@
 
 ### Changelog ###
 
+### 28.06.2016 Version 3.2.1 ###
+
+- Kategorien und Eigentümer sind jetzt in der Listenansicht änderbar
 
 ### 22.06.2016 Version 3.2.0 ###
 
-- Ansichten waren nach der Installtion nicht verfügbar
+- Ansichten waren nach der Installation nicht verfügbar
 
 ### 22.06.2016 Version 3.1.9 ###
 

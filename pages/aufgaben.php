@@ -5,14 +5,17 @@
 //  Vars
 // *************************************
 
-$func = rex_request('func', 'string');
-$aufgabe = rex_request('aufgabe', 'string');
-$filter_kategorien = rex_request('filter_kategorien', 'string');
+$func               = rex_request('func', 'string');
+$aufgabe            = rex_request('aufgabe', 'string');
+$filter_kategorien  = rex_request('filter_kategorien', 'string');
+$change_kategorie   = rex_request('change_kategorie', 'string');
 $filter_eigentuemer = rex_request('filter_eigentuemer', 'string');
-$filter_prio = rex_request('filter_prio', 'string');
-$filter_status = rex_request('filter_status', 'string');
-$filter_erledigt = rex_request('filter_erledigt', 'string');
-$current_user = rex::getUser()->getId();
+$change_eigentuemer = rex_request('change_eigentuemer', 'string');
+$filter_prio        = rex_request('filter_prio', 'string');
+$filter_status      = rex_request('filter_status', 'string');
+$filter_erledigt    = rex_request('filter_erledigt', 'string');
+$current_user       = rex::getUser()->getId();
+
 
 
   // Mails verschicken
@@ -113,6 +116,48 @@ if ($func == 'setprio') {
 
   $func = '';
 }
+
+// *************************************
+//  Change Eigentümer
+// *************************************
+
+if ($func == 'change_eigentuemer') {
+
+  $eigentuemer_ids = explode(",",$change_eigentuemer);
+
+  $sql = rex_sql::factory();
+  // $sql->setDebug();
+
+  $sql->setTable('rex_aufgaben_aufgaben');
+  $sql->setWhere('id = ' . $eigentuemer_ids[0]);
+  $sql->setValue('eigentuemer', $eigentuemer_ids[1]);
+  if ($sql->update()) {
+    //   echo '<div class="alert alert-success">Der Eigentümer wurde aktualisiert.</div>';
+  }
+  $func = '';
+}
+
+// *************************************
+//  Change Kategorie
+// *************************************
+
+if ($func == 'change_kategorie') {
+
+  $kategorie_ids = explode(",",$change_kategorie);
+
+  $sql = rex_sql::factory();
+  // $sql->setDebug();
+
+  $sql->setTable('rex_aufgaben_aufgaben');
+  $sql->setWhere('id = ' . $kategorie_ids[0]);
+  $sql->setValue('kategorie', $kategorie_ids[1]);
+  if ($sql->update()) {
+    //   echo '<div class="alert alert-success">Der Eigentümer wurde aktualisiert.</div>';
+  }
+  $func = '';
+}
+
+
 
 // --------------------
 //  Ausgabe der Tabelle
@@ -443,19 +488,43 @@ if ($func == '' || $func == 'filter') {
   $list->setColumnLabel('kategorie', 'Kategorie');
   $list->setColumnLayout('kategorie', ['<th>###VALUE###<br/>' . $kategoriefilter . '</th>', '<td data-title="Kategorie" class="td_kategorie">###VALUE###</td>']);
   $list->setColumnFormat('kategorie', 'custom',
-  function ($params)
+ function ($params)
   {
+    $kategorie = '';
+    $list = $params['list'];
+    $sql = rex_sql::factory();
+    // $sql->setDebug();
+    $sql->setQuery('SELECT * FROM rex_aufgaben_kategorien ORDER BY kategorie');
+    if ($sql->getRows() > 1) {
+    $kategorie .= "<div class='rex-select-style intable'><select class='change_kategorie' >";
+      for ($i =0 ; $i < $sql->getRows(); $i++) {
+       if ($sql->getValue('id') == $list->getValue('kategorie')) {
+              $selected = 'selected';
+            }
+            else {
+              $selected = '';
+            }
+        $kategorie.= '<option value="'.$list->getValue('id').','.$sql->getValue('id').'" '.$selected.' >'.$sql->getValue('kategorie') . '</option>';
+        $sql->next();
+      }
+    $kategorie.= "</select></div>";
+    } else {
+      $sql = rex_sql::factory();
+      $sql->setDebug();
+      $sql->setTable('rex_aufgaben_kategorien');
+      $sql->setWhere(['id' => $list->getValue('kategorie') ]);
+      $sql->select();
+      $kategorie = $sql->getValue('login');
+    }
+
+    return $kategorie;
+
     $list = $params['list'];
     $sql = rex_sql::factory();
 
-    // $sql->setDebug();
-
-    $sql->setTable(rex::getTablePrefix() . 'aufgaben_kategorien');
-    $sql->setWhere(['id' => $list->getValue('kategorie') ]);
-    $sql->select();
-    $kategorie = $sql->getValue('kategorie');
-    return $kategorie;
   });
+
+
 
   // --------------------
   //
@@ -499,16 +568,38 @@ if ($func == '' || $func == 'filter') {
   $list->setColumnFormat('eigentuemer', 'custom',
   function ($params)
   {
+    $eigentuemer = '';
+    $list = $params['list'];
+    $sql = rex_sql::factory();
+    // $sql->setDebug();
+    $sql->setQuery('SELECT * FROM rex_user ORDER BY login');
+    if ($sql->getRows() > 1) {
+    $eigentuemer .= "<div class='rex-select-style intable'><select class='change_eigentuemer' >";
+      for ($i =0 ; $i < $sql->getRows(); $i++) {
+       if ($sql->getValue('id') == $list->getValue('eigentuemer')) {
+              $selected = 'selected';
+            }
+            else {
+              $selected = '';
+            }
+        $eigentuemer.= '<option value="'.$list->getValue('id').','.$sql->getValue('id').'" '.$selected.' >'.$sql->getValue('login') . '</option>';
+        $sql->next();
+      }
+    $eigentuemer.= "</select></div>";
+    } else {
+      $sql = rex_sql::factory();
+      $sql->setDebug();
+      $sql->setTable('rex_user');
+      $sql->setWhere(['id' => $list->getValue('eigentuemer') ]);
+      $sql->select();
+      $eigentuemer = $sql->getValue('login');
+    }
+
+    return $eigentuemer;
+
     $list = $params['list'];
     $sql = rex_sql::factory();
 
-    // $sql->setDebug();
-
-    $sql->setTable('rex_user');
-    $sql->setWhere(['id' => $list->getValue('eigentuemer') ]);
-    $sql->select();
-    $eigentuemer = $sql->getValue('login');
-    return $eigentuemer;
   });
 
   // --------------------
@@ -752,11 +843,22 @@ $("#kategoriefilter").change(function(){
      if ($value_k == null) {$value_k = '0'};
      location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_kategorien="+$value_k );
 });
+$(".change_kategorie").change(function(){
+     $value_ck = $(this).val();
+     if ($value_ck == null) $value_ck = '0';
+     location.replace("index.php?page=aufgaben/aufgaben&func=change_kategorie&change_kategorie="+$value_ck );
+});
 $("#eigentuemerfilter").change(function(){
      $value_e = $("#eigentuemerfilter").val();
      if ($value_e == null) $value_e = '0';
      location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_eigentuemer="+$value_e );
 });
+$(".change_eigentuemer").change(function(){
+     $value_ce = $(this).val();
+     if ($value_ce == null) $value_ce = '0';
+     location.replace("index.php?page=aufgaben/aufgaben&func=change_eigentuemer&change_eigentuemer="+$value_ce );
+});
+
 $("#priofilter").change(function(){
      $value_p = $("#priofilter").val();
      if ($value_p == null) {$value_p = '0'};
@@ -767,6 +869,7 @@ $("#statusfilter").change(function(){
      if ($value_s == null) {$value_s = '0'};
      location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_status="+$value_s );
 });
+
 
 $("#erledigtverbergen").click(function(){
   location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&filter_erledigt=1" );

@@ -202,3 +202,13 @@
   }
 
 }
+
+#aufgaben .rex-select-style.intable {
+  border: none;
+  background: transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAR0lEQVQokWNgGH6AEZnz//9/ghp+/PjBxIgm5otL8f///zfD2Ey4JPCJMxFSgMsgZAVwzMDA4Pv//3+G48ePCyKLE+PvoQgAyHozRmwVt2MAAAAASUVORK5CYII=') no-repeat 97.5% 50%;
+  &:hover {
+  background: transparent  url("data:image/png;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==") no-repeat 98% 50%;
+  }
+}
+
+
