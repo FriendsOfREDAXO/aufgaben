@@ -1,5 +1,14 @@
-
 <?php
+
+// *************************************
+//  MarkItUp
+// *************************************
+if(rex_addon::get('rex_markitup')->isAvailable()) {
+  if (!rex_markitup::profileExists('simple')) {
+  rex_markitup::insertProfile('simple', 'Angelegt durch das Addon Aufgaben', 'textile', 'bold,italic,underline,deleted,quote,sub,sup,code,unorderedlist,grouplink[internal|external|mailto]');
+  }
+}
+
 
 // *************************************
 //  Vars
@@ -133,6 +142,8 @@ if ($func == 'change_eigentuemer') {
   $sql->setValue('eigentuemer', $eigentuemer_ids[1]);
   if ($sql->update()) {
     //   echo '<div class="alert alert-success">Der Eigentümer wurde aktualisiert.</div>';
+    $mail = new rex_aufgaben();
+    $mail->send_mails($this->getConfig('mails'), $eigentuemer_ids[0], 'change', 'Geänderter Eigentümer: ');
   }
   $func = '';
 }
@@ -153,6 +164,8 @@ if ($func == 'change_kategorie') {
   $sql->setValue('kategorie', $kategorie_ids[1]);
   if ($sql->update()) {
     //   echo '<div class="alert alert-success">Der Eigentümer wurde aktualisiert.</div>';
+    $mail = new rex_aufgaben();
+    $mail->send_mails($this->getConfig('mails'), $kategorie_ids[0], 'change', 'Geänderte Kategorie: ');
   }
   $func = '';
 }
@@ -368,18 +381,22 @@ if ($func == '' || $func == 'filter') {
     }
 
     if ($list->getValue('beschreibung')) {
-      $text = htmlspecialchars_decode($list->getValue('beschreibung'));
+      $text = $list->getValue('beschreibung');
       if (rex_addon::get('textile')->isAvailable()) {
         $text = str_replace('<br />', '', $text);
         $text = rex_textile::parse($text);
         $text = str_replace('###', '&#x20;', $text);
       }
-      else {
+      if (rex_addon::get('rex_markitup')->isAvailable()) {
+          $text = rex_markitup::parseOutput('textile', $text);
+      }
+
+      if (!rex_addon::get('rex_markitup')->isAvailable() AND !rex_addon::get('textile')->isAvailable()) {
         $text = str_replace(PHP_EOL, '<br/>', $text);
       }
 
       $user_name = rex::getUser()->getValue('login');
-      $text = str_replace('*****', '<div class="aufgabentrenner">' . date("d.m.y") . ' - ' . htmlspecialchars($user_name) . '</div>', $text);
+     //$text = str_replace('*****', '<div class="aufgabentrenner">' . date("d.m.y") . ' - ' . htmlspecialchars($user_name) . '</div>', $text);
       $beschreibung = '<div id="collapse###id###" class="collapse"><br/>' . $text . '</div>';
     }
     else {
@@ -743,7 +760,7 @@ elseif ($func == 'edit' || $func == 'add') {
   $field = $form->addTextField('titel');
   $field->setLabel('Titel');
   $field->getValidator()->add('notEmpty', 'Bitte einen Titel angeben.');
-  $field = $form->addTextareaField('beschreibung');
+  $field = $form->addTextareaField('beschreibung', null, ['class' => 'form-control markitupEditor-simple']);
   $field->setLabel('Beschreibung');
   $field = $form->addSelectField('kategorie');
   $field->setLabel("Kategorie");

@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+### 28.06.2016 Version 3.2.2 ###
+
+- MarkItUp Unterstützung eingebaut
+- Bei Eigentümer / Kategorieänderungen in der Listenanbsicht werden jetzt auch Mails verschickt
+
 ### 28.06.2016 Version 3.2.1 ###
 
 - Kategorien und Eigentümer sind jetzt in der Listenansicht änderbar
