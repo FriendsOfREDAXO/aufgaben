@@ -1,21 +1,4 @@
-#kanban-drag-helper
-{
-    -moz-transition-property: color;
-    -o-transition-property: color;
-    -webkit-transition-property: color;
-    transition-property: color;
-    -moz-transition-duration: 0.3s;
-    -o-transition-duration: 0.3s;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -moz-transition-timing-function: ease-in-out;
-    -o-transition-timing-function: ease-in-out;
-    -webkit-transition-timing-function: ease-in-out;
-    transition-timing-function: ease-in-out;
-}
-
-.kanban-wrapper
-{
+#aufgaben.kanban-wrapper {
     width: 100%;
     position:relative;
     overflow-X: scroll;
@@ -29,11 +12,12 @@
 
     h4
     {
-        color: #324050;
+        color: #555;
+        font-size: 16px;
 
         a
         {
-            color: #324050;
+            color: #555;
             display: block;
             position:relative;
             padding-left: 17px;
@@ -47,9 +31,9 @@
             {
                 &:after
                 {
-                    content: "\f139";
+                    content: "\f077";
                     font-family: FontAwesome;
-                    font-size: 14px;
+                    font-size: 12px;
                     position:absolute;
                     left: 0;
                     top: 2px;
@@ -61,21 +45,18 @@
                 {
                     &:after
                     {
-                        content: "\f13a";
+                        content: "\f078";
                     }
                 }
             }
         }
     }
 
-    .kanban-heading
-    {
+    .kanban-heading {
         font-size: 14px;
-        font-weight: bold;
     }
 
-    .kanban-centered
-    {
+    .kanban-centered  {
         position: relative;
         margin-bottom: 30px;
 
@@ -102,14 +83,9 @@
     }
 
 
-    .kanban-entry
-    {
+    .kanban-entry {
         position: relative;
-        margin: 10px 8px;
         clear: both;
-        -moz-box-shadow: rgba(50, 50, 50, 0.5) 1px 1px 2px;
-        -webkit-box-shadow: rgba(50, 50, 50, 0.5) 1px 1px 2px;
-        box-shadow: rgba(50, 50, 50, 0.5) 1px 1px 2px;
 
         &:before, &:after
         {
@@ -196,7 +172,6 @@
         .kanban-label
         {
             position: relative;
-            background: #f5f5f6;
             padding: 0.75em;
             -webkit-background-clip: padding-box;
             -moz-background-clip: padding;
@@ -206,10 +181,7 @@
 
 
     .kanban-centered .kanban-entry .kanban-entry-inner .kanban-label h2, .kanban-centered .kanban-entry .kanban-entry-inner .kanban-label p {
-        color: #737881;
-        font-family: "Noto Sans",sans-serif;
         font-size: 12px;
-        margin: 0;
         line-height: 1.428571429;
     }
 
@@ -236,44 +208,42 @@
         filter: alpha(opacity=60);
     }
 
-    .kanban-col
-    {
-        width: 300px;
-        margin-right: 20px;
+    .kanban-col {
+        width: 280px;
+        margin-right: 10px;
         float: left;
     }
 
-    .panel-body
-    {
-        padding: 15px 0 0 0;
+    .panel-body {
+        padding: 0;
         overflow-y: auto;
     }
 
 
-    .panel-heading
-    {
-        cursor: context-menu;
+    .panel-heading {
+        cursor: default;
 
-        i
-        {
+        i {
             cursor: pointer;
         }
     }
 
-    .status
-    {
+    .status {
         display: table;
         width: 100%;
 
-        .change-status
-        {
+        .change-status {
             text-align: center;
             display: table-cell;
             width: 16.66666666666667%;
+            text-align: center !important;
+            i {
+                border: none;
+                margin-left: 9px;
+            }
         }
 
-        .change-status.current i
-        {
+        .change-status.current i {
             color: black;
             padding: 3px;
         }
@@ -287,17 +257,28 @@
     hr
     {
         border-top: 1px solid #DFE3E9;
-        margin: 10px 0;
+        margin: 3px 0;
     }
+
+    .responsible {
+        font-size: 10px;
+    }
+
+
 
     .kanban-entry
     {
 
+        margin-top: 20px;
+        background: #f9f9f9;
+        border-top: 1px solid #aaa;
+        border-bottom: 1px solid #aaa;
+
         .prio-wrapper
         {
             position:absolute;
-            right: 2px;
-            top: -8px;
+            right: 8px;
+            top: 4px;
             z-index: 50;
             opacity: 0;
             -moz-transition-property: all;
@@ -323,12 +304,21 @@
             }
         }
 
+        .date {
+            display: inline;
+            font-size: 10px;
+        }
+
+        .well {
+            font-size: 10px;
+        }
+
         .delete-kanban-entry
         {
             position:absolute;
-            right: 2px;
-            bottom: 2px;
-            font-size: 10px;
+            right: 8px;
+            bottom: 8px;
+            font-size: 9px;
             color: #C9302C;
             z-index: 50;
             opacity: 0;
@@ -362,9 +352,9 @@
         .edit-kanban-entry
         {
             position:absolute;
-            right: 24px;
-            bottom: 1px;
-            font-size: 10px;
+            right: 28px;
+            bottom: 7px;
+            font-size: 9px;
             color: #008803;
             z-index: 50;
             opacity: 0;
@@ -414,4 +404,22 @@
         font-size: 30px;
         color: black;
     }
+
+    #kanban-drag-helper
+    {
+        -moz-transition-property: color;
+        -o-transition-property: color;
+        -webkit-transition-property: color;
+        transition-property: color;
+        -moz-transition-duration: 0.3s;
+        -o-transition-duration: 0.3s;
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        -moz-transition-timing-function: ease-in-out;
+        -o-transition-timing-function: ease-in-out;
+        -webkit-transition-timing-function: ease-in-out;
+        transition-timing-function: ease-in-out;
+    }
+
+
 }

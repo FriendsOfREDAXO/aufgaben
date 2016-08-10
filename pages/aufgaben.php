@@ -5,10 +5,11 @@
 // *************************************
 if(rex_addon::get('rex_markitup')->isAvailable()) {
   if (!rex_markitup::profileExists('simple')) {
-  rex_markitup::insertProfile('simple', 'Angelegt durch das Addon Aufgaben', 'textile', 'bold,italic,underline,deleted,quote,sub,sup,code,unorderedlist,grouplink[internal|external|mailto]');
+
+  rex_markitup::insertProfile ('simple', $this->i18n('aufgaben_markitupinfo'), 'textile', 300, 800, 'relative', 'bold,italic,underline,deleted,quote,sub,sup,code,unorderedlist,grouplink[internal|external|mailto]');
+
   }
 }
-
 
 // *************************************
 //  Vars
@@ -16,13 +17,13 @@ if(rex_addon::get('rex_markitup')->isAvailable()) {
 
 $func               = rex_request('func', 'string');
 $aufgabe            = rex_request('aufgabe', 'string');
-$filter_kategorien  = rex_request('filter_kategorien', 'string');
-$change_kategorie   = rex_request('change_kategorie', 'string');
-$filter_eigentuemer = rex_request('filter_eigentuemer', 'string');
-$change_eigentuemer = rex_request('change_eigentuemer', 'string');
+$filter_category    = rex_request('filter_category', 'string');
+$change_category    = rex_request('change_category', 'string');
+$filter_responsible = rex_request('filter_responsible', 'string');
+$change_responsible = rex_request('change_responsible', 'string');
 $filter_prio        = rex_request('filter_prio', 'string');
 $filter_status      = rex_request('filter_status', 'string');
-$filter_erledigt    = rex_request('filter_erledigt', 'string');
+$filter_done        = rex_request('filter_done', 'string');
 $current_user       = rex::getUser()->getId();
 
 
@@ -30,18 +31,19 @@ $current_user       = rex::getUser()->getId();
   // Mails verschicken
   $mailbetreff = '';
   if ($aufgabe == 'edit' || $aufgabe == 'new' ) {
-    if ($aufgabe == 'edit') { $mailbetreff =  'Geänderte Aufgabe'; }
-    if ($aufgabe == 'new') { $mailbetreff =  'Neue Aufgabe Aufgabe'; }
+    if ($aufgabe == 'edit') { $mailbetreff =  $this->i18n('aufgaben_mail_change'); }
+    if ($aufgabe == 'new') { $mailbetreff =  $this->i18n('aufgaben_mail_new'); }
     $aktuelle_id = rex_request('id', 'int');
     $mail = new rex_aufgaben();
     $mail->send_mails($this->getConfig('mails'), $aktuelle_id, $aufgabe, $mailbetreff);
   }
 
+
 // *************************************
 //  Erledigtschalter
 // *************************************
 
-if ($func == 'erledigtfilter') {
+if ($func == 'donefilter') {
   $sql = rex_sql::factory();
 
   // $sql->setDebug();
@@ -50,8 +52,8 @@ if ($func == 'erledigtfilter') {
   $sql->setWhere('user = ' . $current_user);
   $sql->select();
   if ($sql->getRows() > 0) {
-    if ($filter_erledigt == '') {
-      $filter_erledigt = '0';
+    if ($filter_done == '') {
+      $filter_done = '0';
     }
 
     $sql = rex_sql::factory();
@@ -60,12 +62,12 @@ if ($func == 'erledigtfilter') {
 
     $sql->setTable('rex_aufgaben_filter');
     $sql->setWhere('user = ' . $current_user);
-    $sql->setValue('erledigt', $filter_erledigt);
+    $sql->setValue('done', $filter_done);
     $sql->update();
   }
   else {
-    if ($filter_erledigt == '') {
-      $filter_erledigt = '0';
+    if ($filter_done == '') {
+      $filter_done = '0';
     }
 
     $sql = rex_sql::factory();
@@ -73,7 +75,7 @@ if ($func == 'erledigtfilter') {
     // $sql->setDebug();
 
     $sql->setTable('rex_aufgaben_filter');
-    $sql->setValue('erledigt', '1');
+    $sql->setValue('done', '1');
     $sql->insert();
   }
 
@@ -86,18 +88,17 @@ if ($func == 'erledigtfilter') {
 
 if ($func == 'setstatus') {
   $new_status = (rex_request('neuerstatus', 'int'));
-  $id = (rex_request('id', 'int'));
+  $id = rex_request('id', 'int');
   $sql = rex_sql::factory();
 
   // $sql->setDebug();
 
-  $sql->setTable('rex_aufgaben_aufgaben');
+  $sql->setTable('rex_aufgaben');
   $sql->setWhere('id = ' . $id);
   $sql->setValue('status', $new_status);
-  if ($sql->update()) {
-
-    //    echo '<div class="alert alert-success">Der Status wurde aktualisiert.</div>';
-
+  if ($sql->update() AND $this->getConfig('mails') != '') {
+    $mail = new rex_aufgaben();
+    $mail->send_mails($this->getConfig('mails'), $id, 'change', $this->i18n('aufgaben_mail_change_status'));
   }
 
   $func = '';
@@ -114,13 +115,12 @@ if ($func == 'setprio') {
 
   // $sql->setDebug();
 
-  $sql->setTable('rex_aufgaben_aufgaben');
+  $sql->setTable('rex_aufgaben');
   $sql->setWhere('id = ' . $id);
   $sql->setValue('prio', $new_prio);
   if ($sql->update()) {
-
-    //   echo '<div class="alert alert-success">Die Priorität wurde aktualisiert.</div>';
-
+    $mail = new rex_aufgaben();
+    $mail->send_mails($this->getConfig('mails'),  $id, 'change', $this->i18n('aufgaben_mail_change_prio'));
   }
 
   $func = '';
@@ -130,42 +130,40 @@ if ($func == 'setprio') {
 //  Change Eigentümer
 // *************************************
 
-if ($func == 'change_eigentuemer') {
+if ($func == 'change_responsible') {
 
-  $eigentuemer_ids = explode(",",$change_eigentuemer);
+  $responsible_ids = explode(",",$change_responsible);
 
   $sql = rex_sql::factory();
   // $sql->setDebug();
 
-  $sql->setTable('rex_aufgaben_aufgaben');
-  $sql->setWhere('id = ' . $eigentuemer_ids[0]);
-  $sql->setValue('eigentuemer', $eigentuemer_ids[1]);
+  $sql->setTable('rex_aufgaben');
+  $sql->setWhere('id = ' . $responsible_ids[0]);
+  $sql->setValue('responsible', $responsible_ids[1]);
   if ($sql->update()) {
-    //   echo '<div class="alert alert-success">Der Eigentümer wurde aktualisiert.</div>';
     $mail = new rex_aufgaben();
-    $mail->send_mails($this->getConfig('mails'), $eigentuemer_ids[0], 'change', 'Geänderter Eigentümer: ');
+    $mail->send_mails($this->getConfig('mails'), $responsible_ids[0], 'change', $this->i18n('aufgaben_mail_change_responsible'));
   }
   $func = '';
 }
 
 // *************************************
-//  Change Kategorie
+//  Change category
 // *************************************
 
-if ($func == 'change_kategorie') {
+if ($func == 'change_category') {
 
-  $kategorie_ids = explode(",",$change_kategorie);
+  $category_ids = explode(",",$change_category);
 
   $sql = rex_sql::factory();
   // $sql->setDebug();
 
-  $sql->setTable('rex_aufgaben_aufgaben');
-  $sql->setWhere('id = ' . $kategorie_ids[0]);
-  $sql->setValue('kategorie', $kategorie_ids[1]);
+  $sql->setTable('rex_aufgaben');
+  $sql->setWhere('id = ' . $category_ids[0]);
+  $sql->setValue('category', $category_ids[1]);
   if ($sql->update()) {
-    //   echo '<div class="alert alert-success">Der Eigentümer wurde aktualisiert.</div>';
     $mail = new rex_aufgaben();
-    $mail->send_mails($this->getConfig('mails'), $kategorie_ids[0], 'change', 'Geänderte Kategorie: ');
+    $mail->send_mails($this->getConfig('mails'), $category_ids[0], 'change', $this->i18n('aufgaben_mail_change_cat'));
   }
   $func = '';
 }
@@ -186,12 +184,12 @@ if ($func == '' || $func == 'filter') {
   $sql->setWhere('user = ' . $current_user);
   $sql->select();
   if ($sql->getRows() > 0) {
-    if ($filter_kategorien == '') {
-      $filter_kategorien = $sql->getValue('kategorie');
+    if ($filter_category == '') {
+      $filter_category = $sql->getValue('category');
     }
 
-    if ($filter_eigentuemer == '') {
-      $filter_eigentuemer = $sql->getValue('eigentuemer');
+    if ($filter_responsible == '') {
+      $filter_responsible = $sql->getValue('responsible');
     }
 
     if ($filter_prio == '') {
@@ -207,20 +205,20 @@ if ($func == '' || $func == 'filter') {
     // $sql->setDebug();
 
     $sql->setTable('rex_aufgaben_filter');
-    $sql->setValue('kategorie', $filter_kategorien);
-    $sql->setValue('eigentuemer', $filter_eigentuemer);
+    $sql->setValue('category', $filter_category);
+    $sql->setValue('responsible', $filter_responsible);
     $sql->setValue('prio', $filter_prio);
     $sql->setValue('status', $filter_status);
     $sql->setWhere('user = ' . $current_user);
     $sql->update();
   }
   else {
-    if ($filter_kategorien == '') {
-      $filter_kategorien = '0';
+    if ($filter_category == '') {
+      $filter_category = '0';
     }
 
-    if ($filter_eigentuemer == '') {
-      $filter_eigentuemer = '0';
+    if ($filter_responsible == '') {
+      $filter_responsible = '0';
     }
 
     if ($filter_prio == '') {
@@ -237,19 +235,19 @@ if ($func == '' || $func == 'filter') {
 
     $sql->setTable('rex_aufgaben_filter');
     $sql->setValue('user', $current_user);
-    $sql->setValue('kategorie', $filter_kategorien);
-    $sql->setValue('eigentuemer', $filter_eigentuemer);
+    $sql->setValue('category', $filter_category);
+    $sql->setValue('responsible', $filter_responsible);
     $sql->setValue('prio', $filter_prio);
     $sql->setValue('status', $filter_status);
     $sql->insert();
   }
 
-  if ($filter_kategorien != '0') {
-    $addsql.= ' AND a.kategorie IN (' . $filter_kategorien . ')';
+  if ($filter_category != '0') {
+    $addsql.= ' AND a.category IN (' . $filter_category . ')';
   }
 
-  if ($filter_eigentuemer != '0') {
-    $addsql.= ' AND a.eigentuemer IN (' . $filter_eigentuemer . ')';
+  if ($filter_responsible != '0') {
+    $addsql.= ' AND a.responsible IN (' . $filter_responsible . ')';
   }
 
   if ($filter_prio != '0') {
@@ -264,9 +262,9 @@ if ($func == '' || $func == 'filter') {
 
   // $sql->setDebug();
 
-  $sql->setQuery('SELECT erledigt FROM rex_aufgaben_filter WHERE user = ' . $current_user);
-  $aktueller_erledigt_status = $sql->getValue('erledigt');
-  if ($aktueller_erledigt_status == 0) {
+  $sql->setQuery('SELECT done FROM rex_aufgaben_filter WHERE user = ' . $current_user);
+  $aktueller_done_status = $sql->getValue('done');
+  if ($aktueller_done_status == 0) {
     $where = ' a.status > 0';
   }
   else {
@@ -276,11 +274,11 @@ if ($func == '' || $func == 'filter') {
   $query = 'SELECT  a.*,
                     a.id AS id,
                     k.id,
-                    k.kategorie AS kategorie_name,
-                    k.farbe
-            FROM    ' . rex::getTable('aufgaben_aufgaben') . ' AS a
-            LEFT JOIN  ' . rex::getTable('aufgaben_kategorien') . ' AS k
-            ON a.kategorie = k.id
+                    k.category AS category_name,
+                    k.color
+            FROM    ' . rex::getTable('aufgaben') . ' AS a
+            LEFT JOIN  ' . rex::getTable('aufgaben_categories') . ' AS k
+            ON a.category = k.id
             WHERE ' . $where . ' ' . $addsql . ' ORDER BY a.id DESC';
   $list = rex_list::factory($query, 30, 'aufgaben');
 
@@ -313,7 +311,7 @@ if ($func == '' || $func == 'filter') {
   $counter->show_counter();
 
 
-  $list->setNoRowsMessage('<div class="alert alert-info" role="alert"><strong>Keine Aufgaben vorhanden.</strong><br/><br/>Mögliche Ursachen:<br/><br/><ul><li>es ist keine Aufgabe angelegt</li><li>keine der vorhandenen Aufgaben erfüllt auf die eingestellten Filterkriterien</li><li>die Ausgabe der erledigten Aufgaben ist abgeschaltet</li></ul></div>');
+  $list->setNoRowsMessage('<div class="alert alert-info" role="alert">'.$this->i18n('aufgaben_no_task').'</div>');
 
   // --------------------
   //  Edit
@@ -322,9 +320,7 @@ if ($func == '' || $func == 'filter') {
   $tdIcon = '<i class="rex-icon rex-icon-edit"></i>';
   $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '"><i class="rex-icon rex-icon-add"></i></a>';
 
-  // $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon" style="border-left: 5px solid ###farbe###">###VALUE###<a class="watch" href="javascript:void(0);"><i class="rex-icon fa-eye-slash"></i></a></td>']);
-
-  $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon" style="border-left: 5px solid ###farbe###">###VALUE###</td>']);
+  $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon" style="border-left: 5px solid ###color###">###VALUE###</td>']);
   $list->setColumnParams($thIcon, ['func' => 'edit', 'id' => '###id###']);
 
   // --------------------
@@ -332,11 +328,11 @@ if ($func == '' || $func == 'filter') {
   // --------------------
 
   $list->removeColumn('id');
-  $list->removeColumn('beschreibung');
-  $list->removeColumn('farbe');
-  $list->removeColumn('kategorie_farbe');
-  $list->removeColumn('kategorie_id');
-  $list->removeColumn('kategorie_name');
+  $list->removeColumn('description');
+  $list->removeColumn('color');
+  $list->removeColumn('category_color');
+  $list->removeColumn('category_id');
+  $list->removeColumn('category_name');
   $list->removeColumn('createdate');
   $list->removeColumn('createuser');
   $list->removeColumn('updateuser');
@@ -346,8 +342,8 @@ if ($func == '' || $func == 'filter') {
   //  set Sortable
   // --------------------
 
-  $list->setColumnSortable('kategorie');
-  $list->setColumnSortable('eigentuemer');
+  $list->setColumnSortable('category');
+  $list->setColumnSortable('responsible');
   $list->setColumnSortable('prio');
   $list->setColumnSortable('status');
   $list->setColumnSortable('updatedate');
@@ -360,28 +356,28 @@ if ($func == '' || $func == 'filter') {
   //
   // --------------------
 
-  if ($aktueller_erledigt_status == 0) {
-    $titleLink = '<a id="erledigtverbergen" class="erledigtschalter" title="Erledigte Aufgaben verbergen" href="javascript:void(0);">Aufgaben<i class="rex-icon fa-check-square-o"></i></a>';
+  if ($aktueller_done_status == 0) {
+    $titleLink = '<a id="doneverbergen" class="erledigtschalter" title="'.$this->i18n('aufgaben_task_hide').'" href="javascript:void(0);">'.$this->i18n('aufgaben_task').'<i class="rex-icon fa-check-square-o"></i></a>';
   }
   else {
-    $titleLink = '<a id="erledigtanzeigen" class="erledigtschalter" title="Erledigte Aufgaben anzeigen" href="javascript:void(0);">Aufgaben<i class="rex-icon fa-square-o"></i></a>';
+    $titleLink = '<a id="doneanzeigen" class="erledigtschalter" title="Aufgaben anzeigen" href="javascript:void(0);">'.$this->i18n('aufgaben_task').'<i class="rex-icon fa-square-o"></i></a>';
   }
 
-  $list->setColumnLabel('titel', $titleLink);
-  $list->setColumnLayout('titel', ['<th>###VALUE###</th>', '<td data-title="Aufgaben" class="td_aufgaben">###VALUE###</td>']);
-  $list->setColumnFormat('titel', 'custom',
+  $list->setColumnLabel('title', $titleLink);
+  $list->setColumnLayout('title', ['<th>###VALUE###</th>', '<td data-title="'.$this->i18n('aufgaben_task').'" class="td_aufgaben">###VALUE###</td>']);
+  $list->setColumnFormat('title', 'custom',
   function ($params)
   {
     $list = $params['list'];
-    if ($list->getValue('beschreibung') != '') {
-      $aufgabe = '<div class="collapsetitel" data-toggle="collapse" data-target="#collapse###id###">' . $list->getValue('titel') . '</div>';
+    if ($list->getValue('description') != '') {
+      $aufgabe = '<div class="collapsetitle" data-toggle="collapse" data-target="#collapse###id###">' . $list->getValue('title') . '</div>';
     }
     else {
-      $aufgabe = $list->getValue('titel');
+      $aufgabe = $list->getValue('title');
     }
 
-    if ($list->getValue('beschreibung')) {
-      $text = $list->getValue('beschreibung');
+    if ($list->getValue('description')) {
+      $text = $list->getValue('description');
       if (rex_addon::get('textile')->isAvailable()) {
         $text = str_replace('<br />', '', $text);
         $text = rex_textile::parse($text);
@@ -396,7 +392,6 @@ if ($func == '' || $func == 'filter') {
       }
 
       $user_name = rex::getUser()->getValue('login');
-     //$text = str_replace('*****', '<div class="aufgabentrenner">' . date("d.m.y") . ' - ' . htmlspecialchars($user_name) . '</div>', $text);
       $beschreibung = '<div id="collapse###id###" class="collapse"><br/>' . $text . '</div>';
     }
     else {
@@ -413,8 +408,8 @@ if ($func == '' || $func == 'filter') {
   //
   // --------------------
 
-  $list->setColumnLabel('updatedate', 'Letzte Aktualisierung');
-  $list->setColumnLayout('updatedate', ['<th>###VALUE###</th>', '<td data-title="Letze Aktualisierung" class="td_updatedate">###VALUE###</td>']);
+  $list->setColumnLabel('updatedate', $this->i18n('aufgaben_last_update'));
+  $list->setColumnLayout('updatedate', ['<th>###VALUE###</th>', '<td data-title="'.$this->i18n('aufgaben_last_update').'" class="td_updatedate">###VALUE###</td>']);
   $list->setColumnFormat('updatedate', 'custom',
   function ($params)
   {
@@ -443,8 +438,8 @@ if ($func == '' || $func == 'filter') {
   //
   // --------------------
 
-  $list->setColumnLabel('finaldate', 'Fällig');
-  $list->setColumnLayout('finaldate', ['<th>###VALUE###</th>', '<td data-title="Fälligkeitsdatum" class="td_finaldate">###VALUE###</td>']);
+  $list->setColumnLabel('finaldate', $this->i18n('aufgaben_due'));
+  $list->setColumnLayout('finaldate', ['<th>###VALUE###</th>', '<td data-title="'.$this->i18n('aufgaben_due_date').'" class="td_finaldate">###VALUE###</td>']);
   $list->setColumnFormat('finaldate', 'custom',
   function ($params)
   {
@@ -466,21 +461,21 @@ if ($func == '' || $func == 'filter') {
 
   // --------------------
   //
-  //  Kategoriefilter
+  //  categoryfilter
   //
   // --------------------
 
-  $kategoriefilter = '';
+  $categoryfilter = '';
   $sql = rex_sql::factory();
 
   // $sql->setDebug();
 
-  $sql->setQuery('SELECT k.* FROM rex_aufgaben_kategorien k INNER JOIN rex_aufgaben_aufgaben a ON (a.kategorie = k.id) GROUP BY k.id ORDER BY k.kategorie');
+  $sql->setQuery('SELECT k.* FROM rex_aufgaben_categories k INNER JOIN rex_aufgaben a ON (a.category = k.id) GROUP BY k.id ORDER BY k.category');
 
   if ($sql->getRows() > 1) {
-    $kategoriefilter = "<select id='kategoriefilter' multiple>";
+    $categoryfilter = "<select id='categoryfilter' multiple>";
     for ($i = 0; $i < $sql->getRows(); $i++) {
-      $kat_ids = explode(',', $filter_kategorien);
+      $kat_ids = explode(',', $filter_category);
       if (in_array($sql->getValue('id') , $kat_ids)) {
         $selected = 'selected';
       }
@@ -488,53 +483,53 @@ if ($func == '' || $func == 'filter') {
         $selected = '';
       }
 
-      $kategoriefilter.= '<option value="' . $sql->getValue('id') . '" ' . $selected . '>' . $sql->getValue('kategorie') . '</option>';
+      $categoryfilter.= '<option value="' . $sql->getValue('id') . '" ' . $selected . '>' . $sql->getValue('category') . '</option>';
       $sql->next();
     }
-    $kategoriefilter.= "</select>";
+    $categoryfilter.= "</select>";
   } else {
-    $kategoriefilter = '';
+    $categoryfilter = '';
   }
 
   // --------------------
   //
-  //  Kategorie
+  //  category
   //
   // --------------------
 
-  $list->setColumnLabel('kategorie', 'Kategorie');
-  $list->setColumnLayout('kategorie', ['<th>###VALUE###<br/>' . $kategoriefilter . '</th>', '<td data-title="Kategorie" class="td_kategorie">###VALUE###</td>']);
-  $list->setColumnFormat('kategorie', 'custom',
+  $list->setColumnLabel('category', $this->i18n('aufgaben_category'));
+  $list->setColumnLayout('category', ['<th>###VALUE###<br/>' . $categoryfilter . '</th>', '<td data-title="'.$this->i18n('aufgaben_category').'" class="td_category">###VALUE###</td>']);
+  $list->setColumnFormat('category', 'custom',
  function ($params)
   {
-    $kategorie = '';
+    $category = '';
     $list = $params['list'];
     $sql = rex_sql::factory();
     // $sql->setDebug();
-    $sql->setQuery('SELECT * FROM rex_aufgaben_kategorien ORDER BY kategorie');
+    $sql->setQuery('SELECT * FROM rex_aufgaben_categories ORDER BY category');
     if ($sql->getRows() > 1) {
-    $kategorie .= "<div class='rex-select-style intable'><select class='change_kategorie' >";
+    $category .= "<div class='rex-select-style intable'><select class='change_category' >";
       for ($i =0 ; $i < $sql->getRows(); $i++) {
-       if ($sql->getValue('id') == $list->getValue('kategorie')) {
+       if ($sql->getValue('id') == $list->getValue('category')) {
               $selected = 'selected';
             }
             else {
               $selected = '';
             }
-        $kategorie.= '<option value="'.$list->getValue('id').','.$sql->getValue('id').'" '.$selected.' >'.$sql->getValue('kategorie') . '</option>';
+        $category.= '<option value="'.$list->getValue('id').','.$sql->getValue('id').'" '.$selected.' >'.$sql->getValue('category') . '</option>';
         $sql->next();
       }
-    $kategorie.= "</select></div>";
+    $category.= "</select></div>";
     } else {
       $sql = rex_sql::factory();
-      $sql->setDebug();
-      $sql->setTable('rex_aufgaben_kategorien');
-      $sql->setWhere(['id' => $list->getValue('kategorie') ]);
+      // $sql->setDebug();
+      $sql->setTable('rex_aufgaben_categories');
+      $sql->setWhere(['id' => $list->getValue('category') ]);
       $sql->select();
-      $kategorie = $sql->getValue('login');
+      $category = $sql->getValue('login');
     }
 
-    return $kategorie;
+    return $category;
 
     $list = $params['list'];
     $sql = rex_sql::factory();
@@ -555,23 +550,23 @@ if ($func == '' || $func == 'filter') {
 
   $sql->setQuery('SELECT * FROM rex_user ORDER BY login');
   if ($sql->getRows() > 1) {
-    $eigentuemerfilter = "<select id='eigentuemerfilter' multiple>";
+    $responsiblefilter = "<select id='responsiblefilter' multiple>";
     for ($i = 0; $i < $sql->getRows(); $i++) {
-      $filter_eigentuemer_ids = explode(',', $filter_eigentuemer);
-      if (in_array($sql->getValue('id') , $filter_eigentuemer_ids)) {
+      $filter_responsible_ids = explode(',', $filter_responsible);
+      if (in_array($sql->getValue('id') , $filter_responsible_ids)) {
         $selected = 'selected';
       }
       else {
         $selected = '';
       }
 
-      $eigentuemerfilter.= '<option value="' . $sql->getValue('id') . '" ' . $selected . '>' . $sql->getValue('login') . '</option>';
+      $responsiblefilter.= '<option value="' . $sql->getValue('id') . '" ' . $selected . '>' . $sql->getValue('login') . '</option>';
       $sql->next();
     }
 
-    $eigentuemerfilter.= "</select>";
+    $responsiblefilter.= "</select>";
   } else {
-    $eigentuemerfilter = '';
+    $responsiblefilter = '';
   }
 
   // --------------------
@@ -580,39 +575,43 @@ if ($func == '' || $func == 'filter') {
   //
   // --------------------
 
-  $list->setColumnLabel('eigentuemer', 'Zuständig');
-  $list->setColumnLayout('eigentuemer', ['<th>###VALUE###<br/>' . $eigentuemerfilter . '</th>', '<td data-title="Zuständig" class="td_eigentuemer">###VALUE###</td>']);
-  $list->setColumnFormat('eigentuemer', 'custom',
+  $list->setColumnLabel('responsible', $this->i18n('aufgaben_responsible'));
+  $list->setColumnLayout('responsible', ['<th>###VALUE###<br/>' . $responsiblefilter . '</th>', '<td data-title="'.$this->i18n('aufgaben_responsible').'" class="td_responsible">###VALUE###</td>']);
+  $list->setColumnFormat('responsible', 'custom',
   function ($params)
   {
-    $eigentuemer = '';
+    $responsible = '';
     $list = $params['list'];
     $sql = rex_sql::factory();
     // $sql->setDebug();
     $sql->setQuery('SELECT * FROM rex_user ORDER BY login');
     if ($sql->getRows() > 1) {
-    $eigentuemer .= "<div class='rex-select-style intable'><select class='change_eigentuemer' >";
+      $responsible .= "<div class='rex-select-style intable'><select class='change_responsible' >";
       for ($i =0 ; $i < $sql->getRows(); $i++) {
-       if ($sql->getValue('id') == $list->getValue('eigentuemer')) {
+       if ($sql->getValue('id') == $list->getValue('responsible')) {
               $selected = 'selected';
             }
             else {
               $selected = '';
             }
-        $eigentuemer.= '<option value="'.$list->getValue('id').','.$sql->getValue('id').'" '.$selected.' >'.$sql->getValue('login') . '</option>';
+        $responsible.= '<option value="'.$list->getValue('id').','.$sql->getValue('id').'" '.$selected.' >'.$sql->getValue('login') . '</option>';
         $sql->next();
       }
-    $eigentuemer.= "</select></div>";
+    $responsible.= "</select></div>";
     } else {
       $sql = rex_sql::factory();
-      $sql->setDebug();
+      // $sql->setDebug();
       $sql->setTable('rex_user');
-      $sql->setWhere(['id' => $list->getValue('eigentuemer') ]);
+      $sql->setWhere(['id' => $list->getValue('responsible') ]);
       $sql->select();
-      $eigentuemer = $sql->getValue('login');
+       if ($sql->getRows() >= 1) {
+          $responsible = '<span class="single">'.$sql->getValue('login').'</span>';
+       } else {
+          $responsible = '<span class="single">--</span>';
+       }
     }
 
-    return $eigentuemer;
+    return $responsible;
 
     $list = $params['list'];
     $sql = rex_sql::factory();
@@ -646,8 +645,8 @@ if ($func == '' || $func == 'filter') {
   //
   // --------------------
 
-  $list->setColumnLabel('prio', 'Prio');
-  $list->setColumnLayout('prio', ['<th>###VALUE###<br/>' . $priofilter . '</th>', '<td data-title="Prio" class="td_prio">###VALUE###</td>']);
+  $list->setColumnLabel('prio', $this->i18n('aufgaben_prio'));
+  $list->setColumnLayout('prio', ['<th>###VALUE###<br/>' . $priofilter . '</th>', '<td data-title="'.$this->i18n('aufgaben_prio').'" class="td_prio">###VALUE###</td>']);
   $list->setColumnFormat('prio', 'custom',
   function ($params)
   {
@@ -656,7 +655,7 @@ if ($func == '' || $func == 'filter') {
 
     // $sql->setDebug();
 
-    $sql->setTable(rex::getTablePrefix() . 'aufgaben_aufgaben');
+    $sql->setTable(rex::getTablePrefix() . 'aufgaben');
     $sql->setWhere(['id' => $list->getValue('prio') ]);
     $sql->select();
     $prio = "<div class='priowrapper'>";
@@ -668,7 +667,7 @@ if ($func == '' || $func == 'filter') {
         $star = 'fa-star';
       }
 
-      $list->addLinkAttribute('prio', 'title', 'Prio: ' . $i);
+      $list->addLinkAttribute('prio', 'title', $this->i18n('aufgaben_prio').': ' . $i);
       $list->setColumnParams('prio', ['func' => 'setprio', 'id' => '###id###', 'neueprio' => $i]);
       if ($i == 0) {
         $prio.= $list->getColumnLink('prio', '<i class="rex-icon fa-remove "></i>');
@@ -717,8 +716,8 @@ if ($func == '' || $func == 'filter') {
   //
   // --------------------
 
-  $list->setColumnLabel('status', 'Status');
-  $list->setColumnLayout('status', ['<th>###VALUE###<br/>' . $statusfilter . '</th>', '<td data-title="Status" class="td_status">###VALUE###</td>']);
+  $list->setColumnLabel('status',  $this->i18n('aufgaben_status'));
+  $list->setColumnLayout('status', ['<th>###VALUE###<br/>' . $statusfilter . '</th>', '<td data-title="'.$this->i18n('aufgaben_status').'" class="td_status">###VALUE###</td>']);
   $list->setColumnFormat('status', 'custom',
   function ($params)
   {
@@ -750,33 +749,35 @@ if ($func == '' || $func == 'filter') {
 
   $content = '<div id="aufgaben">' . $list->get() . '</div>';
   $fragment = new rex_fragment();
+  $fragment->setVar('title', $this->i18n('aufgaben_title'));
   $fragment->setVar('content', $content, false);
   echo $fragment->parse('core/page/section.php');
 }
 elseif ($func == 'edit' || $func == 'add') {
-  $fieldset = $func == 'edit' ? 'Aufgabe editieren' : 'Aufgabe hinzufügen';
+  $fieldset = $func == 'edit' ? $this->i18n('aufgaben_edit') : $this->i18n('aufgaben_add');
   $id = rex_request('id', 'int');
-  $form = rex_form::factory(rex::getTablePrefix() . 'aufgaben_aufgaben', '', 'id=' . $id);
-  $field = $form->addTextField('titel');
-  $field->setLabel('Titel');
-  $field->getValidator()->add('notEmpty', 'Bitte einen Titel angeben.');
-  $field = $form->addTextareaField('beschreibung', null, ['class' => 'form-control markitupEditor-simple']);
-  $field->setLabel('Beschreibung');
-  $field = $form->addSelectField('kategorie');
-  $field->setLabel("Kategorie");
+  $form = rex_form::factory(rex::getTablePrefix() . 'aufgaben', '', 'id=' . $id);
+  $field = $form->addTextField('title');
+  $field->setLabel($this->i18n('aufgaben_task'));
+  $field->getValidator()->add('notEmpty', $this->i18n('aufgaben_title_empty'));
+  $field = $form->addTextareaField('description', null, ['class' => 'form-control  markitupEditor-simple']);
+
+  $field->setLabel($this->i18n('aufgaben_description'));
+  $field = $form->addSelectField('category');
+  $field->setLabel($this->i18n('aufgaben_category'));
   $field->setPrefix('<div class="rex-select-style">');
   $field->setSuffix('</div>');
-  $field->getValidator()->add('notEmpty', 'Bitte eine Kategorie auswählen.');
+  $field->getValidator()->add('notEmpty', $this->i18n('aufgaben_category_empty'));
   $select = $field->getSelect();
   $select->setSize(1);
-  $query = 'SELECT kategorie as label, id FROM rex_aufgaben_kategorien ORDER BY kategorie';
-  $select->addOption('Bitte wählen', '');
+  $query = 'SELECT category as label, id FROM rex_aufgaben_categories ORDER BY category';
+  $select->addOption($this->i18n('aufgaben_please_choose'), '');
   $select->addSqlOptions($query);
-  $field = $form->addSelectField('eigentuemer');
-  $field->setLabel('Zuständig');
+  $field = $form->addSelectField('responsible');
+  $field->setLabel($this->i18n('aufgaben_responsible'));
   $field->setPrefix('<div class="rex-select-style">');
   $field->setSuffix('</div>');
-  $field->getValidator()->add('notEmpty', 'Bitte geben Sie an wer für diese Aufgabe zuständig ist.');
+  $field->getValidator()->add('notEmpty', $this->i18n('aufgaben_responsible_empty'));
   $select = $field->getSelect();
   if ($func == 'add') {
     $select->setSelected($current_user);
@@ -785,12 +786,12 @@ elseif ($func == 'edit' || $func == 'add') {
   $select->setSize(1);
   $field = $form->addTextField('finaldate');
   $field->setAttribute('id', 'datepicker');
-  $field->setLabel('Fälligkeitsdatum');
+  $field->setLabel($this->i18n('aufgaben_due_date'));
 
-  // date('d.m.Y H:i:s'
+  // date('d.m.Y H:i:s')
 
   $query = 'SELECT login as label, id FROM rex_user';
-  $select->addOption('Bitte wählen', '');
+  $select->addOption($this->i18n('aufgaben_please_choose'), '');
   $select->addSqlOptions($query);
   $field = $form->addSelectField('status');
   $field->setLabel('Status');
@@ -801,7 +802,7 @@ elseif ($func == 'edit' || $func == 'add') {
   $query = 'SELECT status as label, id FROM rex_aufgaben_status';
 
   // $select->addOption('Offen',1);
-  // $select->addOption('Erledigt',2);
+  // $select->addOption('done',2);
 
   $select->addSqlOptions($query);
   if ($func == 'add') {
@@ -815,11 +816,11 @@ elseif ($func == 'edit' || $func == 'add') {
       $field = $form->addReadonlyField('updatedate');
       $field->setHeader('<hr/><div class="row"><div class="col-md-6">');
       $field->setFooter('</div>');
-      $field->setLabel('Letzte Änderung am ');
+      $field->setLabel($this->i18n('aufgaben_last_change'));
       $field = $form->addReadonlyField('updateuser');
       $field->setHeader('<div class="col-md-6">');
       $field->setFooter('</div></div>');
-      $field->setLabel('von');
+      $field->setLabel($this->i18n('aufgaben_by'));
     }
 
     if ($form->getSql()->getValue('createuser') != '') {
@@ -827,11 +828,11 @@ elseif ($func == 'edit' || $func == 'add') {
       $field = $form->addReadonlyField('createdate');
       $field->setHeader('<div class="row"><div class="col-md-6">');
       $field->setFooter('</div>');
-      $field->setLabel('Erstellt am ');
+      $field->setLabel($this->i18n('aufgaben_create_on'));
       $field = $form->addReadonlyField('createuser');
       $field->setHeader('<div class="col-md-6">');
       $field->setFooter('</div></div><br/>');
-      $field->setLabel('von');
+      $field->setLabel($this->i18n('aufgaben_by'));
     }
 
     $form->addParam('id', $id);
@@ -849,31 +850,31 @@ elseif ($func == 'edit' || $func == 'add') {
 
 ?>
 <script>
-$('#kategoriefilter').SumoSelect({okCancelInMulti: true });
+$('#categoryfilter').SumoSelect({okCancelInMulti: true });
 
 $('#priofilter').SumoSelect({ okCancelInMulti: true });
-$('#eigentuemerfilter').SumoSelect({ okCancelInMulti: true });
+$('#responsiblefilter').SumoSelect({ okCancelInMulti: true });
 $('#statusfilter').SumoSelect({ okCancelInMulti: true });
 
-$("#kategoriefilter").change(function(){
-     $value_k = $("#kategoriefilter").val();
+$("#categoryfilter").change(function(){
+     $value_k = $("#categoryfilter").val();
      if ($value_k == null) {$value_k = '0'};
-     location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_kategorien="+$value_k );
+     location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_category="+$value_k );
 });
-$(".change_kategorie").change(function(){
+$(".change_category").change(function(){
      $value_ck = $(this).val();
      if ($value_ck == null) $value_ck = '0';
-     location.replace("index.php?page=aufgaben/aufgaben&func=change_kategorie&change_kategorie="+$value_ck );
+     location.replace("index.php?page=aufgaben/aufgaben&func=change_category&change_category="+$value_ck );
 });
-$("#eigentuemerfilter").change(function(){
-     $value_e = $("#eigentuemerfilter").val();
+$("#responsiblefilter").change(function(){
+     $value_e = $("#responsiblefilter").val();
      if ($value_e == null) $value_e = '0';
-     location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_eigentuemer="+$value_e );
+     location.replace("index.php?page=aufgaben/aufgaben&func=filter&filter_responsible="+$value_e );
 });
-$(".change_eigentuemer").change(function(){
+$(".change_responsible").change(function(){
      $value_ce = $(this).val();
      if ($value_ce == null) $value_ce = '0';
-     location.replace("index.php?page=aufgaben/aufgaben&func=change_eigentuemer&change_eigentuemer="+$value_ce );
+     location.replace("index.php?page=aufgaben/aufgaben&func=change_responsible&change_responsible="+$value_ce );
 });
 
 $("#priofilter").change(function(){
@@ -888,16 +889,16 @@ $("#statusfilter").change(function(){
 });
 
 
-$("#erledigtverbergen").click(function(){
-  location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&filter_erledigt=1" );
+$("#doneverbergen").click(function(){
+  location.replace("index.php?page=aufgaben/aufgaben&func=donefilter&filter_done=1" );
 });
-$("#erledigtanzeigen").click(function(){
-  location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&filter_erledigt=0" );
+$("#doneanzeigen").click(function(){
+  location.replace("index.php?page=aufgaben/aufgaben&func=donefilter&filter_done=0" );
 });
 
 $(".watch").click(function(){
 
-  // location.replace("index.php?page=aufgaben/aufgaben&func=erledigtfilter&filter_erledigt=0" );
+  // location.replace("index.php?page=aufgaben/aufgaben&func=donefilter&filter_done=0" );
 
   $(this).toggleClass( "enabled" );
 });
@@ -911,11 +912,37 @@ $("select.form-control").on('change', function () {
       field: $('#datepicker')[0] ,
       format: 'DD.MM.YYYY',
       i18n: {
-        previousMonth : 'Nächster Monat',
-        nextMonth     : 'Vorheriger Monat',
-        months        : ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
-        weekdays      : ['Sonntag','Montag','Dienstag','Mittwoch','Donjnerstag','Freitag','Samstag'],
-        weekdaysShort : ['So','Mo','Di','Mi','Do','Fr','Sa']
+        previousMonth : '<?= $this->i18n('aufgaben_prev_month'); ?>',
+        nextMonth     : '<?= $this->i18n('aufgaben_next_month'); ?>',
+        months        : [
+          '<?= $this->i18n('aufgaben_januar'); ?>',
+          '<?= $this->i18n('aufgaben_februar'); ?>',
+          '<?= $this->i18n('aufgaben_maerz'); ?>',
+          '<?= $this->i18n('aufgaben_april'); ?>',
+          '<?= $this->i18n('aufgaben_mai'); ?>',
+          '<?= $this->i18n('aufgaben_juni'); ?>',
+          '<?= $this->i18n('aufgaben_juli'); ?>',
+          '<?= $this->i18n('aufgaben_august'); ?>',
+          '<?= $this->i18n('aufgaben_september'); ?>',
+          '<?= $this->i18n('aufgaben_oktober'); ?>',
+          '<?= $this->i18n('aufgaben_november'); ?>',
+          '<?= $this->i18n('aufgaben_dezember'); ?>'],
+        weekdays      : [
+        '<?= $this->i18n('aufgaben_sonntag'); ?>',
+        '<?= $this->i18n('aufgaben_montag'); ?>',
+        '<?= $this->i18n('aufgaben_dienstag'); ?>',
+        '<?= $this->i18n('aufgaben_mittwoch'); ?>',
+        '<?= $this->i18n('aufgaben_donnerstag'); ?>',
+        '<?= $this->i18n('aufgaben_freitag'); ?>',
+        '<?= $this->i18n('aufgaben_samstag'); ?>'],
+        weekdaysShort : [
+        '<?= $this->i18n('aufgaben_so'); ?>',
+        '<?= $this->i18n('aufgaben_mo'); ?>',
+        '<?= $this->i18n('aufgaben_di'); ?>',
+        '<?= $this->i18n('aufgaben_mi'); ?>',
+        '<?= $this->i18n('aufgaben_do'); ?>',
+        '<?= $this->i18n('aufgaben_fr'); ?>',
+        '<?= $this->i18n('aufgaben_sa'); ?>']
       }
     }
 );

@@ -194,24 +194,24 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
 
         var jThis = jQuery(this);
         var jAddEntryModal = jQuery("#add-modal");
-        var kategorieId = jThis.data("kategorieid");
-        var kategorieName = jThis.data("kategoriename");
+        var categoryId = jThis.data("categoryid");
+        var categoryName = jThis.data("categoryname");
         var jForm = jAddEntryModal.find("form");
-        var jTitle = jForm.find("#rex-aufgaben-aufgaben-titel");
-        var jDescription = jForm.find("#rex-aufgaben-aufgaben-beschreibung");
-        var jCategoryID = jForm.find("#rex-aufgaben-aufgaben-kategorie");
-        var jCategoryName = jForm.find("#rex-aufgaben-aufgaben-kategorie-name");
+        var jTitle = jForm.find("#rex-aufgaben-title");
+        var jDescription = jForm.find("#rex-aufgaben-description");
+        var jCategoryID = jForm.find("#rex-aufgaben-category");
+        var jCategoryName = jForm.find("#rex-aufgaben-category-name");
         var jErrorContainer = jQuery("#missing-values");
 
-        console.log(jThis);
-        console.log("kategorieId", kategorieId);
+        // console.log(jThis);
+        // console.log("categoryId", categoryId);
 
         jErrorContainer.hide();
 
         jTitle.val("");
         jDescription.val("");
-        jCategoryName.val(kategorieName);
-        jCategoryID.val(parseFloat(kategorieId));
+        jCategoryName.val(categoryName);
+        jCategoryID.val(parseFloat(categoryId));
 
         var checkForm = function checkForm(event)
         {
@@ -248,32 +248,33 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
         var jThis = jQuery(this);
         var jEntry = jThis.closest("article.kanban-entry");
         var jEditEntryModal = jQuery("#edit-modal");
-        var kategorieId = jEntry.data("kategorieid");
+        var categoryId = jEntry.data("categoryid");
         var id = jEntry.data("id");
-        var titel = jEntry.data("title");
-        var beschreibung = jEntry.data("beschreibung");
-        var eigentuemer = jEntry.data("eigentuemer");
+        var title = jEntry.data("title");
+        var description = jEntry.data("description");
+        var owner = jEntry.data("owner");
         var status = jEntry.data("status");
         var jForm = jEditEntryModal.find("form");
-        var jTitle = jForm.find("#rex-aufgaben-aufgaben-titel");
+        var jTitle = jForm.find("#rex-aufgaben-title");
         var jId = jForm.find("#entry-id");
-        var jDescription = jForm.find("#rex-aufgaben-aufgaben-beschreibung");
-        var jStatus = jForm.find("#rex-aufgaben-aufgaben-status");
-        var jEigentuemer = jForm.find("#rex-aufgaben-aufgaben-eigentuemer");
-        var jCategory = jForm.find("#rex-aufgaben-aufgaben-kategorie");
+        var jDescription = jForm.find("#rex-aufgaben-description");
+        var jStatus = jForm.find("#rex-aufgaben-status");
+        var jowner = jForm.find("#rex-aufgaben-owner");
+        var jCategory = jForm.find("#rex-aufgaben-category");
         var jErrorContainer = jQuery("#missing-values");
 
-        console.log(id);
-        console.log(jEntry.data());
+        // console.log(id);
+        // console.log(jEntry.data());
 
         jErrorContainer.hide();
 
         jId.val(id);
-        jTitle.val(titel);
-        jDescription.val(beschreibung);
-        jCategory.val(kategorieId);
+        jTitle.val(title);
+
+        jDescription.val(description);
+        jCategory.val(categoryId);
         jStatus.val(status);
-        jEigentuemer.val(eigentuemer);
+        jowner.val(owner);
 
         var checkForm = function checkForm(event)
         {
@@ -335,14 +336,14 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
         drop: function (event, ui)
         {
             var jThis = jQuery(this);
-            var kategorieid = jThis.data("kategorieid");
+            var categoryid = jThis.data("categoryid");
             var jAppendContainer = jThis.find(".kanban-centered");
             var jDraggedItem = jQuery(ui.draggable);
             var id = jDraggedItem.data("id");
-            var draggedkategorieid = jDraggedItem.data("kategorieid");
+            var draggedcategoryid = jDraggedItem.data("categoryid");
             var color = jThis.data("color");
 
-            if (draggedkategorieid === kategorieid)
+            if (draggedcategoryid === categoryid)
             {
                 return false;
             }
@@ -352,11 +353,11 @@ redaxo.Kanban = redaxo.Kanban || (function (jQuery)
                 jRexLoader.removeClass('rex-visible');
                 jThis.find(".placeholder").remove();
                 jDraggedItem.appendTo(jAppendContainer);
-                jDraggedItem.data("kategorieid", kategorieid);
+                jDraggedItem.data("categoryid", categoryid);
                 jDraggedItem.find(".kanban-entry-inner").css({"border-color": color});
             };
 
-            kanbanAjax({"updatekategorie": "true", "id": id, "kategorieid": kategorieid}, postSuccessCallback);
+            kanbanAjax({"updatecategory": "true", "id": id, "categoryid": categoryid}, postSuccessCallback);
         }
     };
 

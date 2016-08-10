@@ -1,2 +1,141 @@
-navigation_aufgaben = !
-aufgaben_title = Aufgaben
+//
+// General
+//
+aufgaben_title      = Aufgaben
+aufgaben_info       = Info
+aufgaben_help       = Hilfe
+aufgaben_licence    = Lizenz
+aufgaben_changelog  = Changelog
+
+aufgaben_description = Beschreibung
+
+aufgaben_task = Aufgabe
+aufgaben_task_hide = Aufgaben verbergen
+aufgaben_last_update = Letze Aktualisierung
+
+aufgaben_last_update
+aufgaben_due = Fällig
+aufgaben_due_date = Fälligkeitsdatum
+
+aufgaben_category = Kategorie
+aufgaben_categories = Kategorien
+
+aufgaben_responsible = Zuständig
+
+aufgaben_prio = Prio
+
+aufgaben_status = Status
+
+aufgaben_edit = Aufgabe editieren
+aufgaben_add = Aufgabe hinzufügen
+aufgaben_title_empty = Bitte geben Sie einen Titel an.
+aufgaben_category_empty = Bitte wählen Sie eine Kategorie aus.
+aufgaben_responsible_empty = Bitte geben Sie an wer für diese Aufgabe zuständig ist.
+
+aufgaben_please_choose = Bitte wählen
+aufgaben_last_change = Letzte Änderung am
+aufgaben_create_on = Erstellt am
+
+aufgaben_by = von
+
+aufgaben_mail_could_not_sent = E-Mail konnte nicht gesendet werden.
+aufgaben_mail_sent_to = E-Mail gesendet an:
+
+aufgaben_markitupinfo = Angelegt durch das Addon Aufgaben
+
+aufgaben_mail_change = Aufgabe geändert:
+aufgaben_mail_new = Neue Aufgabe:
+aufgaben_mail_change_status = Aufgabe - Status geändert:
+aufgaben_mail_change_prio = Aufgabe - Priorität geändert:
+aufgaben_mail_change_responsible = Aufgabe - Zuständigkeit geändert:
+aufgaben_mail_change_cat = Aufgabe - Kategorie geändert:
+
+aufgaben_no_task = <b>Keine Aufgaben vorhanden.</b><br/><br/>Mögliche Ursachen:<br/><br/>- es ist keine Aufgabe angelegt<br/> - keine der vorhandenen Aufgaben erfüllt auf die eingestellten Filterkriterien<br/>- die Ausgabe der erledigten Aufgaben ist abgeschaltet
+
+aufgaben_prev_month = Vorheriger Monat
+aufgaben_next_month = Nächster Monat
+aufgaben_januar = Januar
+aufgaben_februar = Februar
+aufgaben_maerz = März
+aufgaben_april = April
+aufgaben_mai = Mai
+aufgaben_juni = Juni
+aufgaben_juli = Juli
+aufgaben_august = August
+aufgaben_september = September
+aufgaben_oktober = Oktober
+aufgaben_november = November
+aufgaben_dezember = Dezember
+aufgaben_sonntag = Sonntag
+aufgaben_montag = Montag
+aufgaben_dienstag = Dienstag
+aufgaben_mittwoch = Mittwoch
+aufgaben_donnerstag = Donnerstag
+aufgaben_freitag = Freitag
+aufgaben_samstag = Samstag
+aufgaben_so = So
+aufgaben_mo = Mo
+aufgaben_di = Di
+aufgaben_mi = Mi
+aufgaben_do = Do
+aufgaben_fr = Fr
+aufgaben_sa = Sa
+
+
+
+
+//
+// Kategorien
+//
+aufgaben_categories_title = Kategorien
+aufgaben_categories_category = Kategorie
+aufgaben_categories_color = Farbe
+aufgaben_categories_no_category = Keine Kategorie vorhanden.<br/>Bitte legen Sie eine Kategorie an bzw. informieren Ihren Administrator.
+aufgaben_categories_category_add = Kategorie hinzufügen
+aufgaben_categories_category_edit = Kategorie editieren
+aufgaben_categories_category_empty = Bitte geben Sie eine Kategorie an.
+aufgaben_categories_category_delete = Kategorie löschen
+aufgaben_categories_category_deleted = Die Kategorie wurde gelöscht.
+aufgaben_categories_category_in_use  = Dieser Kategorie sind noch Aufgaben zugeordnet.<br/><b>Die Kategorie wurde nicht gelöscht!</b>
+
+
+//
+// Einstellungen
+//
+aufgaben_settings_title = Einstellungen
+aufgaben_settings_ansicht = Ansicht
+aufgaben_settings_beide = Beide Ansichten
+aufgaben_settings_liste = Liste
+aufgaben_settings_kanban = Kanban
+aufgaben_settings_e_mails_an = E-Mails an
+aufgaben_settings_e_mails_empty = Bei keinem User ist in der Benutzerverwaltung eine E-Mail Adresse eingetragen.
+aufgaben_settings_save = Einstellungen speichern
+
+
+//
+// Export / Import
+//
+aufgaben_exim_export = Export
+aufgaben_exim_dateityp = Dateityp
+aufgaben_exim_dateityp_csv = Aufgaben als <b>.csv</b> exportieren
+aufgaben_exim_dateityp_json = Aufgaben als <b>.json</b> exportieren
+aufgaben_exim_export_save = Aufgaben exportieren
+
+
+
+//
+// Kanban Ansicht
+//
+aufgaben_kanban = Kanban
+aufgaben_kanban_aufgabe_hinzufuegen = Aufgabe hinzügen
+aufgaben_kanban_title = Titel
+aufgaben_kanban_error_title = Bitte geben Sie einen Titel an
+aufgaben_kanban_description = Beschreibung
+aufgaben_kanban_category = Kategorie
+aufgaben_kanban_responsible = Zuständig
+aufgaben_kanban_status = Status
+aufgaben_kanban_abort = Abbrechen
+aufgaben_kanban_save = Speichern
+aufgaben_kanban_edit = Aufgabe bearbeiten
+aufgaben_kanban_delete = Aufgabe löschen
+aufgaben_kanban_delete_confirm = Soll folgene Aufgabe wirklich gelöscht werden?

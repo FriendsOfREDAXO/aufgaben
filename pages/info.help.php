@@ -14,7 +14,7 @@ if ($func == 'import_beispieldaten') {
 
   -- Aufgaben
 
-  INSERT IGNORE `rex_aufgaben_aufgaben` VALUES
+  INSERT IGNORE `rex_aufgaben` VALUES
       (1, 'Fav Icon erstellen', 'Wird immer benötigt',1,1,0,1,now(),now(),'$user','$user','',''),
       (2, 'Touch Icon erstellen', '',1,1,0,1,now(),now(),'$user','$user','',''),
       (3, 'Meta Infos erstellen', 'Sind Ortsbezogene meta Infos wichtig?',1,1,0,1,now(),now(),'$user','$user','',''),
@@ -23,7 +23,7 @@ if ($func == 'import_beispieldaten') {
 
   -- Kategorien
 
-  INSERT IGNORE `rex_aufgaben_kategorien` VALUES
+  INSERT IGNORE `rex_aufgaben_categories` VALUES
       (1,'Grundlagen','#9EAEC2'),
       (2,'Backend','#588D76'),
       (3,'Design','#8D588A'),
@@ -34,8 +34,7 @@ if ($func == 'import_beispieldaten') {
 
 -- User Settings
 
-  INSERT IGNORE `rex_aufgaben_user_settings` VALUES (1,$current_user,5,0);
-
+  INSERT IGNORE `rex_aufgaben_user_settings` VALUES (1,$current_user,5);
   ";
 
   $sql = rex_sql::factory();

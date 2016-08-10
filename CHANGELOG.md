@@ -1,8 +1,29 @@
-##### ToDo siehe [ISSUES](https://github.com/olien/aufgaben/issues) #####
+##### ToDo siehe [ISSUES](https://github.com/FriendsOfREDAXO/aufgaben/issues) #####
 
 ---
 
 ### Changelog ###
+
+___
+
+### 10.08.2016 Version 4.0 Beta 1 ###
+
+_ACHTUNG: Es ist kein Update von früheren Versionen möglich_
+
+
+- Tabellen umbenannt
+- Kanban-Darstellung angepasst
+- Listen-Darstellung angepasst
+- E-Mail-Ausgabe angepasst
+- Fixed: https://github.com/FriendsOfREDAXO/aufgaben/issues/79
+- Fixed: https://github.com/FriendsOfREDAXO/aufgaben/issues/78
+- Fixed: https://github.com/FriendsOfREDAXO/aufgaben/issues/77
+- Fixed: https://github.com/FriendsOfREDAXO/aufgaben/issues/71
+- Fixed: https://github.com/FriendsOfREDAXO/aufgaben/issues/67
+- Fixed: https://github.com/FriendsOfREDAXO/aufgaben/issues/62
+- Fixed: https://github.com/FriendsOfREDAXO/aufgaben/issues/48
+- Fixed: https://github.com/FriendsOfREDAXO/aufgaben/issues/39
+
 
 ### 28.06.2016 Version 3.2.2 ###
 

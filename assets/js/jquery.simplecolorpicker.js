@@ -37,21 +37,21 @@
 
       if (self.options.picker === true) {
         var selectText = self.$select.find('> option:selected').text();
-        self.$icon = $('<span class="simplecolorpicker icon"'
+        self.$icon = $('<span class="aufgabensimplecolorpicker icon"'
                      + ' title="' + selectText + '"'
                      + ' style="background-color: ' + self.$select.val() + ';"'
                      + ' role="button" tabindex="0">'
                      + '</span>').insertAfter(self.$select);
         self.$icon.on('click.' + self.type, $.proxy(self.showPicker, self));
 
-        self.$picker = $('<span class="simplecolorpicker picker ' + self.options.theme + '"></span>').appendTo(document.body);
+        self.$picker = $('<span class="aufgabensimplecolorpicker picker ' + self.options.theme + '"></span>').appendTo(document.body);
         self.$colorList = self.$picker;
 
         // Hide picker when clicking outside
         $(document).on('mousedown.' + self.type, $.proxy(self.hidePicker, self));
         self.$picker.on('mousedown.' + self.type, $.proxy(self.mousedown, self));
       } else {
-        self.$inline = $('<span class="simplecolorpicker inline ' + self.options.theme + '"></span>').insertAfter(self.$select);
+        self.$inline = $('<span class="aufgabensimplecolorpicker inline ' + self.options.theme + '"></span>').insertAfter(self.$select);
         self.$colorList = self.$inline;
       }
 

@@ -3,9 +3,9 @@
 @import "../aufgaben/scss/simplecolorpicker";
 @import "../aufgaben/scss/kanban";
 
-
 // Status
 #aufgaben {
+  // border: 1px solid green;
   .status {
     display: inline-block;
     min-width: 156px;
@@ -55,13 +55,12 @@
         color: #000;
       }
       &.fa-star {
-        padding: 3px 2px 1px 2px;
+        padding: 2px;
         color: #f0ad4e;
       }
       &.fa-star-o  {
-        padding: 3px 2px 1px 2px;
+        padding: 2px;
         &:hover  {
-          padding: 3px 2px 1px 2px;
           color: #f0ad4e;
         }
       }
@@ -72,7 +71,10 @@
 
 // Tabelle
 #aufgaben {
-  .collapsetitel {
+
+
+
+  .collapsetitle {
     display: inline-block;
     color: #4B9AD9;
     &:hover {
@@ -84,8 +86,8 @@
     width: auto;
   }
 
-  .td_kategorie {
-    width: 150px;
+  .td_category {
+    min-width: 150px;
     font-size: 12px;
   }
 
@@ -94,9 +96,14 @@
     font-size: 14px;
   }
 
-  .td_eigentuemer {
-    width: 150px;
+  .td_responsible {
+    min-width: 150px;
     font-size: 12px;
+    .single {
+      position: absolute;
+      padding-top: 2px;
+
+    }
   }
 
   .td_updatedate {
@@ -205,13 +212,25 @@
 
 #aufgaben .rex-select-style.intable {
   border: none;
+  padding-right: 20px;
   background: transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAR0lEQVQokWNgGH6AEZnz//9/ghp+/PjBxIgm5otL8f///zfD2Ey4JPCJMxFSgMsgZAVwzMDA4Pv//3+G48ePCyKLE+PvoQgAyHozRmwVt2MAAAAASUVORK5CYII=') no-repeat 97.5% 50%;
   &:hover {
   background: transparent  url("data:image/png;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==") no-repeat 98% 50%;
   }
+  select {
+    padding: 2px 0 2px 0;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  option {
+    background: #ff0 !important;
+  }
 }
+
 
 #rex-page-aufgaben-aufgaben .markitupEditor-simple  {
   margin-top: -10px;
   min-height: 300px;
 }
+

@@ -1,13 +1,18 @@
 <?php
 
+if (!$this->hasConfig()) {
+  $this->setConfig('ansicht', 'beide');
+  $this->setConfig('mails', []);
+}
+
 $sql = rex_sql::factory();
 $sql->setQuery('
-  CREATE TABLE IF NOT EXISTS `rex_aufgaben_aufgaben` (
+  CREATE TABLE IF NOT EXISTS `rex_aufgaben` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `titel` varchar(255) DEFAULT NULL,
-    `beschreibung` longtext DEFAULT NULL,
-    `kategorie` int(10) DEFAULT NULL,
-    `eigentuemer` int(10) DEFAULT NULL,
+    `title` varchar(255) DEFAULT NULL,
+    `description` longtext DEFAULT NULL,
+    `category` int(10) DEFAULT NULL,
+    `responsible` int(10) DEFAULT NULL,
     `prio` int(10) DEFAULT NULL,
     `status` int(10) DEFAULT NULL,
     `createdate` DATETIME DEFAULT NULL,
@@ -20,11 +25,12 @@ $sql->setQuery('
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ');
 
+
 $sql = rex_sql::factory();
-$sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_kategorien` (
+$sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_categories` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `kategorie` varchar(255) DEFAULT NULL,
-    `farbe` varchar(255) DEFAULT NULL,
+    `category` varchar(255) DEFAULT NULL,
+    `color` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ');
@@ -38,15 +44,16 @@ $sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_status` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ');
 
+
 $sql = rex_sql::factory();
 $sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_filter` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `user` varchar(255) DEFAULT NULL,
-    `kategorie` varchar(255)  DEFAULT NULL,
-    `eigentuemer` varchar(255)  DEFAULT NULL,
+    `category` varchar(255)  DEFAULT NULL,
+    `responsible` varchar(255)  DEFAULT NULL,
     `prio` varchar(255)  DEFAULT NULL,
     `status` varchar(255) DEFAULT NULL,
-    `erledigt` varchar(255) DEFAULT NULL,
+    `done` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ');
@@ -60,6 +67,7 @@ $sql->setQuery('CREATE TABLE IF NOT EXISTS `rex_aufgaben_user_settings` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ');
 
+// Sollte noch übersetzt werden -> wie?
 $sql = rex_sql::factory();
 $sql->setQuery("REPLACE INTO `rex_aufgaben_status` VALUES
     (1,'Offen','fa-folder-open-o'),
@@ -70,47 +78,9 @@ $sql->setQuery("REPLACE INTO `rex_aufgaben_status` VALUES
     (6,'Erledigt','fa-check');
 ");
 
-rex_sql_table::get("rex_aufgaben_aufgaben")
-->ensureColumn(new rex_sql_column('titel', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('beschreibung', 'longtext'))
-->ensureColumn(new rex_sql_column('kategorie', 'int(10)'))
-->ensureColumn(new rex_sql_column('eigentuemer', 'int(10)'))
-->ensureColumn(new rex_sql_column('prio', 'int(10)'))
-->ensureColumn(new rex_sql_column('status', 'int(10)'))
-->alter();
-
-rex_sql_table::get("rex_aufgaben_kategorien")
-->ensureColumn(new rex_sql_column('kategorie', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('farbe', 'varchar(255)'))
-->alter();
-
-rex_sql_table::get("rex_aufgaben_user_settings")
-->ensureColumn(new rex_sql_column('user', 'int(10)'))
-->ensureColumn(new rex_sql_column('counter', 'int(10)'))
-->ensureColumn(new rex_sql_column('filter', 'int(20)'))
-->alter();
-
-rex_sql_table::get("rex_aufgaben_status")
-->ensureColumn(new rex_sql_column('status', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('icon', 'varchar(255)'))
-->alter();
-
-rex_sql_table::get("rex_aufgaben_filter")
-->ensureColumn(new rex_sql_column('user', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('kategorie', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('eigentuemer', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('prio', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('status', 'varchar(255)'))
-->ensureColumn(new rex_sql_column('erledigt', 'varchar(255)'))
-->alter();
-
-
-
 $error = '';
-// Überprüfungen
 
-if(!$error AND !$this->hasConfig()) {
+if(!$error) {
   $this->setConfig('install', true);
-  $this->setConfig('ansicht',  'beide');
 }
 

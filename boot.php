@@ -2,15 +2,21 @@
 
 if (rex::isBackend() && rex::getUser()) {
 
-  /* Einstellungen */
+  //////////
+  // JS
+  //////////
+  $current_page = rex_be_controller::getCurrentPage();
 
-  rex_view::addJSFile($this->getAssetsUrl('js/moments.js'));
-  rex_view::addJSFile($this->getAssetsUrl('js/pikaday.js'));
-  rex_view::addJSFile($this->getAssetsUrl('js/jquery.sumoselect.js'));
-  rex_view::addJSFile($this->getAssetsUrl('js/jquery.simplecolorpicker.js'));
-  rex_view::addJSFile($this->getAssetsUrl('js/custom.js'));
-  rex_view::addJSFile($this->getAssetsUrl('js/kanban.js'));
+    rex_view::addJSFile($this->getAssetsUrl('js/jquery.sumoselect.js'));
+    rex_view::addJSFile($this->getAssetsUrl('js/kanban.js'));
+    rex_view::addJSFile($this->getAssetsUrl('js/jquery.simplecolorpicker.js'));
+    rex_view::addJSFile($this->getAssetsUrl('js/moments.js'));
+    rex_view::addJSFile($this->getAssetsUrl('js/pikaday.js'));
+    rex_view::addJSFile($this->getAssetsUrl('js/custom.js'));
 
+  ///////////
+  // SCSS
+  ///////////
   rex_extension::register('PACKAGES_INCLUDED', function () {
     if (rex::getUser() && $this->getProperty('compile')) {
 
@@ -24,49 +30,51 @@ if (rex::isBackend() && rex::getUser()) {
         }
     });
   rex_view::addCssFile($this->getAssetsUrl('css/styles.css'));
-}
 
-// Subpages
-//  Listen Ansicht
-if ($this->getConfig('ansicht') == 'liste' OR $this->getConfig('ansicht') == 'beide') {
+
+  ///////////
+  // Subpages
+  ///////////
+
+  //  aufgaben Listenansicht
+  if ($this->getConfig('ansicht') == 'liste' OR $this->getConfig('ansicht') == 'beide') {
     $page = $this->getProperty('page');
-    $page['subpages']['aufgaben'] = ['title' => 'Aufgaben'];
+    $page['subpages']['aufgaben'] = ['title' =>  $this->i18n('aufgaben_title')];
     $this->setProperty('page', $page);
-}
+  }
 
-//  Kanban Ansicht
-if ($this->getConfig('ansicht') == 'kanban' OR $this->getConfig('ansicht') == 'beide') {
+  //  Kanban Ansicht
+  if ($this->getConfig('ansicht') == 'kanban' OR $this->getConfig('ansicht') == 'beide') {
+      $page = $this->getProperty('page');
+      $page['subpages']['kanban'] = ['title' => 'Kanban Ansicht'];
+      $this->setProperty('page', $page);
+  }
+
+  //  Kategorien
+  $page = $this->getProperty('page');
+  $page['subpages']['categories'] = ['title' => $this->i18n('aufgaben_categories'), 'perm' => 'aufgaben[categories]'];
+  $this->setProperty('page', $page);
+
+  //  Einstellungen
     $page = $this->getProperty('page');
-    $page['subpages']['kanban'] = ['title' => 'Kanban Ansicht'];
+    $page['subpages']['settings'] = ['title' => 'Einstellungen', 'perm' =>'admin[]'];
     $this->setProperty('page', $page);
-}
 
-//  Kategorien
-  $page = $this->getProperty('page');
-  $page['subpages']['kategorien'] = ['title' => 'Kategorien', 'perm' => 'aufgaben[kategorien]'];
-  $this->setProperty('page', $page);
+  //  Import /( Export)
+    $page = $this->getProperty('page');
+    $page['subpages']['exim'] = ['title' => 'Export', 'perm' =>'admin[]' ];
+    $page['subpages']['exim']['subpages']['export'] = ['title' => 'Export'];
+  //  $page['subpages']['exim']['subpages']['import'] = ['title' => 'Import'];
+    $this->setProperty('page', $page);
 
-//  Einstellungen
-  $page = $this->getProperty('page');
-  $page['subpages']['settings'] = ['title' => 'Einstellungen', 'perm' =>'admin[]'];
-  $this->setProperty('page', $page);
 
-//  Import /( Export)
-  $page = $this->getProperty('page');
-  $page['subpages']['exim'] = ['title' => 'Export', 'perm' =>'admin[]' ];
-  $page['subpages']['exim']['subpages']['export'] = ['title' => 'Export'];
-//  $page['subpages']['exim']['subpages']['import'] = ['title' => 'Import'];
-  $this->setProperty('page', $page);
-
-//  Info
-  $page = $this->getProperty('page');
-  $page['subpages']['info'] = ['title' => 'Info'];
-  $page['subpages']['info']['subpages']['hilfe'] = ['title' => 'Hilfe'];
-  $page['subpages']['info']['subpages']['changelog'] = ['title' => 'Changelog'];
-  $page['subpages']['info']['subpages']['lizenz'] = ['title' => 'Lizenz'];
-  $this->setProperty('page', $page);
-
-// /Subpages
+    //  Info
+    $page = $this->getProperty('page');
+    $page['subpages']['info'] = ['title' => $this->i18n('aufgaben_info')];
+    $page['subpages']['info']['subpages']['help'] = ['title' => $this->i18n('aufgaben_help')];
+    $page['subpages']['info']['subpages']['changelog'] = ['title' => $this->i18n('aufgaben_changelog')];
+    $page['subpages']['info']['subpages']['licence'] = ['title' => $this->i18n('aufgaben_licence')];
+    $this->setProperty('page', $page);
 
 
 if ($this->getConfig('install') == 'true' && rex::getUser()) {
@@ -75,5 +83,9 @@ if ($this->getConfig('install') == 'true' && rex::getUser()) {
       $counter = new rex_aufgaben();
       $counter->show_counter();
    }
+}
+
+
+
 }
 

@@ -70,7 +70,7 @@ class rex_aufgaben {
       }
       $sql_aufgabe = rex_sql::factory();
       // $sql_aufgabe->setDebug();
-      $sql_aufgabe->setQuery('SELECT * FROM rex_aufgaben_aufgaben '.$expand_query);
+      $sql_aufgabe->setQuery('SELECT * FROM rex_aufgaben '.$expand_query);
 
       if ($sql_aufgabe->getRows()) {
 
@@ -100,14 +100,18 @@ class rex_aufgaben {
         // print_r($mail_adressen);
 
         // Mailinhalt
-        $mail_titel         = $sql_aufgabe->getValue('titel');
-        $mail_beschreibung  = $sql_aufgabe->getValue('beschreibung');
-        $mail_eigentuemer   = $sql_aufgabe->getValue('eigentuemer');
+        $mail_titel         = $sql_aufgabe->getValue('title');
+        $mail_beschreibung  = $sql_aufgabe->getValue('description');
+        $mail_eigentuemer   = $sql_aufgabe->getValue('responsible');
         $mail_prio          = $sql_aufgabe->getValue('prio');
         $mail_status        = $sql_aufgabe->getValue('status');
         $mail_creatuser     = $sql_aufgabe->getValue('createuser');
         $mail_updateuser    = $sql_aufgabe->getValue('updateuser');
         $mail_finaldate     = $sql_aufgabe->getValue('finaldate');
+
+        if ($mail_finaldate == '') {
+          $mail_finaldate = '--';
+        }
 
         $sql_status_name = rex_sql::factory();
         // $sql_status_name->setDebug();
@@ -142,12 +146,39 @@ class rex_aufgaben {
 
               $mail = new rex_mailer();
 
-              $body  = "<h3>".$mail_titel."</h3>";
-              $body  .= '<hr/>';
-              $body  .= '<p>Status: <b>'.$mail_status.'</b> | Zuständig: <b>'.$mail_eigentuemer.'</b> | Prio: <b>'.$mail_prio.'</b>';
-              $body  .= '<p>Aktualisiert von: <b>'.$mail_updateuser.'</b> | Erstellt von: <b>'.$mail_creatuser.'</b> | Zieldatum: <b>'.$mail_finaldate.'</b>';
-              $body  .= '<hr/>';
-              $body  .= "<p><b></b>".$text_beschreibung."</b>";
+              $body = '
+              <table style="border-collapse:collapse;border-spacing:0;border-color:#ccc; width: 100%; text-align: left;">
+  <tr>
+    <td style="font-family:Arial, sans-serif; padding:20px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;font-weight:bold;vertical-align:top" colspan="4">
+      <h2>'.$mail_titel.'</h2>
+    </td>
+  </tr>
+  <tr>
+    <td style="font-family:Arial, sans-serif; font-size: 14px;padding:8px 3px 8px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top" colspan="4">
+      '.$text_beschreibung.'
+    </td>
+  </tr>
+  <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;font-weight:bold;vertical-align:top" colspan="4"> </td>
+  </tr>
+  <tr>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top"> Prio </td>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top;"> <b>'.$mail_prio.'</b> </td>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top"> Status </td>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top;"> <b>'.$mail_status.'</b> </td>
+  </tr>
+  <tr>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top"> Zuständig </td>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top;"> <b>'.$mail_eigentuemer.'</b> </td>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top"> Erstellt von </td>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top;"> <b>'.$mail_creatuser.'</b> </td>
+  </tr>
+  <tr>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top"> Fälligkeitsdatum </td>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top;"> <b>'.$mail_finaldate.'</b> </td>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top"> Aktualisiert von </td>
+    <td style="font-family:Arial, sans-serif; font-size: 12px;padding:3px 3px 3px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;vertical-align:top;"> <b>'.$mail_updateuser.'</b> </td>
+  </tr>
+</table>';
 
               $text_body = $mail_titel."\n\n";
               $text_body .= $mail_beschreibung."\n\n";
