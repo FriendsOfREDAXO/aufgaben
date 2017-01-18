@@ -4,6 +4,12 @@
 
 ### Changelog ###
 
+### 18.01.2017 Version 4.0.1 ###
+
+- Beta entfernt
+- Fehlerkorrektur
+- Projektlead hinzugefügt
+
 ___
 
 ### 10.08.2016 Version 4.0 Beta 1 ###

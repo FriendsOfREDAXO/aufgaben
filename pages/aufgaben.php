@@ -526,7 +526,6 @@ if ($func == '' || $func == 'filter') {
       $sql->setTable('rex_aufgaben_categories');
       $sql->setWhere(['id' => $list->getValue('category') ]);
       $sql->select();
-      $category = $sql->getValue('login');
     }
 
     return $category;
