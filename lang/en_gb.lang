@@ -1,0 +1,141 @@
+//
+// General
+//
+aufgaben_title      = Tasks
+aufgaben_info       = Info
+aufgaben_help       = Help
+aufgaben_licence    = Licence
+aufgaben_changelog  = Change log
+
+aufgaben_description = Description
+
+aufgaben_task = Task
+aufgaben_task_hide = Hide task
+aufgaben_last_update = Last update
+
+aufgaben_last_update
+aufgaben_due = Due
+aufgaben_due_date = Due date
+
+aufgaben_category = Category
+aufgaben_categories = Categories
+
+aufgaben_responsible = Responsible
+
+aufgaben_prio = Prio
+
+aufgaben_status = Status
+
+aufgaben_edit = Edit task
+aufgaben_add = Add task
+aufgaben_title_empty = Please enter a title.
+aufgaben_category_empty = Please choose a category.
+aufgaben_responsible_empty = Please specify who is responsible for this task.
+
+aufgaben_please_choose = Please choose
+aufgaben_last_change = Last updated
+aufgaben_create_on = Created
+
+aufgaben_by = by
+
+aufgaben_mail_could_not_sent = E-mail could not be sent.
+aufgaben_mail_sent_to = E-mail sent to:
+
+aufgaben_markitupinfo = Created by AddOn Tasks
+
+aufgaben_mail_change = Task updated:
+aufgaben_mail_new = New task:
+aufgaben_mail_change_status = Task - status updated:
+aufgaben_mail_change_prio = Task - priority updated:
+aufgaben_mail_change_responsible = Task - responsibility updated:
+aufgaben_mail_change_cat = Task - category updated:
+
+aufgaben_no_task = <b>No tasks found.</b><br/><br/>Possible reasons:<br/><br/>- no tasks were created<br/> - the currently applied filter excludes all of the existing tasks<br/>- completed tasks are set to be hidden
+
+aufgaben_prev_month = Previous month
+aufgaben_next_month = Next month
+aufgaben_januar = January
+aufgaben_februar = February
+aufgaben_maerz = March
+aufgaben_april = April
+aufgaben_mai = May
+aufgaben_juni = June
+aufgaben_juli = July
+aufgaben_august = August
+aufgaben_september = September
+aufgaben_oktober = October
+aufgaben_november = November
+aufgaben_dezember = December
+aufgaben_sonntag = Sunday
+aufgaben_montag = Monday
+aufgaben_dienstag = Tuesday
+aufgaben_mittwoch = Wednesday
+aufgaben_donnerstag = Thursday
+aufgaben_freitag = Friday
+aufgaben_samstag = Saturday
+aufgaben_so = Sun
+aufgaben_mo = Mon
+aufgaben_di = Tue
+aufgaben_mi = Wed
+aufgaben_do = Thu
+aufgaben_fr = Fri
+aufgaben_sa = Sat
+
+
+
+
+//
+// Kategorien
+//
+aufgaben_categories_title = Categories
+aufgaben_categories_category = Category
+aufgaben_categories_color = Color
+aufgaben_categories_no_category = No categories found.<br />Please create a category or speak to your administrator
+aufgaben_categories_category_add = Add category
+aufgaben_categories_category_edit = Edit category
+aufgaben_categories_category_empty = Please assign a category
+aufgaben_categories_category_delete = Delete category
+aufgaben_categories_category_deleted = Category has been deleted
+aufgaben_categories_category_in_use  = There are tasks assigned to this category.<br />The category <b>has not</b> been deleted!
+
+
+//
+// Einstellungen
+//
+aufgaben_settings_title = Settings
+aufgaben_settings_ansicht = View
+aufgaben_settings_beide = Both views
+aufgaben_settings_liste = List
+aufgaben_settings_kanban = Kanban
+aufgaben_settings_e_mails_an = Send e-mails to
+aufgaben_settings_e_mails_empty = None of the users in the user management have e-mail addresses supplied.
+aufgaben_settings_save = Save settings
+
+
+//
+// Export / Import
+//
+aufgaben_exim_export = Export
+aufgaben_exim_dateityp = Filetype
+aufgaben_exim_dateityp_csv = Export tasks as <b>.csv</b>
+aufgaben_exim_dateityp_json = Export tasks as <b>.json</b>
+aufgaben_exim_export_save = Export task
+
+
+
+//
+// Kanban Ansicht
+//
+aufgaben_kanban = Kanban
+aufgaben_kanban_aufgabe_hinzufuegen = Add task
+aufgaben_kanban_title = Title
+aufgaben_kanban_error_title = Please enter a title
+aufgaben_kanban_description = Description
+aufgaben_kanban_category = Category
+aufgaben_kanban_responsible = Responsible
+aufgaben_kanban_status = Status
+aufgaben_kanban_abort = Cancel
+aufgaben_kanban_save = Save
+aufgaben_kanban_edit = Edit task
+aufgaben_kanban_delete = Delete Task
+aufgaben_kanban_delete_confirm = Would you like to delete the following task?
