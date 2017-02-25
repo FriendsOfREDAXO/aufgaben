@@ -4,6 +4,11 @@
 
 ### Changelog ###
 
+
+### 25.02.2017 Version 4.0.2 ###
+
+-Update en_gb.lang - Danke an @ynamite! 
+
 ### 18.01.2017 Version 4.0.1 ###
 
 - Beta entfernt
