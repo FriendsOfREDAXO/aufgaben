@@ -1,0 +1,141 @@
+//
+// General
+//
+aufgaben_title      = Tarefas
+aufgaben_info       = Informações
+aufgaben_help       = Ajuda
+aufgaben_licence    = Licença
+aufgaben_changelog  = Mudar log
+
+aufgaben_description = Descrição
+
+aufgaben_task = Tarefa
+aufgaben_task_hide = Esconder tarefa
+aufgaben_last_update = Última atualização
+
+aufgaben_last_update
+aufgaben_due = Devido
+aufgaben_due_date = Vencimento
+
+aufgaben_category = Categoria
+aufgaben_categories = Categorias
+
+aufgaben_responsible = Responsável
+
+aufgaben_prio = Prio
+
+aufgaben_status = Status
+
+aufgaben_edit = Editar tarefas
+aufgaben_add = Adicionar tarefas
+aufgaben_title_empty = Por favor, insira um título.
+aufgaben_category_empty = Por favor, escolha uma categoria.
+aufgaben_responsible_empty = Por favor, especifique quem é o responsável pela tarefa.
+
+aufgaben_please_choose = Por favor, escolha
+aufgaben_last_change = última atualização
+aufgaben_create_on = Criado
+
+aufgaben_by = por
+
+aufgaben_mail_could_not_sent = O e-mail não pôde ser enviado.
+aufgaben_mail_sent_to = E-mail enviado para:
+
+aufgaben_markitupinfo = Criado pelo AddOn tarefas:
+
+aufgaben_mail_change = Tarefa atualizada:
+aufgaben_mail_new = Nova tarefa:
+aufgaben_mail_change_status = Tarefa - status atualizado:
+aufgaben_mail_change_prio = Tarefa - prioridade atualizada:
+aufgaben_mail_change_responsible = Tarefa - responsabilidade atualizada:
+aufgaben_mail_change_cat = Tarefa - categoria atualizada:
+
+aufgaben_no_task = <b>Nenhuma tarefa encontrada.<b><br/><br/>Possíveis motivos:<br/><br/>- nenhuma tarefa foi criada<br/> - o filtro atualizado exclui todas as tarefas existentes<br/>-tarefas completadas estão programadas para não serem exibidas
+
+aufgaben_prev_month = Mês anterior
+aufgaben_next_month = Próximo mês
+aufgaben_januar = Janeiro
+aufgaben_februar = Fevereiro
+aufgaben_maerz = Março
+aufgaben_april = Abril
+aufgaben_mai = Maio
+aufgaben_juni = Junho
+aufgaben_juli = Julho
+aufgaben_august = Agosto
+aufgaben_september = Setembro
+aufgaben_oktober = Outubro
+aufgaben_november = Novembro
+aufgaben_dezember = Dezembro
+aufgaben_sonntag = Domingo
+aufgaben_montag = Segunda-feira
+aufgaben_dienstag = Terça-feira
+aufgaben_mittwoch = Quarta-feira
+aufgaben_donnerstag = Quinta-feira
+aufgaben_freitag = Sexta-feira
+aufgaben_samstag = Sábado
+aufgaben_so = Do
+aufgaben_mo = Se
+aufgaben_di = Te
+aufgaben_mi = Qa
+aufgaben_do = Qi
+aufgaben_fr = Sx
+aufgaben_sa = Sa
+
+
+
+
+//
+// Kategorien
+//
+aufgaben_categories_title = Categorias
+aufgaben_categories_category = Categoria
+aufgaben_categories_color = Cor
+aufgaben_categories_no_category = Nenhuma categoria encontrada.<br />Por favor, crie uma categoria ou entre em contato com o seu administrador
+aufgaben_categories_category_add = Adicionar categoria
+aufgaben_categories_category_edit = Editar categoria
+aufgaben_categories_category_empty = Por favor, atribua uma categoria
+aufgaben_categories_category_delete = Deletar categoria
+aufgaben_categories_category_deleted = Categoria foi deletada
+aufgaben_categories_category_in_use  = Há tarefas atribuídas a esta categoria.<br />A categoria <b>não</b> foi deletada!
+
+
+//
+// Einstellungen
+//
+aufgaben_settings_title = Configurações
+aufgaben_settings_ansicht = Vista
+aufgaben_settings_beide = Ambas as vistas
+aufgaben_settings_liste = Lista
+aufgaben_settings_kanban = Kanban
+aufgaben_settings_e_mails_an = Enviar e-emails para
+aufgaben_settings_e_mails_empty = Nenhum dos usuários da gestão de usuários inseriu um e-mail.
+aufgaben_settings_save = Salvar configurações
+
+
+//
+// Export / Import
+//
+aufgaben_exim_export = Exportar
+aufgaben_exim_dateityp = Tipo do arquivo
+aufgaben_exim_dateityp_csv = Exportar tarefas como  <b>.csv</b>
+aufgaben_exim_dateityp_json = Exportar tarefas como <b>.json</b>
+aufgaben_exim_export_save = Exportar tarefas
+
+
+
+//
+// Kanban Ansicht
+//
+aufgaben_kanban = Kanban
+aufgaben_kanban_aufgabe_hinzufuegen = Adicionar tarefas
+aufgaben_kanban_title = Título
+aufgaben_kanban_error_title = Por favor, insira um título
+aufgaben_kanban_description = Descrição
+aufgaben_kanban_category = Categoria
+aufgaben_kanban_responsible = Responsável
+aufgaben_kanban_status = Status
+aufgaben_kanban_abort = Cancelar
+aufgaben_kanban_save = Salvar
+aufgaben_kanban_edit = Editar tarefa
+aufgaben_kanban_delete = Deletar tarefa
+aufgaben_kanban_delete_confirm = Você gostaria de deletar a tarefa a seguir?
