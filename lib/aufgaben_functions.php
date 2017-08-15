@@ -108,7 +108,7 @@ class rex_aufgaben {
         $eigentuemer_realname = $sql_aufgabe->getValue('responsible');      
         $eigentuemer_sql = rex_sql::factory();
         $eigentuemer_sql->setQuery("SELECT name FROM rex_user WHERE login = '$eigentuemer_realname'");
-        $mail_eigentuemer  = $eigentuemerr_sql->getValue('name');  
+        $mail_eigentuemer  = $eigentuemer_sql->getValue('name');  
       
         $creatuser_realname = $sql_aufgabe->getValue('createuser');      
         $creatuser_sql = rex_sql::factory();
