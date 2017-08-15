@@ -128,7 +128,7 @@ class rex_aufgaben {
 
 
         $sql_eigentuemer_name = rex_sql::factory();
-        $sql_eigentuemer_name->setQuery('SELECT login FROM rex_user WHERE id = '.$mail_eigentuemer);
+        $sql_eigentuemer_name->setQuery('SELECT * FROM rex_user WHERE id = '.$mail_eigentuemer);
         $mail_eigentuemer = $sql_eigentuemer_name->getValue('name');
 
 
