@@ -26,8 +26,6 @@ $filter_status      = rex_request('filter_status', 'string');
 $filter_done        = rex_request('filter_done', 'string');
 $current_user       = rex::getUser()->getId();
 
-
-
   // Mails verschicken
   $mailbetreff = '';
   if ($aufgabe == 'edit' || $aufgabe == 'new' ) {
@@ -271,15 +269,15 @@ if ($func == '' || $func == 'filter') {
     $where = ' a.status != 6';
   }
 
-  $query = 'SELECT  a.*,
-                    a.id AS id,
-                    k.id,
-                    k.category AS category_name,
-                    k.color
-            FROM    ' . rex::getTable('aufgaben') . ' AS a
-            LEFT JOIN  ' . rex::getTable('aufgaben_categories') . ' AS k
-            ON a.category = k.id
-            WHERE ' . $where . ' ' . $addsql . ' ORDER BY a.id DESC';
+  $where .= ' and a.category = k.id and a.createuser = u.login ' . $addsql;  
+  $query = '	SELECT a.*,
+  			 	a.id AS id,
+  			 	k.id,
+  			 	k.category AS category_name,
+  			 	k.color, u.name AS realname 
+  			 	FROM ' . rex::getTable('aufgaben') . ' AS a, ' . rex::getTable('aufgaben_categories') . ' AS k, rex_user AS u WHERE ' . $where . ' GROUP BY a.id ORDER BY a.id DESC';
+
+  
   $list = rex_list::factory($query, 30, 'aufgaben');
 
   // Anzahl der Aufgaben
@@ -337,7 +335,8 @@ if ($func == '' || $func == 'filter') {
   $list->removeColumn('createuser');
   $list->removeColumn('updateuser');
   $list->removeColumn('observer');
-
+  $list->removeColumn('realname');
+  
   // --------------------
   //  set Sortable
   // --------------------
@@ -392,6 +391,8 @@ if ($func == '' || $func == 'filter') {
       }
 
       $user_name = rex::getUser()->getValue('login');
+
+      
       $beschreibung = '<div id="collapse###id###" class="collapse"><br/>' . $text . '</div>';
     }
     else {
@@ -424,8 +425,8 @@ if ($func == '' || $func == 'filter') {
     if ($list->getValue('updateuser') == '') {
       $updateuservalue = '';
     }
-    else {
-      $updateuservalue = $list->getValue('updateuser');
+    else {    
+      $updateuservalue = $list->getValue('realname');   
     }
 
     $updatedate = $updatedatevalue . '<br/><span>' . $updateuservalue . '</span>';
@@ -558,8 +559,8 @@ if ($func == '' || $func == 'filter') {
       else {
         $selected = '';
       }
-
-      $responsiblefilter.= '<option value="' . $sql->getValue('id') . '" ' . $selected . '>' . $sql->getValue('login') . '</option>';
+      $responsiblefilter.= '<option value="' . $sql->getValue('id') . '" ' . $selected . '>' . $sql->getValue('name') . '</option>'; 
+  
       $sql->next();
     }
 
@@ -593,7 +594,9 @@ if ($func == '' || $func == 'filter') {
             else {
               $selected = '';
             }
-        $responsible.= '<option value="'.$list->getValue('id').','.$sql->getValue('id').'" '.$selected.' >'.$sql->getValue('login') . '</option>';
+        
+        $responsible.= '<option value="'.$list->getValue('id').','.$sql->getValue('id').'" '.$selected.' >'.$sql->getValue('name') . '</option>';
+    
         $sql->next();
       }
     $responsible.= "</select></div>";
@@ -604,7 +607,10 @@ if ($func == '' || $func == 'filter') {
       $sql->setWhere(['id' => $list->getValue('responsible') ]);
       $sql->select();
        if ($sql->getRows() >= 1) {
-          $responsible = '<span class="single">'.$sql->getValue('login').'</span>';
+       
+          $responsible = '<span class="single">'.$sql->getValue('name').'</span>';
+
+          
        } else {
           $responsible = '<span class="single">--</span>';
        }
@@ -756,6 +762,7 @@ elseif ($func == 'edit' || $func == 'add') {
   $fieldset = $func == 'edit' ? $this->i18n('aufgaben_edit') : $this->i18n('aufgaben_add');
   $id = rex_request('id', 'int');
   $form = rex_form::factory(rex::getTablePrefix() . 'aufgaben', '', 'id=' . $id);
+  
   $field = $form->addTextField('title');
   $field->setLabel($this->i18n('aufgaben_task'));
   $field->getValidator()->add('notEmpty', $this->i18n('aufgaben_title_empty'));
@@ -786,10 +793,7 @@ elseif ($func == 'edit' || $func == 'add') {
   $field = $form->addTextField('finaldate');
   $field->setAttribute('id', 'datepicker');
   $field->setLabel($this->i18n('aufgaben_due_date'));
-
-  // date('d.m.Y H:i:s')
-
-  $query = 'SELECT login as label, id FROM rex_user';
+  $query = 'SELECT name as label, id FROM rex_user';  
   $select->addOption($this->i18n('aufgaben_please_choose'), '');
   $select->addSqlOptions($query);
   $field = $form->addSelectField('status');
@@ -816,7 +820,11 @@ elseif ($func == 'edit' || $func == 'add') {
       $field->setHeader('<hr/><div class="row"><div class="col-md-6">');
       $field->setFooter('</div>');
       $field->setLabel($this->i18n('aufgaben_last_change'));
-      $field = $form->addReadonlyField('updateuser');
+      $updateuser_realname = $form->getSql()->getValue('updateuser');      
+      $sql = rex_sql::factory();
+      $sql->setQuery("SELECT name FROM rex_user WHERE login = '$updateuser_realname'");
+      $field = $form->addReadonlyField('updateuser', $sql->getValue('name'));
+      
       $field->setHeader('<div class="col-md-6">');
       $field->setFooter('</div></div>');
       $field->setLabel($this->i18n('aufgaben_by'));
@@ -828,7 +836,10 @@ elseif ($func == 'edit' || $func == 'add') {
       $field->setHeader('<div class="row"><div class="col-md-6">');
       $field->setFooter('</div>');
       $field->setLabel($this->i18n('aufgaben_create_on'));
-      $field = $form->addReadonlyField('createuser');
+      $createuser_realname = $form->getSql()->getValue('createuser');      
+      $sql = rex_sql::factory();
+      $sql->setQuery("SELECT name FROM rex_user WHERE login = '$createuser_realname'");
+      $field = $form->addReadonlyField('createuser', $sql->getValue('name'));
       $field->setHeader('<div class="col-md-6">');
       $field->setFooter('</div></div><br/>');
       $field->setLabel($this->i18n('aufgaben_by'));
@@ -945,6 +956,4 @@ $("select.form-control").on('change', function () {
       }
     }
 );
-
-
 </script>
