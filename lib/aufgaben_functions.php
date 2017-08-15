@@ -105,7 +105,7 @@ class rex_aufgaben {
         $mail_prio          = $sql_aufgabe->getValue('prio');
         $mail_status        = $sql_aufgabe->getValue('status');
 
-        $eigentuemer_realname = $eigentuemer_sql->getValue('name');  
+        $mail_eigentuemer = $eigentuemer_sql->getValue('name');  
       
         $creatuser_realname = $sql_aufgabe->getValue('createuser');      
         $creatuser_sql = rex_sql::factory();
