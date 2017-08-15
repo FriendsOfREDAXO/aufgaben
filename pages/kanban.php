@@ -148,7 +148,8 @@ if (rex_post('updateprio') == "true")
                 $sql_responsible->select('*');
 
                     if ($sql_responsible->getRows() >= 1) {
-                       return $sql_responsible->getValue('login');
+                       ##taskreturn $sql_responsible->getValue('login');
+                       return $sql_responsible->getValue('name');
                     } else {
                        return '--';
                     }
@@ -376,7 +377,8 @@ if (rex_post('updateprio') == "true")
                                         foreach ($sql_zustaendig->getArray() as $zustaendig)
                                         {
                                             var_dump($zustaendig);
-                                            echo '<option value="' . $zustaendig["id"] . '">' . $zustaendig["login"] . '</option>';
+                                            ##taskecho '<option value="' . $zustaendig["id"] . '">' . $zustaendig["login"] . '</option>';
+                                            echo '<option value="' . $zustaendig["id"] . '">' . $zustaendig["name"] . '</option>';
                                         }
                                         ?>
                                     </select>
@@ -471,7 +473,15 @@ if (rex_post('updateprio') == "true")
                                             foreach ($sql_zustaendig->getArray() as $zustaendig)
                                             {
                                                 // var_dump($zustaendig);
+                                                ##bisher
+                                                /*
                                                 echo '<option value="' . $zustaendig["id"] . '">' . $zustaendig["login"] . '</option>';
+                                                */
+
+                                                ##neu-start
+                                                echo '<option value="' . $zustaendig["id"] . '">' . $zustaendig["name"] . '</option>';
+                                                ##neu-ende
+  
                                             }
                                         ?>
                                     </select>
