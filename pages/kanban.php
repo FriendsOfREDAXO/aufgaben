@@ -472,15 +472,7 @@ if (rex_post('updateprio') == "true")
                                         <?php
                                             foreach ($sql_zustaendig->getArray() as $zustaendig)
                                             {
-                                                // var_dump($zustaendig);
-                                                ##bisher
-                                                /*
-                                                echo '<option value="' . $zustaendig["id"] . '">' . $zustaendig["login"] . '</option>';
-                                                */
-
-                                                ##neu-start
                                                 echo '<option value="' . $zustaendig["id"] . '">' . $zustaendig["name"] . '</option>';
-                                                ##neu-ende
   
                                             }
                                         ?>
