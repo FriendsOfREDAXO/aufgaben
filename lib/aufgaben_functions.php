@@ -109,7 +109,6 @@ class rex_aufgaben {
         $creatuser_sql = rex_sql::factory();
         $creatuser_sql->setQuery("SELECT name FROM rex_user WHERE login = '$creatuser_realname'");
         $mail_creatuser  = $creatuser_sql->getValue('name');  
-        
         $updateuser_realname = $sql_aufgabe->getValue('updateuser');      
         $updateuser_sql = rex_sql::factory();
         $updateuser_sql->setQuery("SELECT name FROM rex_user WHERE login = '$updateuser_realname'");
