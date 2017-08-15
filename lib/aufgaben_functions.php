@@ -102,13 +102,19 @@ class rex_aufgaben {
         // Mailinhalt
         $mail_titel         = $sql_aufgabe->getValue('title');
         $mail_beschreibung  = $sql_aufgabe->getValue('description');
-        $mail_eigentuemer   = $sql_aufgabe->getValue('responsible');
         $mail_prio          = $sql_aufgabe->getValue('prio');
         $mail_status        = $sql_aufgabe->getValue('status');
-        $creatuser_realname = $sql_aufgabe->getValue('creatuser');      
+
+        $eigentuemer_realname = $sql_aufgabe->getValue('responsible');      
+        $eigentuemer_sql = rex_sql::factory();
+        $eigentuemer_sql->setQuery("SELECT name FROM rex_user WHERE login = '$eigentuemer_realname'");
+        $mail_eigentuemer  = $eigentuemerr_sql->getValue('name');  
+      
+        $creatuser_realname = $sql_aufgabe->getValue('createuser');      
         $creatuser_sql = rex_sql::factory();
         $creatuser_sql->setQuery("SELECT name FROM rex_user WHERE login = '$creatuser_realname'");
         $mail_creatuser  = $creatuser_sql->getValue('name');  
+        
         $updateuser_realname = $sql_aufgabe->getValue('updateuser');      
         $updateuser_sql = rex_sql::factory();
         $updateuser_sql->setQuery("SELECT name FROM rex_user WHERE login = '$updateuser_realname'");
