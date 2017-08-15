@@ -87,11 +87,11 @@ class rex_aufgaben {
         $sql_email_updateuser->setQuery('SELECT email FROM rex_user WHERE login = "'.$sql_aufgabe->getValue('updateuser').'" AND email != ""');
         $mail_receiver[] = $sql_email_updateuser->getValue('email');
 
-        // Createuser holen
-        $sql_email_createuser = rex_sql::factory();
-        // $sql_email_createuser->setDebug();
-        $sql_email_createuser->setQuery('SELECT email FROM rex_user WHERE login = "'.$sql_aufgabe->getValue('createuser').'" AND email != ""');
-        $mail_receiver[] = $sql_email_createuser->getValue('email');
+        // creatuser holen
+        $sql_email_creatuser = rex_sql::factory();
+        // $sql_email_creatuser->setDebug();
+        $sql_email_creatuser->setQuery('SELECT email FROM rex_user WHERE login = "'.$sql_aufgabe->getValue('creatuser').'" AND email != ""');
+        $mail_receiver[] = $sql_email_creatuser->getValue('email');
         */
         // Doppelte Mail Empfänger entfernen
         $mail_adressen = '';
@@ -105,8 +105,15 @@ class rex_aufgaben {
         $mail_eigentuemer   = $sql_aufgabe->getValue('responsible');
         $mail_prio          = $sql_aufgabe->getValue('prio');
         $mail_status        = $sql_aufgabe->getValue('status');
-        $mail_creatuser     = $sql_aufgabe->getValue('createuser');
-        $mail_updateuser    = $sql_aufgabe->getValue('updateuser');
+        $creatuser_realname = $sql_aufgabe->getValue('creatuser');      
+        $creatuser_sql = rex_sql::factory();
+        $creatuser_sql->setQuery("SELECT name FROM rex_user WHERE login = '$creatuser_realname'");
+        $mail_creatuser  = $creatuser_sql->getValue('name');  
+        $updateuser_realname = $sql_aufgabe->getValue('updateuser');      
+        $updateuser_sql = rex_sql::factory();
+        $updateuser_sql->setQuery("SELECT name FROM rex_user WHERE login = '$updateuser_realname'");
+        $mail_updateuser  = $updateuser_sql->getValue('name');  
+
         $mail_finaldate     = $sql_aufgabe->getValue('finaldate');
 
         if ($mail_finaldate == '') {
@@ -121,7 +128,7 @@ class rex_aufgaben {
 
         $sql_eigentuemer_name = rex_sql::factory();
         $sql_eigentuemer_name->setQuery('SELECT login FROM rex_user WHERE id = '.$mail_eigentuemer);
-        $mail_eigentuemer = $sql_eigentuemer_name->getValue('login');
+        $mail_eigentuemer = $sql_eigentuemer_name->getValue('name');
 
 
         if(rex_addon::get('textile')->isAvailable()) {
