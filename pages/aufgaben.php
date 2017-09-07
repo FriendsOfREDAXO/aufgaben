@@ -27,15 +27,11 @@ $filter_done        = rex_request('filter_done', 'string');
 $current_article_id = rex_request('id', 'int');
 $current_user       = rex::getUser()->getId();
 $sql_aufgabe        = rex_sql::factory();
-$sql_aufgabe->setQuery('SELECT * FROM rex_aufgaben '.$expand_query);
-$mail_versendet     = rex_sql::factory();
-$mail_versendet->setQuery('SELECT * FROM rex_aufgaben '.$expand_query);
-$mail_versendet 	= $sql_aufgabe->getValue('versendet');
-
+$sql_aufgabe->setQuery('SELECT * FROM rex_aufgaben');
 
   // Mails verschicken
   $mailbetreff = '';
-  if ($aufgabe == 'new' && $mail_versendet == '2') {
+  if ($aufgabe == 'new') {
        $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
         $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
@@ -62,7 +58,7 @@ $mail_versendet 	= $sql_aufgabe->getValue('versendet');
 
     
   
-  if ($aufgabe == 'edit' && $mail_versendet == '2') {
+  if ($aufgabe == 'edit') {
     if ($aufgabe == 'edit') { $mailbetreff =  $this->i18n('aufgaben_mail_change'); }
         $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
@@ -82,15 +78,13 @@ $mail_versendet 	= $sql_aufgabe->getValue('versendet');
                 }
     		 }
     
-
-        
             $mail->send_mails($this->getConfig('mails'),$aktuelle_id, $aufgabe, $mailbetreff, $bodyText, $responseId);             
         }
         
 
 //    $mail->send_mails($this->getConfig('mails'), $aktuelle_id, $aufgabe, $mailbetreff);
   }
-  if ($aufgabe == 'edit' && $mail_versendet = '1' || $aufgabe == 'new' && $mail_versendet = '1') {
+  if ($aufgabe == 'edit' || $aufgabe == 'new') {
        $sql_aufgabe->setQuery("UPDATE rex_aufgaben SET versendet = '2' WHERE id = ".$current_article_id);      
   }
 
@@ -153,7 +147,7 @@ if ($func == 'setstatus') {
   $sql->setValue('updatedate', $checkTimeNow);
   $sql->setValue('status', $new_status);
   $sql->setValue('versendet', '2');
-  if ($sql->update() && $mail_versendet == '2') {
+  if ($sql->update()) {
         $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
         $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
@@ -196,7 +190,7 @@ if ($func == 'setprio') {
   $sql->setWhere('id = ' . $id);
   $sql->setValue('prio', $new_prio);
   $sql->setValue('versendet', '2');
-  if ($sql->update() && $mail_versendet == '2') {
+  if ($sql->update()) {
   	
 
         $mail = new rex_aufgaben();
@@ -242,7 +236,7 @@ if ($func == 'change_responsible') {
   $sql->setWhere('id = ' . $responsible_ids[0]);
   $sql->setValue('responsible', $responsible_ids[1]);
   $sql->setValue('versendet', '2');
-  if ($sql->update() && $mail_versendet == '2') {
+  if ($sql->update()) {
         $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
         $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
