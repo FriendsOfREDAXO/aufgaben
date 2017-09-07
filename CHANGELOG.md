@@ -5,6 +5,15 @@
 ### Changelog ###
 
 
+### 07.09.2017 Version 4.1.0 ###
+
+- E-Mail Versand entsprechend eingestelltem Intervall
+- E-Mails werden je Nutzer gesammelt
+- Der E-Mail-Betreff kann gesetzt werden
+- Absemder-E-Mail-Adresse kann festgelegt werden
+- E-Mails können an alle Empfänger oder nur an die Zuständigen geschickt werden
+Danke an @chrison94!
+
 ### 25.02.2017 Version 4.0.2 ###
 
 -Update en_gb.lang - Danke an @ynamite! 
