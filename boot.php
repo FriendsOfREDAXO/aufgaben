@@ -42,6 +42,47 @@ if (rex::isBackend() && rex::getUser()) {
     $page['subpages']['aufgaben'] = ['title' =>  $this->i18n('aufgaben_title')];
     $this->setProperty('page', $page);
   }
+    if ($this->getConfig('time') == '5Minuten') {
+            $this->setConfig('time', 5);
+     //   dump($this->getConfig('time'));
+    }if ($this->getConfig('time') == '15Minuten') {
+            $this->setConfig('time', 15);
+      //  dump($this->getConfig('time'));
+    }if ($this->getConfig('time') == '30Minuten') {
+            $this->setConfig('time', 30);
+     //   dump($this->getConfig('time'));
+        
+    }
+        if ($this->getConfig('time') == '60Minuten') {
+            $this->setConfig('time', 60);
+    //    dump($this->getConfig('time'));
+    }if ($this->getConfig('time') == '120Minuten') {
+            $this->setConfig('time', 120);
+    //    dump($this->getConfig('time'));
+    }if ($this->getConfig('time') == '0Minuten') {
+            $this->setConfig('time', 0);
+     //   dump($this->getConfig('time'));
+        
+    }
+	  if ($this->getConfig('absender') != null) {
+		$absender = $this->getConfig('absender');
+   		$this->setConfig('absender',$absender);
+    }
+    if ($this->getConfig('betreff') != null) {
+    	$betreff = $this->getConfig('betreff');
+    	$this->setConfig('betreff',$betreff);
+    }
+    if($this->getConfig('send-to-all') == 1) {
+    	$checkbox = $this->getConfig('send-to-all');
+    	$this->setConfig('send-to-all', $checkbox);
+    //	dump($checkbox);
+    }
+    if($this->getConfig('send-to-all') == 0) {
+    	$checkbox = $this->getConfig('send-to-all');
+    	$this->setConfig('send-to-all', $checkbox);
+    //	dump($checkbox);
+    }
+    
 
   //  Kanban Ansicht
   if ($this->getConfig('ansicht') == 'kanban' OR $this->getConfig('ansicht') == 'beide') {
@@ -49,7 +90,6 @@ if (rex::isBackend() && rex::getUser()) {
       $page['subpages']['kanban'] = ['title' => 'Kanban Ansicht'];
       $this->setProperty('page', $page);
   }
-
   //  Kategorien
   $page = $this->getProperty('page');
   $page['subpages']['categories'] = ['title' => $this->i18n('aufgaben_categories'), 'perm' => 'aufgaben[categories]'];
@@ -76,6 +116,7 @@ if (rex::isBackend() && rex::getUser()) {
     $page['subpages']['info']['subpages']['licence'] = ['title' => $this->i18n('aufgaben_licence')];
     $this->setProperty('page', $page);
 
+    //Standard-Delay
 
 if ($this->getConfig('install') == 'true' && rex::getUser()) {
    $current_page = rex_be_controller::getCurrentPage();

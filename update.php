@@ -13,6 +13,7 @@ rex_sql_table::get("rex_aufgaben")
 ->ensureColumn(new rex_sql_column('updateuser', 'varchar(255)'))
 ->ensureColumn(new rex_sql_column('observer', 'varchar(255)'))
 ->ensureColumn(new rex_sql_column('finaldate', 'varchar(255)'))
+->ensureColumn(new rex_sql_column('versendet', 'varchar(255)'))
 ->alter();
 
 

@@ -3,6 +3,7 @@
 if (!$this->hasConfig()) {
   $this->setConfig('ansicht', 'beide');
   $this->setConfig('mails', []);
+  $this->setConfig('time', 5);
 }
 
 $sql = rex_sql::factory();
@@ -21,6 +22,7 @@ $sql->setQuery('
     `updateuser` varchar(255) DEFAULT NULL,
     `observer` varchar(255) DEFAULT NULL,
     `finaldate` varchar(255) DEFAULT NULL,
+    `versendet` varchar(255) DEFAULT "nein",
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ');

@@ -50,6 +50,8 @@ aufgaben_mail_change_prio = Tarefa - prioridade atualizada:
 aufgaben_mail_change_responsible = Tarefa - responsabilidade atualizada:
 aufgaben_mail_change_cat = Tarefa - categoria atualizada:
 
+aufgaben_versendet = Mail
+
 aufgaben_no_task = <b>Nenhuma tarefa encontrada.<b><br/><br/>Possíveis motivos:<br/><br/>- nenhuma tarefa foi criada<br/> - o filtro atualizado exclui todas as tarefas existentes<br/>-tarefas completadas estão programadas para não serem exibidas
 
 aufgaben_prev_month = Mês anterior
@@ -87,6 +89,7 @@ aufgaben_sa = Sa
 //
 // Kategorien
 //
+
 aufgaben_categories_title = Categorias
 aufgaben_categories_category = Categoria
 aufgaben_categories_color = Cor
@@ -102,6 +105,12 @@ aufgaben_categories_category_in_use  = Há tarefas atribuídas a esta categoria.
 //
 // Einstellungen
 //
+5_minuten_verzoegerung = 5 Minutos
+15_minuten_verzoegerung = 15 Minutos
+30_minuten_verzoegerung = 30 Minutos
+60_minuten_verzoegerung = 1 hora
+120_minuten_verzoegerung = 2 horas
+0_minuten_verzoegerung = Sem atraso
 aufgaben_settings_title = Configurações
 aufgaben_settings_ansicht = Vista
 aufgaben_settings_beide = Ambas as vistas
@@ -110,7 +119,12 @@ aufgaben_settings_kanban = Kanban
 aufgaben_settings_e_mails_an = Enviar e-emails para
 aufgaben_settings_e_mails_empty = Nenhum dos usuários da gestão de usuários inseriu um e-mail.
 aufgaben_settings_save = Salvar configurações
-
+absender_Email = Remetente
+absender_Email_placeholder = Digite seu endereço de e-mail
+betreff_Email_placeholder = Digite o assunto para o e-mail
+betreff_Email = Assunto do E-Mail
+send-to-all-checkbox = todos notificam
+zeit_ansicht = intervalo de tempo automático (E-Mail)
 
 //
 // Export / Import

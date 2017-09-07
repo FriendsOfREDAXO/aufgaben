@@ -50,6 +50,8 @@ aufgaben_mail_change_prio = Task - priority updated:
 aufgaben_mail_change_responsible = Task - responsibility updated:
 aufgaben_mail_change_cat = Task - category updated:
 
+aufgaben_versendet = Mail
+
 aufgaben_no_task = <b>No tasks found.</b><br/><br/>Possible reasons:<br/><br/>- no tasks were created<br/> - the currently applied filter excludes all of the existing tasks<br/>- completed tasks are set to be hidden
 
 aufgaben_prev_month = Previous month
@@ -102,6 +104,12 @@ aufgaben_categories_category_in_use  = There are tasks assigned to this category
 //
 // Einstellungen
 //
+5_minuten_verzoegerung = 5 Minutes
+15_minuten_verzoegerung = 15 Minutes
+30_minuten_verzoegerung = 30 Minutes
+60_minuten_verzoegerung = 1 hour
+120_minuten_verzoegerung = 2 hours
+0_minuten_verzoegerung = No delay
 aufgaben_settings_title = Settings
 aufgaben_settings_ansicht = View
 aufgaben_settings_beide = Both views
@@ -110,7 +118,12 @@ aufgaben_settings_kanban = Kanban
 aufgaben_settings_e_mails_an = Send e-mails to
 aufgaben_settings_e_mails_empty = None of the users in the user management have e-mail addresses supplied.
 aufgaben_settings_save = Save settings
-
+absender_Email = Sender
+absender_Email_placeholder = Please enter your E-Mail address
+betreff_Email_placeholder = Please enter the subject for the e-mail
+betreff_Email = Subject 
+send-to-all-checkbox = Send mail to all
+zeit_ansicht = Automatic send Mail intervall
 
 //
 // Export / Import
