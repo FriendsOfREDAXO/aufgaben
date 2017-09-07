@@ -22,7 +22,7 @@ $sql->setQuery('
     `updateuser` varchar(255) DEFAULT NULL,
     `observer` varchar(255) DEFAULT NULL,
     `finaldate` varchar(255) DEFAULT NULL,
-    `versendet` varchar(255) DEFAULT "nein",
+    `versendet` varchar(255) DEFAULT "2",
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ');
