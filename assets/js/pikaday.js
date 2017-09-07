@@ -173,7 +173,9 @@
     },
 
     /**
-     * defaults and localisation
+     * defau$n['label'] = '<label for="aufgaben-ansicht">'.$this->i18n('aufgaben_settings_ansicht').'</label>';
+$n['field'] = '<div class="rex-select-style">'.$sel_ansicht->get().'</div>';
+$formElements[] = $n;lts and localisation
      */
     defaults = {
 

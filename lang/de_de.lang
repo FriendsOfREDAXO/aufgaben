@@ -50,6 +50,8 @@ aufgaben_mail_change_prio = Aufgabe - Priorität geändert:
 aufgaben_mail_change_responsible = Aufgabe - Zuständigkeit geändert:
 aufgaben_mail_change_cat = Aufgabe - Kategorie geändert:
 
+aufgaben_versendet = Mail
+
 aufgaben_no_task = <b>Keine Aufgaben vorhanden.</b><br/><br/>Mögliche Ursachen:<br/><br/>- es ist keine Aufgabe angelegt<br/> - keine der vorhandenen Aufgaben erfüllt auf die eingestellten Filterkriterien<br/>- die Ausgabe der erledigten Aufgaben ist abgeschaltet
 
 aufgaben_prev_month = Vorheriger Monat
@@ -102,6 +104,12 @@ aufgaben_categories_category_in_use  = Dieser Kategorie sind noch Aufgaben zugeo
 //
 // Einstellungen
 //
+5_minuten_verzoegerung = 5 Minuten
+15_minuten_verzoegerung = 15 Minuten
+30_minuten_verzoegerung = 30 Minuten
+60_minuten_verzoegerung = 1 Stunde
+120_minuten_verzoegerung = 2 Stunden
+0_minuten_verzoegerung = Keine Verzögerung
 aufgaben_settings_title = Einstellungen
 aufgaben_settings_ansicht = Ansicht
 aufgaben_settings_beide = Beide Ansichten
@@ -110,7 +118,12 @@ aufgaben_settings_kanban = Kanban
 aufgaben_settings_e_mails_an = E-Mails an
 aufgaben_settings_e_mails_empty = Bei keinem User ist in der Benutzerverwaltung eine E-Mail Adresse eingetragen.
 aufgaben_settings_save = Einstellungen speichern
-
+absender_Email = Absender 
+absender_Email_placeholder = Bitte geben Sie ihre E-Mail Adresse ein
+betreff_Email_placeholder = Bitte geben Sie den Betreff für die E-Mail ein
+betreff_Email = Betreff
+send-to-all-checkbox = E-Mail an alle
+zeit_ansicht = E-Mail Versand Intervall
 
 //
 // Export / Import
