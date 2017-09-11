@@ -32,6 +32,10 @@ $sql_aufgabe->setQuery('SELECT * FROM rex_aufgaben');
   // Mails verschicken
   $mailbetreff = '';
   if ($aufgabe == 'new') {
+  	if($this->getConfig('mails') == null) {
+  		echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
+  	}
+  	else if($this->getConfig('mails') != null) {
        $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
         $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
@@ -54,12 +58,17 @@ $sql_aufgabe->setQuery('SELECT * FROM rex_aufgaben');
             $mail->send_mails($this->getConfig('mails'),$aktuelle_id, $aufgabe, $mailbetreff, $bodyText, $responseId);             
         }
     }
+}
 
 
     
   
   if ($aufgabe == 'edit') {
-    if ($aufgabe == 'edit') { $mailbetreff =  $this->i18n('aufgaben_mail_change'); }
+    	if($this->getConfig('mails') == null) {
+  		echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
+  	}
+  	 else if($this->getConfig('mails') != null) {
+    	$mailbetreff =  $this->i18n('aufgaben_mail_change'); 
         $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
         $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
@@ -80,10 +89,9 @@ $sql_aufgabe->setQuery('SELECT * FROM rex_aufgaben');
     
             $mail->send_mails($this->getConfig('mails'),$aktuelle_id, $aufgabe, $mailbetreff, $bodyText, $responseId);             
         }
-        
-
+  	 }       
+}
 //    $mail->send_mails($this->getConfig('mails'), $aktuelle_id, $aufgabe, $mailbetreff);
-  }
   if ($aufgabe == 'edit' || $aufgabe == 'new') {
        $sql_aufgabe->setQuery("UPDATE rex_aufgaben SET versendet = '2' WHERE id = ".$current_article_id);      
   }
@@ -148,6 +156,10 @@ if ($func == 'setstatus') {
   $sql->setValue('status', $new_status);
   $sql->setValue('versendet', '2');
   if ($sql->update()) {
+  	if($this->getConfig('mails') == null) {
+  		echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
+  	}
+  	 else if($this->getConfig('mails') != null) {
         $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
         $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
@@ -167,6 +179,7 @@ if ($func == 'setstatus') {
     		 }
     		 $mail->send_mails($this->getConfig('mails'),$aktuelle_id, 'change', $this->i18n('aufgaben_mail_change_status'), $bodyText, $responseId);             
         }
+  	 }
   }
   $func = '';
 
@@ -191,7 +204,10 @@ if ($func == 'setprio') {
   $sql->setValue('prio', $new_prio);
   $sql->setValue('versendet', '2');
   if ($sql->update()) {
-  	
+	if($this->getConfig('mails') == null) {
+  		echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
+  	}
+  	else if($this->getConfig('mails') != null) {
 
         $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
@@ -215,6 +231,7 @@ if ($func == 'setprio') {
         
             $mail->send_mails($this->getConfig('mails'),$aktuelle_id, 'change', $this->i18n('aufgaben_mail_change_prio'), $bodyText, $responseId);             
         } 
+  	}
   }
 
   $func = '';
@@ -237,6 +254,10 @@ if ($func == 'change_responsible') {
   $sql->setValue('responsible', $responsible_ids[1]);
   $sql->setValue('versendet', '2');
   if ($sql->update()) {
+  	if($this->getConfig('mails') == null) {
+  		echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
+  	}
+  	 else if($this->getConfig('mails') != null) {
         $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
         $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
@@ -255,7 +276,8 @@ if ($func == 'change_responsible') {
                 }
     		 }
             $mail->send_mails($this->getConfig('mails'),$aktuelle_id, 'change', $this->i18n('aufgaben_mail_change_eigentuemer'), $bodyText, $responseId);             
-        } 
+        }
+	}
   }
   $func = '';
 }
@@ -276,6 +298,10 @@ if ($func == 'change_category') {
   $sql->setValue('category', $category_ids[1]);
  
   if ($sql->update()) {
+  	if($this->getConfig('mails') == null) {
+  		echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
+  	}
+  	else if($this->getConfig('mails') != null) {
   	 $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
         $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
@@ -295,6 +321,7 @@ if ($func == 'change_category') {
     		 }
             $mail->send_mails($this->getConfig('mails'),$aktuelle_id, $aufgabe, $mailbetreff, $bodyText, $responseId);             
         }
+  	}
   }  
   $func = '';
 }
