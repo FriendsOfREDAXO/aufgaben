@@ -44,6 +44,7 @@ aufgaben_mail_sent_to = E-mail sent to:
 aufgaben_markitupinfo = Created by AddOn Tasks
 
 aufgaben_mail_change = Task updated:
+aufgaben_mail_change_eigentuemer = Owner updated:
 aufgaben_mail_new = New task:
 aufgaben_mail_change_status = Task - status updated:
 aufgaben_mail_change_prio = Task - priority updated:
