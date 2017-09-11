@@ -4,6 +4,9 @@ if (!$this->hasConfig()) {
   $this->setConfig('ansicht', 'beide');
   $this->setConfig('mails', []);
   $this->setConfig('time', 5);
+  $this->setConfig('send-to-all', '0');
+  $this->setConfig('betreff', "");
+  $this->setConfig('absender', "");
 }
 
 $sql = rex_sql::factory();
