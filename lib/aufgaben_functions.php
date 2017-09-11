@@ -128,7 +128,7 @@ function createMailText($aktuelle_id) {
     
 }
  function checkTime($aktuelle_id) {
-      $delay = rex_config::get(aufgaben, 'time');
+      $delay = rex_config::get('aufgaben', 'time');
       $sql_aufgabe = rex_sql::factory();
       $sql_aufgabe->setQuery('SELECT * FROM rex_aufgaben WHERE id = '.$aktuelle_id);
  
@@ -151,9 +151,9 @@ function createMailText($aktuelle_id) {
 
   // MAILS
   function send_mails($email_adressen, $aktuelle_id, $aufgabe, $betreff, $bodyText, $responseId) {
-        $sender = rex_config::get(aufgaben, 'absender');
-        $betreffMail = rex_config::get(aufgaben, 'betreff');
-        $checkbox = rex_config::get(aufgaben, 'send-to-all');
+        $sender = rex_config::get('aufgaben', 'absender');
+        $betreffMail = rex_config::get('aufgaben', 'betreff');
+        $checkbox = rex_config::get('aufgaben', 'send-to-all');
        
      
     if ($aufgabe != '') {
@@ -288,8 +288,3 @@ function createMailText($aktuelle_id) {
   }
 
 }
-
-
-
-
-
