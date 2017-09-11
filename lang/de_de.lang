@@ -44,6 +44,7 @@ aufgaben_mail_sent_to = E-Mail gesendet an:
 aufgaben_markitupinfo = Angelegt durch das Addon Aufgaben
 
 aufgaben_mail_change = Aufgabe geändert:
+aufgaben_mail_change_eigentuemer = Aufgabe geändert:
 aufgaben_mail_new = Neue Aufgabe:
 aufgaben_mail_change_status = Aufgabe - Status geändert:
 aufgaben_mail_change_prio = Aufgabe - Priorität geändert:
