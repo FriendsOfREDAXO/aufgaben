@@ -4,11 +4,11 @@ $func = rex_request('func', 'string');
 
 if ($func == 'import_beispieldaten') {
 
-  $current_user       = rex::getUser()->getId();
+  $current_user  = rex::getUser()->getId();
   $sql = rex_sql::factory();
   //$sql->setDebug();
   $sql->setQuery('SELECT * FROM rex_user WHERE id = '.$current_user);
-  $user = $sql->getValue('name');
+  $user = $sql->getValue('login');
 
   $qry = "
 
