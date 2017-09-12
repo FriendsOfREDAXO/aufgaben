@@ -154,6 +154,7 @@ function createMailText($aktuelle_id) {
         $sender = rex_config::get('aufgaben', 'absender');
         $betreffMail = rex_config::get('aufgaben', 'betreff');
         $checkbox = rex_config::get('aufgaben', 'send-to-all');
+	$body = "";
        
      
     if ($aufgabe != '') {
