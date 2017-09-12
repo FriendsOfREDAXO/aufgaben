@@ -48,13 +48,11 @@ $sql_aufgabe->setQuery('SELECT * FROM rex_aufgaben');
             	$aktuelle_id = $sql->getValue('id');
                 $checkTimer = $mail->checkTime($sql->getValue('id'));
                 if($checkTimer == true) {
-                //	 dump("CHECKTIMER".$checkTimer);
-                //	 dump($aktuelle_id);
-                	 $sql_aufgabe->setQuery("UPDATE rex_aufgaben SET versendet = '1' WHERE id = ".$aktuelle_id);     
+               	 $sql_aufgabe->setQuery("UPDATE rex_aufgaben SET versendet = '1' WHERE id = ".$aktuelle_id);     
                  $bodyText .= $mail->createMailText($aktuelle_id);
                 }
     		 }
-        	 dump($responseId);
+        	 
             $mail->send_mails($this->getConfig('mails'),$aktuelle_id, $aufgabe, $mailbetreff, $bodyText, $responseId);             
         }
     }
