@@ -21,7 +21,8 @@ if (rex_post('addtodo') == "true")
     $sql_add->setValue('observer', '');
     $sql_add->setValue('finaldate', '');
     $sql_add->setValue('status', rex_post('status'));
-
+    $sql_add->setValue('versendet', 2);
+    
     if ($sql_add->insert())
     {
         http_response_code(200);
