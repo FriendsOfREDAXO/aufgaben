@@ -1,0 +1,155 @@
+//
+// General
+//
+aufgaben_title      = Uppgifter
+aufgaben_info       = Info
+aufgaben_help       = Hjälp
+aufgaben_licence    = Licens
+aufgaben_changelog  = Changelog
+
+aufgaben_description = Beskrivning
+
+aufgaben_task = Uppgift
+aufgaben_task_hide = Dölj uppgifterna
+aufgaben_last_update = Senaste aktualisering
+
+aufgaben_last_update
+aufgaben_due = Due
+aufgaben_due_date = Förfallodatum
+
+aufgaben_category = Kategori
+aufgaben_categories = Kategorier
+
+aufgaben_responsible = Ansvarig
+
+aufgaben_prio = Prio
+
+aufgaben_status = Status
+
+aufgaben_edit = Redigera uppgift
+aufgaben_add = Tillfoga uppgift
+aufgaben_title_empty = Var god ange en titel.
+aufgaben_category_empty = Var god välj en kategori.
+aufgaben_responsible_empty = Var god ange vem som är ansvarig för uppgiften.
+
+aufgaben_please_choose = Var god välj
+aufgaben_last_change = Senaste ändring
+aufgaben_create_on = Skapat den
+
+aufgaben_by = av
+
+aufgaben_mail_could_not_sent = E-posten kunde inte skickas
+aufgaben_mail_sent_to = E-post har skickats till:
+
+aufgaben_markitupinfo = Created by AddOn Tasks
+
+aufgaben_mail_change = Uppgiften ändrades:
+aufgaben_mail_change_eigentuemer = Ändrat uppgift:
+aufgaben_mail_new = Ny uppgift
+aufgaben_mail_change_status = Uppgift - status ändrades:
+aufgaben_mail_change_prio = Uppgift - prioritet ändrades:
+aufgaben_mail_change_responsible = Uppgift - behörighet ändrades:
+aufgaben_mail_change_cat = Uppgift - kategori ändrades:
+
+aufgaben_versendet = E-post
+
+aufgaben_no_task = <b>Inga uppgifter hittades.</b><br/><br/>Möjliga orsaker:<br/><br/>- inga uppgifter skapades<br/>- det aktuella filtret filterar bort alla befintliga uppgifter<br/>- slutförda uppgifter är inställda att vara dolda
+
+aufgaben_prev_month = Förra månad
+aufgaben_next_month = Nästa månad
+aufgaben_januar = Januari
+aufgaben_februar = Februari
+aufgaben_maerz = Mars
+aufgaben_april = April
+aufgaben_mai = Maj
+aufgaben_juni = Juni
+aufgaben_juli = Juli
+aufgaben_august = Augusti
+aufgaben_september = September
+aufgaben_oktober = Oktober
+aufgaben_november = November
+aufgaben_dezember = December
+aufgaben_sonntag = Söndag
+aufgaben_montag = Måndag
+aufgaben_dienstag = Tisdag
+aufgaben_mittwoch = Onsdag
+aufgaben_donnerstag = Torsdag
+aufgaben_freitag = Fredag
+aufgaben_samstag = Lördag
+aufgaben_so = Sö
+aufgaben_mo = Må
+aufgaben_di = Ti
+aufgaben_mi = On
+aufgaben_do = To
+aufgaben_fr = Fr
+aufgaben_sa = Lö
+
+
+
+
+//
+// Kategorien
+//
+aufgaben_categories_title = Kategorier
+aufgaben_categories_category = Kategori
+aufgaben_categories_color = Färg
+aufgaben_categories_no_category = Inga kategorier hittades. <br /> Vänligen skapa en kategori eller kontakta din administratör
+aufgaben_categories_category_add = Skapa kategori
+aufgaben_categories_category_edit = Redigera kategori
+aufgaben_categories_category_empty = Var god ange en kategori.
+aufgaben_categories_category_delete = Radera kategori
+aufgaben_categories_category_deleted = Kategorien raderades.
+aufgaben_categories_category_in_use  = Det finns uppgifter kvar som tilldelats den här kategorin. <br />Kategorien<b> har inte </ b> raderats!
+
+
+//
+// Einstellungen
+//
+5_minuten_verzoegerung = 5 minuter
+15_minuten_verzoegerung = 15 minuter
+30_minuten_verzoegerung = 30 minuter
+60_minuten_verzoegerung = 1 timme
+120_minuten_verzoegerung = 2 timmar
+0_minuten_verzoegerung = Inga fördröjningar
+aufgaben_settings_title = Inställningar
+aufgaben_settings_ansicht = Synhåll
+aufgaben_settings_beide = Båda synhåll
+aufgaben_settings_liste = Lista
+aufgaben_settings_kanban = Kanban
+aufgaben_settings_e_mails_an = Skicka e-post till
+aufgaben_settings_e_mails_empty = Det finns inga e-postadresser lämnade till någon av användare i användarförvaltning
+aufgaben_settings_save = Spara inställningarna
+absender_Email = Avsändare
+absender_Email_placeholder = Vänligen ange din e-postadress
+betreff_Email_placeholder = Vänligen ange ett ämne
+betreff_Email = Ämne
+send-to-all-checkbox = Skicka e-postmeddelande till alla
+zeit_ansicht = E-post leveransintervall
+
+//
+// Export / Import
+//
+aufgaben_exim_export = Export
+aufgaben_exim_dateityp = Filtyp
+aufgaben_exim_dateityp_csv = Exportera uppgifter som <b>.csv</b>
+aufgaben_exim_dateityp_json = Exportera uppgifter som <b>.json</b>
+aufgaben_exim_export_save = Exportera uppgifter
+
+
+
+//
+// Kanban Ansicht
+//
+aufgaben_kanban = Kanban
+aufgaben_kanban_aufgabe_hinzufuegen = Tillfoga uppgift
+aufgaben_kanban_title = Titel
+aufgaben_kanban_error_title = Var god ange en titel
+aufgaben_kanban_description = Beskrivning
+aufgaben_kanban_category = Kategori
+aufgaben_kanban_responsible = Ansvarig
+aufgaben_kanban_status = Status
+aufgaben_kanban_abort = Avbryta
+aufgaben_kanban_save = Spara
+aufgaben_kanban_edit = Redigera uppgift
+aufgaben_kanban_delete = Radera uppgift
+aufgaben_kanban_delete_confirm = Vill du verkligen radera uppgiften?
