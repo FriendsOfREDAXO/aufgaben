@@ -1,0 +1,155 @@
+//
+// General
+//
+aufgaben_title      = Tareas
+aufgaben_info       = Info
+aufgaben_help       = Ayuda
+aufgaben_licence    = Licencia
+aufgaben_changelog  = Cambios
+
+aufgaben_description = Descripción
+
+aufgaben_task = Tarea
+aufgaben_task_hide = Ocultar tareas
+aufgaben_last_update = Última actualización
+
+aufgaben_last_update
+aufgaben_due = Vencido
+aufgaben_due_date = Fecha de vencimiento
+
+aufgaben_category = Categoría
+aufgaben_categories = Categorías
+
+aufgaben_responsible = Responsable
+
+aufgaben_prio = Prio
+
+aufgaben_status = Estado
+
+aufgaben_edit = Editar tarea
+aufgaben_add = Añadir una tarea
+aufgaben_title_empty = Por favor ingrese un título.
+aufgaben_category_empty = Por favor seleccione una categoría
+aufgaben_responsible_empty = Por favor, indique quién es el responsable de esta tarea.
+
+aufgaben_please_choose = Por favor elija
+aufgaben_last_change = Último cambio en
+aufgaben_create_on = Creado en
+
+aufgaben_by = de
+
+aufgaben_mail_could_not_sent = El e-mail no pudo ser enviado.
+aufgaben_mail_sent_to = E-mail enviado a:
+
+aufgaben_markitupinfo = Creado por las tareas de complemento
+
+aufgaben_mail_change = Tarea modificada:
+aufgaben_mail_change_eigentuemer = Tarea modificada:
+aufgaben_mail_new = Nueva tarea:
+aufgaben_mail_change_status = Tarea - Estado cambiado:
+aufgaben_mail_change_prio = Tarea: Cambio de prioridad:
+aufgaben_mail_change_responsible = Tarea: Responsabilidad modificada:
+aufgaben_mail_change_cat = Tarea - Categoría modificada:
+
+aufgaben_versendet = Correo
+
+aufgaben_no_task = <b>No hay tareas.</b><br/><br/>Posibles causas:<br/><br/>- no se crea ninguna tarea<br/>- ninguna de las tareas existentes se cumple con los criterios de filtro establecidos<br/>- la salida de las tareas completadas se desactiva
+
+aufgaben_prev_month = Mes anterior
+aufgaben_next_month = El próximo mes
+aufgaben_januar = Enero
+aufgaben_februar = Febrero
+aufgaben_maerz = Marzo
+aufgaben_april = Abril
+aufgaben_mai = Mayo
+aufgaben_juni = Junio
+aufgaben_juli = Julio
+aufgaben_august = Agosto
+aufgaben_september = Septiembre
+aufgaben_oktober = Octubre
+aufgaben_november = Noviembre
+aufgaben_dezember = Diciembre
+aufgaben_sonntag = Domingo
+aufgaben_montag = Lunes
+aufgaben_dienstag = Martes
+aufgaben_mittwoch = Miércoles
+aufgaben_donnerstag = Jueves
+aufgaben_freitag = Viernes
+aufgaben_samstag = Sábado
+aufgaben_so = Dom
+aufgaben_mo = Lun
+aufgaben_di = Mar
+aufgaben_mi = Mié
+aufgaben_do = Jue
+aufgaben_fr = Vie
+aufgaben_sa = Sáb
+
+
+
+
+//
+// Kategorien
+//
+aufgaben_categories_title = Categorías
+aufgaben_categories_category = Categoría
+aufgaben_categories_color = Color
+aufgaben_categories_no_category = No hay categoría disponible.<br/>Por favor crea una categoría o informa a tu administrador.
+aufgaben_categories_category_add = Añadir una categoría
+aufgaben_categories_category_edit = Editar categoría
+aufgaben_categories_category_empty = Por favor ingrese una categoría.
+aufgaben_categories_category_delete = Eliminar categoría
+aufgaben_categories_category_deleted = La categoría ha sido eliminada.
+aufgaben_categories_category_in_use  = Las tareas aún se asignan a esta categoría.<br/><b>¡La categoría no se ha eliminado!</b>
+
+
+//
+// Einstellungen
+//
+5_minuten_verzoegerung = 5 minutos
+15_minuten_verzoegerung = 15 minutos
+30_minuten_verzoegerung = 30 minutos
+60_minuten_verzoegerung = 1 hora
+120_minuten_verzoegerung = 2 horas
+0_minuten_verzoegerung = Sin demora
+aufgaben_settings_title = Ajustes
+aufgaben_settings_ansicht = Ver
+aufgaben_settings_beide = Ambas vistas
+aufgaben_settings_liste = Lista
+aufgaben_settings_kanban = Kanban
+aufgaben_settings_e_mails_an = E-Mails a
+aufgaben_settings_e_mails_empty = Para ningún usuario, se ingresa una dirección de correo electrónico en la administración del usuario.
+aufgaben_settings_save = Guardar configuraciones
+absender_Email = Remitente
+absender_Email_placeholder = Por favor ingrese su dirección de correo electrónico
+betreff_Email_placeholder = Por favor ingrese el asunto para el correo electrónico
+betreff_Email = Respecto
+send-to-all-checkbox = E-mail a todos
+zeit_ansicht = Intervalo de entrega de correo electrónico
+
+//
+// Export / Import
+//
+aufgaben_exim_export = Exportación
+aufgaben_exim_dateityp = Tipo de archivo
+aufgaben_exim_dateityp_csv = Exportar tareas como <b>.csv</b>
+aufgaben_exim_dateityp_json = Exportar tareas como <b>.json</b>
+aufgaben_exim_export_save = Tareas de exportación
+
+
+
+//
+// Kanban Ansicht
+//
+aufgaben_kanban = Kanban
+aufgaben_kanban_aufgabe_hinzufuegen = Agregar tarea
+aufgaben_kanban_title = Título
+aufgaben_kanban_error_title = Por favor ingrese un título
+aufgaben_kanban_description = Descripción
+aufgaben_kanban_category = Categoría
+aufgaben_kanban_responsible = Responsable
+aufgaben_kanban_status = Estado
+aufgaben_kanban_abort = Cancelar
+aufgaben_kanban_save = Guardar
+aufgaben_kanban_edit = Editar tarea
+aufgaben_kanban_delete = Eliminar tarea
+aufgaben_kanban_delete_confirm = ¿Debería eliminarse realmente la siguiente tarea?
