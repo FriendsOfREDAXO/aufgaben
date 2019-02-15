@@ -1,7 +1,7 @@
 # Alle hier gesetzten Werte können über $addon->getProperty($key) abgefragt werden
 
 package: aufgaben
-version: '4.1.0b'
+version: '4.1.0'
 author: Friends Of REDAXO
 supportpage: https://github.com/FriendsOfREDAXO/aufgaben
 info: Idee und Realisierung der ersten Version concedra.de / Oliver Kreischer
