@@ -1,6 +1,6 @@
-### Aufgaben - AddOn für REDAXO 5 ###
+# Aufgaben - AddOn für REDAXO 5 ###
 
-##### Eine ToDo Verwaltung für das Redaxo Backend. #####
+***Eine ToDo Verwaltung für das Redaxo Backend.***
 
 <img src="https://raw.githubusercontent.com/FriendsOfREDAXO/aufgaben/assets/aufgaben_01.png" style="width: 100%; max-width: 888px" />
 
@@ -15,7 +15,7 @@
 
 ---
 
-### Autor
+## Autor
 
 **Friends Of REDAXO**
 
@@ -28,7 +28,7 @@
 
 ___
 
-### Credits ###
+## Credits 
 
 * [jquery.sumoselect](https://github.com/HemantNegi/jquery.sumoselect) von Hemant Negi
 * [Pikaday](https://github.com/dbushell/Pikaday) von David Bushell
