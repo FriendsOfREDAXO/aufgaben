@@ -1,7 +1,7 @@
 <?php
 
 if (!$this->hasConfig()) {
-  $this->setConfig('ansicht', 'beide');
+  $this->setConfig('ansicht', 'liste');
   $this->setConfig('mails', []);
   $this->setConfig('time', 5);
   $this->setConfig('send-to-all', '0');
@@ -56,6 +56,17 @@ rex_sql_table::get(rex::getTable('aufgaben_user_settings'))
     ->ensureColumn(new rex_sql_column('counter', 'int(10)', true))
     ->ensure();
 
+
+$sql = rex_sql::factory();
+$sql->setQuery("
+  REPLACE INTO `rex_aufgaben_status` VALUES
+    (1,'Offen','fa-folder-open-o'),
+    (2,'Wird bearbeitet','fa-gears'),
+    (3,'Frage','fa-question'),
+    (4,'Warten auf etwas','fa-hourglass-start'),
+    (5,'Auf später verschoben','fa-calendar'),
+    (6,'Erledigt','fa-check');
+  ");
 
 $error = '';
 
