@@ -13,6 +13,13 @@ aufgaben_task = Task
 aufgaben_task_hide = Hide task
 aufgaben_last_update = Last update
 
+aufgaben_task = Task
+aufgaben_task_hide_title = Hide completed tasks
+aufgaben_task_hide = Hide tasks
+aufgaben_task_show_title = Show all Tasks
+aufgaben_task_show = Show all Tasks
+aufgaben_last_update = Last update
+
 aufgaben_last_update
 aufgaben_due = Due
 aufgaben_due_date = Due date

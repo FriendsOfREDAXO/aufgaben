@@ -10,7 +10,10 @@ aufgaben_changelog  = Changelog
 aufgaben_description = Beschreibung
 
 aufgaben_task = Aufgabe
+aufgaben_task_hide_title = Erledigte Aufgaben verbergen
 aufgaben_task_hide = Aufgaben verbergen
+aufgaben_task_show_title = Alle Aufgaben anzeigen
+aufgaben_task_show = alle Aufgaben anzeigen
 aufgaben_last_update = Letze Aktualisierung
 
 aufgaben_last_update

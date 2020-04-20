@@ -515,11 +515,11 @@ if ($func == '' || $func == 'filter') {
   //
   // --------------------
 
-  if ($aktueller_done_status == 0) {
-    $titleLink = '<a id="doneverbergen" class="erledigtschalter" title="'.$this->i18n('aufgaben_task_hide').'" href="javascript:void(0);">'.$this->i18n('aufgaben_task').'<i class="rex-icon fa-check-square-o"></i></a>';
+    if ($aktueller_done_status == 0) {
+    $titleLink = '<a id="doneverbergen" class="erledigtschalter" title="'.$this->i18n('aufgaben_task_hide').'" href="javascript:void(0);">'.$this->i18n('aufgaben_task_hide_title').'<i class="rex-icon fa-check-square-o"></i></a>';
   }
   else {
-    $titleLink = '<a id="doneanzeigen" class="erledigtschalter" title="Aufgaben anzeigen" href="javascript:void(0);">'.$this->i18n('aufgaben_task').'<i class="rex-icon fa-square-o"></i></a>';
+    $titleLink = '<a id="doneanzeigen" class="erledigtschalter" title="'.$this->i18n('aufgaben_task_show').'" href="javascript:void(0);">'.$this->i18n('aufgaben_task_show_title').'<i class="rex-icon fa-square-o"></i></a>';
   }
 
   $list->setColumnLabel('title', $titleLink);
