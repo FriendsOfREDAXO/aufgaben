@@ -10,7 +10,10 @@ aufgaben_changelog  = Changelog
 aufgaben_description = Beskrivning
 
 aufgaben_task = Uppgift
-aufgaben_task_hide = Dölj uppgifterna
+aufgaben_task_hide_title = Dölj slutförda uppgifter
+aufgaben_task_hide = Dölj slutförda uppgifter
+aufgaben_task_show_title = Visa alla uppgifter
+aufgaben_task_show = Visa alla uppgifter
 aufgaben_last_update = Senaste aktualisering
 
 aufgaben_last_update

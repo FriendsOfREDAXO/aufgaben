@@ -13,6 +13,13 @@ aufgaben_task = Tarea
 aufgaben_task_hide = Ocultar tareas
 aufgaben_last_update = Última actualización
 
+aufgaben_task = Tarea
+aufgaben_task_hide_title = Ocultar tareas completadas
+aufgaben_task_hide = Ocultar tareas completadas
+aufgaben_task_show_title = Mostrar todas las tareas
+aufgaben_task_show = Mostrar todas las tareas
+aufgaben_last_update = Última actualización
+
 aufgaben_last_update
 aufgaben_due = Vencido
 aufgaben_due_date = Fecha de vencimiento
