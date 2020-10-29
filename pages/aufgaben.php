@@ -624,7 +624,7 @@ if ($func == '' || $func == 'filter') {
   {
     $list = $params['list'];
     if ($list->getValue('finaldate') != '') {
-      if ($list->getValue('finaldate') <= date('Y-m-d')) {
+      if (date_create($list->getValue('finaldate'))->format('Y-m-d') <= date('Y-m-d')) {
         $finaldate = "<span class='text-danger'>" . date('d.m.Y', strtotime($list->getValue('finaldate'))) . "</span>";
       }
       else {
