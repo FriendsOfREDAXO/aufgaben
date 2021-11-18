@@ -1,7 +1,7 @@
 # Alle hier gesetzten Werte können über $addon->getProperty($key) abgefragt werden
 
 package: aufgaben
-version: '4.1.3'
+version: '4.1.4'
 author: Friends Of REDAXO
 supportpage: https://github.com/FriendsOfREDAXO/aufgaben
 info: Idee und Realisierung der ersten Version concedra.de / Oliver Kreischer
@@ -14,7 +14,8 @@ page:
   icon: rex-icon fa-calendar-check-o
 
 requires:
+    redaxo: '>=5.2.0, <6'
     packages:
-        be_style: '^2.1.0'
-        phpmailer: '^2.0.1'
+        be_style: '>=2.1.0, <4'
+        phpmailer: '>=2.0.1'
     redaxo: '>=5.2.0'
