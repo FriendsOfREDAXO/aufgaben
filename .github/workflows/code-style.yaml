@@ -37,18 +37,6 @@ jobs:
                 run: composer cs-fix
 
             # commit and push fixed files
-            - name: Checkout Repository
-              uses: actions/checkout@v4
-              with:
-                fetch-depth: 0
-
-            - name: Get current branch
-              run: echo "CURRENT_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-
-            - name: Ensure correct branch
-              run: git checkout -B "$CURRENT_BRANCH"
-
-            - uses: stefanzweifel/git-auto-commit-action@v5
-              with:
-                commit_message: Apply php-cs-fixer changes
-                branch: ${{ env.CURRENT_BRANCH }}
+            -   uses: stefanzweifel/git-auto-commit-action@v4
+                with:
+                    commit_message: Apply php-cs-fixer changes
