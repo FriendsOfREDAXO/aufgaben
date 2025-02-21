@@ -10,17 +10,13 @@ if ($func == 'delete') {
 
     $sql->setQuery('SELECT * FROM rex_aufgaben WHERE category =' . $id);
 
-    if ($sql->getRows() > 0)
-    {
+    if ($sql->getRows() > 0) {
         echo '<div class="alert alert-danger">'.$this->i18n('aufgaben_categories_category_in_use').'</div>';
-    }
-    else
-    {
+    } else {
         $sql->setTable('rex_aufgaben_categories');
         $sql->setWhere('id = ' . $id);
 
-        if ($sql->delete())
-        {
+        if ($sql->delete()) {
             echo '<div class="alert alert-success">'.$this->i18n('aufgaben_categories_category_deleted').'</div>';
         }
     }
@@ -59,8 +55,7 @@ if ($func == '') {
     $fragment->setVar('content', $content, false);
     $content = $fragment->parse('core/page/section.php');
     echo $content;
-}
-elseif ($func == 'edit' || $func == 'add') {
+} elseif ($func == 'edit' || $func == 'add') {
     $fieldset = $func == 'edit' ? $this->i18n('aufgaben_categories_category_edit') : $this->i18n('aufgaben_categories_category_add');
     $id = rex_request('id', 'int');
     $form = rex_form::factory(rex::getTablePrefix() . 'aufgaben_categories', '', 'id=' . $id);
@@ -73,28 +68,28 @@ elseif ($func == 'edit' || $func == 'add') {
     $field->setPrefix('<div class="colorpicker">');
     $field->setSuffix('</div>');
     $field->setLabel($this->i18n('aufgaben_categories_color'));
-    $select =$field->getSelect();
-    $select->addOption('#000000','#000');
-    $select->addOption('#607D8B','#607D8B');
-    $select->addOption('#9E9E9E','#9E9E9E');
-    $select->addOption('#795548','#795548');
-    $select->addOption('#FF5722','#FF5722');
-    $select->addOption('#FF9800','#FF9800');
-    $select->addOption('#FFC107','#FFC107');
-    $select->addOption('#FFEB3B','#FFEB3B');
-    $select->addOption('#CDDC39','#CDDC39');
-    $select->addOption('#8BC34A','#8BC34A');
-    $select->addOption('#4CAF50','#4CAF50');
-    $select->addOption('#009688','#009688');
-    $select->addOption('#00BCD4','#00BCD4');
-    $select->addOption('#03A9F4','#03A9F4');
-    $select->addOption('#2196F3','#2196F3');
-    $select->addOption('#3F51B5','#3F51B5');
-    $select->addOption('#673AB7','#673AB7');
-    $select->addOption('#9C27B0','#9C27B0');
-    $select->addOption('#E91E63','#E91E63');
-    $select->addOption('#F44336','#F44336');
-    if ($field->getValue()== "") {
+    $select = $field->getSelect();
+    $select->addOption('#000000', '#000');
+    $select->addOption('#607D8B', '#607D8B');
+    $select->addOption('#9E9E9E', '#9E9E9E');
+    $select->addOption('#795548', '#795548');
+    $select->addOption('#FF5722', '#FF5722');
+    $select->addOption('#FF9800', '#FF9800');
+    $select->addOption('#FFC107', '#FFC107');
+    $select->addOption('#FFEB3B', '#FFEB3B');
+    $select->addOption('#CDDC39', '#CDDC39');
+    $select->addOption('#8BC34A', '#8BC34A');
+    $select->addOption('#4CAF50', '#4CAF50');
+    $select->addOption('#009688', '#009688');
+    $select->addOption('#00BCD4', '#00BCD4');
+    $select->addOption('#03A9F4', '#03A9F4');
+    $select->addOption('#2196F3', '#2196F3');
+    $select->addOption('#3F51B5', '#3F51B5');
+    $select->addOption('#673AB7', '#673AB7');
+    $select->addOption('#9C27B0', '#9C27B0');
+    $select->addOption('#E91E63', '#E91E63');
+    $select->addOption('#F44336', '#F44336');
+    if ($field->getValue() == "") {
         $field->setValue('#000000');
     }
 

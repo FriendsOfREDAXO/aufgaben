@@ -31,7 +31,7 @@ $mailbetreff = '';
 if ($aufgabe == 'new') {
     if ($this->getConfig('mails') == null) {
         echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
-    } else if ($this->getConfig('mails') != null) {
+    } elseif ($this->getConfig('mails') != null) {
         $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
         $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
@@ -60,7 +60,7 @@ if ($aufgabe == 'new') {
 if ($aufgabe == 'edit') {
     if ($this->getConfig('mails') == null) {
         echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
-    } else if ($this->getConfig('mails') != null) {
+    } elseif ($this->getConfig('mails') != null) {
         $mailbetreff = $this->i18n('aufgaben_mail_change');
         $mail = new rex_aufgaben();
         $responsibleRequest = rex_sql::factory();
@@ -149,7 +149,7 @@ if ($func == 'setstatus') {
     if ($sql->update()) {
         if ($this->getConfig('mails') == null) {
             echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
-        } else if ($this->getConfig('mails') != null) {
+        } elseif ($this->getConfig('mails') != null) {
             $mail = new rex_aufgaben();
             $responsibleRequest = rex_sql::factory();
             $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
@@ -194,7 +194,7 @@ if ($func == 'setprio') {
     if ($sql->update()) {
         if ($this->getConfig('mails') == null) {
             echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
-        } else if ($this->getConfig('mails') != null) {
+        } elseif ($this->getConfig('mails') != null) {
 
             $mail = new rex_aufgaben();
             $responsibleRequest = rex_sql::factory();
@@ -242,7 +242,7 @@ if ($func == 'change_responsible') {
     if ($sql->update()) {
         if ($this->getConfig('mails') == null) {
             echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
-        } else if ($this->getConfig('mails') != null) {
+        } elseif ($this->getConfig('mails') != null) {
             $mail = new rex_aufgaben();
             $responsibleRequest = rex_sql::factory();
             $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
@@ -284,7 +284,7 @@ if ($func == 'change_category') {
     if ($sql->update()) {
         if ($this->getConfig('mails') == null) {
             echo '<div class="alert alert-success">Es wurde keine E-Mail Adresse hinterlegt</div>';
-        } else if ($this->getConfig('mails') != null) {
+        } elseif ($this->getConfig('mails') != null) {
             $mail = new rex_aufgaben();
             $responsibleRequest = rex_sql::factory();
             $responsibleRequest->setQuery('SELECT * FROM rex_aufgaben WHERE responsible != 0');
@@ -496,40 +496,43 @@ if ($func == '' || $func == 'filter') {
 
     $list->setColumnLabel('title', $titleLink);
     $list->setColumnLayout('title', ['<th>###VALUE###</th>', '<td data-title="' . $this->i18n('aufgaben_task') . '" class="td_aufgaben">###VALUE###</td>']);
-    $list->setColumnFormat('title', 'custom',
-            function ($params) {
-                $list = $params['list'];
-                if ($list->getValue('description') != '') {
-                    $aufgabe = '<div class="collapsetitle" data-toggle="collapse" data-target="#collapse###id###">' . $list->getValue('title') . '</div>';
-                } else {
-                    $aufgabe = $list->getValue('title');
+    $list->setColumnFormat(
+        'title',
+        'custom',
+        function ($params) {
+            $list = $params['list'];
+            if ($list->getValue('description') != '') {
+                $aufgabe = '<div class="collapsetitle" data-toggle="collapse" data-target="#collapse###id###">' . $list->getValue('title') . '</div>';
+            } else {
+                $aufgabe = $list->getValue('title');
+            }
+
+            if ($list->getValue('description')) {
+                $text = $list->getValue('description');
+                if (rex_addon::get('textile')->isAvailable()) {
+                    $text = str_replace('<br />', '', $text);
+                    $text = rex_textile::parse($text);
+                    $text = str_replace('###', '&#x20;', $text);
+                }
+                if (rex_addon::get('rex_markitup')->isAvailable()) {
+                    $text = rex_markitup::parseOutput('textile', $text);
                 }
 
-                if ($list->getValue('description')) {
-                    $text = $list->getValue('description');
-                    if (rex_addon::get('textile')->isAvailable()) {
-                        $text = str_replace('<br />', '', $text);
-                        $text = rex_textile::parse($text);
-                        $text = str_replace('###', '&#x20;', $text);
-                    }
-                    if (rex_addon::get('rex_markitup')->isAvailable()) {
-                        $text = rex_markitup::parseOutput('textile', $text);
-                    }
-
-                    if (!rex_addon::get('rex_markitup')->isAvailable() AND !rex_addon::get('textile')->isAvailable()) {
-                        $text = str_replace(PHP_EOL, '<br/>', $text);
-                    }
-
-                    $user_name = rex::getUser()->getValue('login');
-
-                    $beschreibung = '<div id="collapse###id###" class="collapse"><br/>' . $text . '</div>';
-                } else {
-                    $beschreibung = '';
+                if (!rex_addon::get('rex_markitup')->isAvailable() and !rex_addon::get('textile')->isAvailable()) {
+                    $text = str_replace(PHP_EOL, '<br/>', $text);
                 }
 
-                $aufgabe .= $beschreibung;
-                return $aufgabe;
-            });
+                $user_name = rex::getUser()->getValue('login');
+
+                $beschreibung = '<div id="collapse###id###" class="collapse"><br/>' . $text . '</div>';
+            } else {
+                $beschreibung = '';
+            }
+
+            $aufgabe .= $beschreibung;
+            return $aufgabe;
+        }
+    );
 
     // --------------------
     //
@@ -539,24 +542,27 @@ if ($func == '' || $func == 'filter') {
 
     $list->setColumnLabel('updatedate', $this->i18n('aufgaben_last_update'));
     $list->setColumnLayout('updatedate', ['<th>###VALUE###</th>', '<td data-title="' . $this->i18n('aufgaben_last_update') . '" class="td_updatedate">###VALUE###</td>']);
-    $list->setColumnFormat('updatedate', 'custom',
-            function ($params) {
-                $list = $params['list'];
-                if ($list->getValue('updatedate') == '0000-00-00 00:00:00') {
-                    $updatedatevalue = '-';
-                } else {
-                    $updatedatevalue = date('d.m.Y H:i', strtotime($list->getValue('updatedate')));
-                }
+    $list->setColumnFormat(
+        'updatedate',
+        'custom',
+        function ($params) {
+            $list = $params['list'];
+            if ($list->getValue('updatedate') == '0000-00-00 00:00:00') {
+                $updatedatevalue = '-';
+            } else {
+                $updatedatevalue = date('d.m.Y H:i', strtotime($list->getValue('updatedate')));
+            }
 
-                if ($list->getValue('updateuser') == '') {
-                    $updateuservalue = '';
-                } else {
-                    $updateuservalue = $list->getValue('realname');
-                }
+            if ($list->getValue('updateuser') == '') {
+                $updateuservalue = '';
+            } else {
+                $updateuservalue = $list->getValue('realname');
+            }
 
-                $updatedate = $updatedatevalue . '<br/><span>' . $updateuservalue . '</span>';
-                return $updatedate;
-            });
+            $updatedate = $updatedatevalue . '<br/><span>' . $updateuservalue . '</span>';
+            return $updatedate;
+        }
+    );
     // --------------------
     //
     //  Versenden
@@ -564,16 +570,19 @@ if ($func == '' || $func == 'filter') {
     // --------------------
     $list->setColumnLabel('versendet', $this->i18n('aufgaben_versendet'));
     $list->setColumnLayout('versendet', ['<th>###VALUE###</th>', '<td data-title="' . $this->i18n('aufgaben_versendet') . '" class="td_versendet">###VALUE###</td>']);
-    $list->setColumnFormat('versendet', 'custom',
-            function ($params) {
-                $list = $params['list'];
-                if ($list->getValue('versendet') == '1')
-                    $versendet = "<i class='fa fa-envelope-o' aria-hidden='true'></i>";
-                else {
-                    $versendet = '';
-                }
-                return $versendet;
-            });
+    $list->setColumnFormat(
+        'versendet',
+        'custom',
+        function ($params) {
+            $list = $params['list'];
+            if ($list->getValue('versendet') == '1') {
+                $versendet = "<i class='fa fa-envelope-o' aria-hidden='true'></i>";
+            } else {
+                $versendet = '';
+            }
+            return $versendet;
+        }
+    );
     // --------------------
     //
     //  Finaldate
@@ -582,21 +591,24 @@ if ($func == '' || $func == 'filter') {
 
     $list->setColumnLabel('finaldate', $this->i18n('aufgaben_due'));
     $list->setColumnLayout('finaldate', ['<th>###VALUE###</th>', '<td data-title="' . $this->i18n('aufgaben_due_date') . '" class="td_finaldate">###VALUE###</td>']);
-    $list->setColumnFormat('finaldate', 'custom',
-            function ($params) {
-                $list = $params['list'];
-                if ($list->getValue('finaldate') != '') {
-                    if (date_create($list->getValue('finaldate'))->format('Y-m-d') <= date('Y-m-d')) {
-                        $finaldate = "<span class='text-danger'>" . date('d.m.Y', strtotime($list->getValue('finaldate'))) . "</span>";
-                    } else {
-                        $finaldate = date('d.m.Y', strtotime($list->getValue('finaldate')));
-                    }
+    $list->setColumnFormat(
+        'finaldate',
+        'custom',
+        function ($params) {
+            $list = $params['list'];
+            if ($list->getValue('finaldate') != '') {
+                if (date_create($list->getValue('finaldate'))->format('Y-m-d') <= date('Y-m-d')) {
+                    $finaldate = "<span class='text-danger'>" . date('d.m.Y', strtotime($list->getValue('finaldate'))) . "</span>";
                 } else {
-                    $finaldate = '';
+                    $finaldate = date('d.m.Y', strtotime($list->getValue('finaldate')));
                 }
+            } else {
+                $finaldate = '';
+            }
 
-                return $finaldate;
-            });
+            return $finaldate;
+        }
+    );
 
     // --------------------
     //
@@ -637,38 +649,41 @@ if ($func == '' || $func == 'filter') {
 
     $list->setColumnLabel('category', $this->i18n('aufgaben_category'));
     $list->setColumnLayout('category', ['<th>###VALUE###<br/>' . $categoryfilter . '</th>', '<td data-title="' . $this->i18n('aufgaben_category') . '" class="td_category">###VALUE###</td>']);
-    $list->setColumnFormat('category', 'custom',
-            function ($params) {
-                $category = '';
-                $list = $params['list'];
+    $list->setColumnFormat(
+        'category',
+        'custom',
+        function ($params) {
+            $category = '';
+            $list = $params['list'];
+            $sql = rex_sql::factory();
+            // $sql->setDebug();
+            $sql->setQuery('SELECT * FROM rex_aufgaben_categories ORDER BY category');
+            if ($sql->getRows() > 1) {
+                $category .= "<div class='rex-select-style intable'><select class='change_category' >";
+                for ($i = 0; $i < $sql->getRows(); $i++) {
+                    if ($sql->getValue('id') == $list->getValue('category')) {
+                        $selected = 'selected';
+                    } else {
+                        $selected = '';
+                    }
+                    $category .= '<option value="' . $list->getValue('id') . ',' . $sql->getValue('id') . '" ' . $selected . ' >' . $sql->getValue('category') . '</option>';
+                    $sql->next();
+                }
+                $category .= "</select></div>";
+            } else {
                 $sql = rex_sql::factory();
                 // $sql->setDebug();
-                $sql->setQuery('SELECT * FROM rex_aufgaben_categories ORDER BY category');
-                if ($sql->getRows() > 1) {
-                    $category .= "<div class='rex-select-style intable'><select class='change_category' >";
-                    for ($i = 0; $i < $sql->getRows(); $i++) {
-                        if ($sql->getValue('id') == $list->getValue('category')) {
-                            $selected = 'selected';
-                        } else {
-                            $selected = '';
-                        }
-                        $category .= '<option value="' . $list->getValue('id') . ',' . $sql->getValue('id') . '" ' . $selected . ' >' . $sql->getValue('category') . '</option>';
-                        $sql->next();
-                    }
-                    $category .= "</select></div>";
-                } else {
-                    $sql = rex_sql::factory();
-                    // $sql->setDebug();
-                    $sql->setTable('rex_aufgaben_categories');
-                    $sql->setWhere(['id' => $list->getValue('category')]);
-                    $sql->select();
-                }
+                $sql->setTable('rex_aufgaben_categories');
+                $sql->setWhere(['id' => $list->getValue('category')]);
+                $sql->select();
+            }
 
-                return $category;
+            return $category;
 
-                $list = $params['list'];
-                $sql = rex_sql::factory();
-            });
+            $list = $params['list'];
+            $sql = rex_sql::factory();
+        }
+    );
 
     // --------------------
     //
@@ -708,46 +723,49 @@ if ($func == '' || $func == 'filter') {
 
     $list->setColumnLabel('responsible', $this->i18n('aufgaben_responsible'));
     $list->setColumnLayout('responsible', ['<th>###VALUE###<br/>' . $responsiblefilter . '</th>', '<td data-title="' . $this->i18n('aufgaben_responsible') . '" class="td_responsible">###VALUE###</td>']);
-    $list->setColumnFormat('responsible', 'custom',
-            function ($params) {
-                $responsible = '';
-                $list = $params['list'];
+    $list->setColumnFormat(
+        'responsible',
+        'custom',
+        function ($params) {
+            $responsible = '';
+            $list = $params['list'];
+            $sql = rex_sql::factory();
+            // $sql->setDebug();
+            $sql->setQuery('SELECT * FROM rex_user ORDER BY login');
+            if ($sql->getRows() > 1) {
+                $responsible .= "<div class='rex-select-style intable'><select class='change_responsible' >";
+                for ($i = 0; $i < $sql->getRows(); $i++) {
+                    if ($sql->getValue('id') == $list->getValue('responsible')) {
+                        $selected = 'selected';
+                    } else {
+                        $selected = '';
+                    }
+
+                    $responsible .= '<option value="' . $list->getValue('id') . ',' . $sql->getValue('id') . '" ' . $selected . ' >' . $sql->getValue('name') . '</option>';
+
+                    $sql->next();
+                }
+                $responsible .= "</select></div>";
+            } else {
                 $sql = rex_sql::factory();
                 // $sql->setDebug();
-                $sql->setQuery('SELECT * FROM rex_user ORDER BY login');
-                if ($sql->getRows() > 1) {
-                    $responsible .= "<div class='rex-select-style intable'><select class='change_responsible' >";
-                    for ($i = 0; $i < $sql->getRows(); $i++) {
-                        if ($sql->getValue('id') == $list->getValue('responsible')) {
-                            $selected = 'selected';
-                        } else {
-                            $selected = '';
-                        }
+                $sql->setTable('rex_user');
+                $sql->setWhere(['id' => $list->getValue('responsible')]);
+                $sql->select();
+                if ($sql->getRows() >= 1) {
 
-                        $responsible .= '<option value="' . $list->getValue('id') . ',' . $sql->getValue('id') . '" ' . $selected . ' >' . $sql->getValue('name') . '</option>';
-
-                        $sql->next();
-                    }
-                    $responsible .= "</select></div>";
+                    $responsible = '<span class="single">' . $sql->getValue('name') . '</span>';
                 } else {
-                    $sql = rex_sql::factory();
-                    // $sql->setDebug();
-                    $sql->setTable('rex_user');
-                    $sql->setWhere(['id' => $list->getValue('responsible')]);
-                    $sql->select();
-                    if ($sql->getRows() >= 1) {
-
-                        $responsible = '<span class="single">' . $sql->getValue('name') . '</span>';
-                    } else {
-                        $responsible = '<span class="single">--</span>';
-                    }
+                    $responsible = '<span class="single">--</span>';
                 }
+            }
 
-                return $responsible;
+            return $responsible;
 
-                $list = $params['list'];
-                $sql = rex_sql::factory();
-            });
+            $list = $params['list'];
+            $sql = rex_sql::factory();
+        }
+    );
 
     // --------------------
     //
@@ -777,33 +795,36 @@ if ($func == '' || $func == 'filter') {
 
     $list->setColumnLabel('prio', $this->i18n('aufgaben_prio'));
     $list->setColumnLayout('prio', ['<th>###VALUE###<br/>' . $priofilter . '</th>', '<td data-title="' . $this->i18n('aufgaben_prio') . '" class="td_prio">###VALUE###</td>']);
-    $list->setColumnFormat('prio', 'custom',
-            function ($params) {
-                $list = $params['list'];
-                $sql = rex_sql::factory();
-                // $sql->setDebug();
-                $sql->setTable(rex::getTablePrefix() . 'aufgaben');
-                $sql->setWhere(['id' => $list->getValue('prio')]);
-                $sql->select();
-                $prio = "<div class='priowrapper'>";
-                for ($i = 0; $i < 4; $i++) {
-                    if ($list->getValue('prio') < $i) {
-                        $star = 'fa-star-o';
-                    } else {
-                        $star = 'fa-star';
-                    }
-                    $list->addLinkAttribute('prio', 'title', $this->i18n('aufgaben_prio') . ': ' . $i);
-                    $list->setColumnParams('prio', ['func' => 'setprio', 'id' => '###id###', 'neueprio' => $i]);
-                    if ($i == 0) {
-                        $prio .= $list->getColumnLink('prio', '<i class="rex-icon fa-remove "></i>');
-                        continue;
-                    }
-                    $prio .= $list->getColumnLink('prio', '<i class="rex-icon ' . $star . '"></i>');
-                    $sql->next();
+    $list->setColumnFormat(
+        'prio',
+        'custom',
+        function ($params) {
+            $list = $params['list'];
+            $sql = rex_sql::factory();
+            // $sql->setDebug();
+            $sql->setTable(rex::getTablePrefix() . 'aufgaben');
+            $sql->setWhere(['id' => $list->getValue('prio')]);
+            $sql->select();
+            $prio = "<div class='priowrapper'>";
+            for ($i = 0; $i < 4; $i++) {
+                if ($list->getValue('prio') < $i) {
+                    $star = 'fa-star-o';
+                } else {
+                    $star = 'fa-star';
                 }
-                $prio .= "</div>";
-                return $prio;
-            });
+                $list->addLinkAttribute('prio', 'title', $this->i18n('aufgaben_prio') . ': ' . $i);
+                $list->setColumnParams('prio', ['func' => 'setprio', 'id' => '###id###', 'neueprio' => $i]);
+                if ($i == 0) {
+                    $prio .= $list->getColumnLink('prio', '<i class="rex-icon fa-remove "></i>');
+                    continue;
+                }
+                $prio .= $list->getColumnLink('prio', '<i class="rex-icon ' . $star . '"></i>');
+                $sql->next();
+            }
+            $prio .= "</div>";
+            return $prio;
+        }
+    );
 
     // --------------------
     //
@@ -840,33 +861,36 @@ if ($func == '' || $func == 'filter') {
 
     $list->setColumnLabel('status', $this->i18n('aufgaben_status'));
     $list->setColumnLayout('status', ['<th>###VALUE###<br/>' . $statusfilter . '</th>', '<td data-title="' . $this->i18n('aufgaben_status') . '" class="td_status">###VALUE###</td>']);
-    $list->setColumnFormat('status', 'custom',
-            function ($params) {
-                $list = $params['list'];
-                $sql = rex_sql::factory();
+    $list->setColumnFormat(
+        'status',
+        'custom',
+        function ($params) {
+            $list = $params['list'];
+            $sql = rex_sql::factory();
 
-                // $sql->setDebug();
+            // $sql->setDebug();
 
-                $sql->setTable(rex::getTablePrefix() . 'aufgaben_status');
-                $sql->select();
-                $status = "<div class='status'>";
-                for ($i = 0; $i < $sql->getRows(); $i++) {
-                    if ($list->getValue('status') == $sql->getValue('id')) {
-                        $current = 'current';
-                    } else {
-                        $current = '';
-                    }
-
-                    $list->addLinkAttribute('status', 'title', $sql->getValue('status'));
-                    $list->setColumnParams('status', ['func' => 'setstatus', 'id' => '###id###', 'neuerstatus' => $sql->getValue('id')]);
-
-                    $status .= $list->getColumnLink('status', '<i class="rex-icon ' . $current . ' ' . $sql->getValue('icon') . ' "></i>');
-                    $sql->next();
+            $sql->setTable(rex::getTablePrefix() . 'aufgaben_status');
+            $sql->select();
+            $status = "<div class='status'>";
+            for ($i = 0; $i < $sql->getRows(); $i++) {
+                if ($list->getValue('status') == $sql->getValue('id')) {
+                    $current = 'current';
+                } else {
+                    $current = '';
                 }
 
-                $status .= "</div>";
-                return $status;
-            });
+                $list->addLinkAttribute('status', 'title', $sql->getValue('status'));
+                $list->setColumnParams('status', ['func' => 'setstatus', 'id' => '###id###', 'neuerstatus' => $sql->getValue('id')]);
+
+                $status .= $list->getColumnLink('status', '<i class="rex-icon ' . $current . ' ' . $sql->getValue('icon') . ' "></i>');
+                $sql->next();
+            }
+
+            $status .= "</div>";
+            return $status;
+        }
+    );
 
     $content = '<div id="aufgaben">' . $list->get() . '</div>';
     $fragment = new rex_fragment();

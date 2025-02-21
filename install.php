@@ -1,12 +1,12 @@
 <?php
 
 if (!$this->hasConfig()) {
-  $this->setConfig('ansicht', 'liste');
-  $this->setConfig('mails', []);
-  $this->setConfig('time', 5);
-  $this->setConfig('send-to-all', '0');
-  $this->setConfig('betreff', "");
-  $this->setConfig('absender', "");
+    $this->setConfig('ansicht', 'liste');
+    $this->setConfig('mails', []);
+    $this->setConfig('time', 5);
+    $this->setConfig('send-to-all', '0');
+    $this->setConfig('betreff', "");
+    $this->setConfig('absender', "");
 }
 
 rex_sql_table::get(rex::getTable('aufgaben'))
@@ -70,7 +70,6 @@ $sql->setQuery("
 
 $error = '';
 
-if(!$error) {
-  $this->setConfig('install', true);
+if (!$error) {
+    $this->setConfig('install', true);
 }
-

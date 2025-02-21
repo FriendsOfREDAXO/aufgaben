@@ -3,8 +3,7 @@ $qry = rex_sql::factory();
 $qry->setTable('rex_aufgaben');
 $qry->select('*');
 
-if (rex_post('addtodo') == "true")
-{
+if (rex_post('addtodo') == "true") {
     ob_end_clean();
 
     $sql_add = rex_sql::factory();
@@ -22,20 +21,16 @@ if (rex_post('addtodo') == "true")
     $sql_add->setValue('finaldate', '');
     $sql_add->setValue('status', rex_post('status'));
     $sql_add->setValue('versendet', 2);
-    
-    if ($sql_add->insert())
-    {
+
+    if ($sql_add->insert()) {
         http_response_code(200);
-    }
-    else
-    {
+    } else {
         http_response_code(500);
     }
     exit;
 }
 
-if (rex_post('edittodo') == "true")
-{
+if (rex_post('edittodo') == "true") {
     ob_end_clean();
 
     $sql_edit = rex_sql::factory();
@@ -49,39 +44,31 @@ if (rex_post('edittodo') == "true")
     $sql_edit->setValue('updateuser', rex::getUser()->getName());
     $sql_edit->setWhere('id=' . rex_post('entry-id'));
 
-    if ($sql_edit->update())
-    {
+    if ($sql_edit->update()) {
         http_response_code(200);
-    }
-    else
-    {
+    } else {
         http_response_code(500);
     }
 
     exit;
 }
 
-if (rex_post('deletetodo') == "true")
-{
+if (rex_post('deletetodo') == "true") {
     ob_end_clean();
 
     $sql_delete = rex_sql::factory();
     $sql_delete->setTable('rex_aufgaben');
     $sql_delete->setWhere('id = ' . rex_post('id'));
 
-    if ($sql_delete->delete())
-    {
+    if ($sql_delete->delete()) {
         http_response_code(200);
-    }
-    else
-    {
+    } else {
         http_response_code(500);
     }
     exit;
 }
 
-if (rex_post('updatecategory') == "true")
-{
+if (rex_post('updatecategory') == "true") {
     ob_end_clean();
 
     $sql_update_category = rex_sql::factory();
@@ -93,8 +80,7 @@ if (rex_post('updatecategory') == "true")
     exit;
 }
 
-if (rex_post('updatestatus') == "true")
-{
+if (rex_post('updatestatus') == "true") {
     ob_end_clean();
 
     $sql_update_status = rex_sql::factory();
@@ -106,8 +92,7 @@ if (rex_post('updatestatus') == "true")
     exit;
 }
 
-if (rex_post('updateprio') == "true")
-{
+if (rex_post('updateprio') == "true") {
     ob_end_clean();
 
     $sql_update_prio = rex_sql::factory();
@@ -126,114 +111,104 @@ if (rex_post('updateprio') == "true")
 
             <?php
             $sql_categories = rex_sql::factory();
-            // $sql_categories->setDebug();
-            $sql_categories->setTable('rex_aufgaben_categories');
-            $sql_categories->select('*');
+// $sql_categories->setDebug();
+$sql_categories->setTable('rex_aufgaben_categories');
+$sql_categories->select('*');
 
-            $sql_zustaendig = rex_sql::factory();
-            // $sql_zustaendig->setDebug();
-            $sql_zustaendig->setTable('rex_user');
-            $sql_zustaendig->select('*');
+$sql_zustaendig = rex_sql::factory();
+// $sql_zustaendig->setDebug();
+$sql_zustaendig->setTable('rex_user');
+$sql_zustaendig->select('*');
 
-            $sql_status = rex_sql::factory();
-            // $sql_status->setDebug();
-            $sql_status->setTable('rex_aufgaben_status');
-            $sql_status->select('*');
+$sql_status = rex_sql::factory();
+// $sql_status->setDebug();
+$sql_status->setTable('rex_aufgaben_status');
+$sql_status->select('*');
 
-            function getresponsible($responsibleId)
-            {
-                $sql_responsible = rex_sql::factory();
-                // $sql_responsible->setDebug();
-                $sql_responsible->setTable('rex_user');
-                $sql_responsible->setWhere('id = ' . $responsibleId);
-                $sql_responsible->select('*');
+function getresponsible($responsibleId)
+{
+    $sql_responsible = rex_sql::factory();
+    // $sql_responsible->setDebug();
+    $sql_responsible->setTable('rex_user');
+    $sql_responsible->setWhere('id = ' . $responsibleId);
+    $sql_responsible->select('*');
 
-                    if ($sql_responsible->getRows() >= 1) {
-                       ##taskreturn $sql_responsible->getValue('login');
-                       return $sql_responsible->getValue('name');
-                    } else {
-                       return '--';
-                    }
-            }
+    if ($sql_responsible->getRows() >= 1) {
+        ##taskreturn $sql_responsible->getValue('login');
+        return $sql_responsible->getValue('name');
+    } else {
+        return '--';
+    }
+}
 
-            function getStatusLinks($currentid, $itemid)
-            {
-                $statussql = rex_sql::factory();
-                // $statussql->setDebug();
-                $statussql->setTable(rex::getTablePrefix() . 'aufgaben_status');
-                $statussql->select();
+function getStatusLinks($currentid, $itemid)
+{
+    $statussql = rex_sql::factory();
+    // $statussql->setDebug();
+    $statussql->setTable(rex::getTablePrefix() . 'aufgaben_status');
+    $statussql->select();
 
-                $currentclass = "";
+    $currentclass = "";
 
-                $status = "<hr/>";
-                $status .= "<div class='status'>";
-                for ($i = 0; $i < $statussql->getRows(); $i++)
-                {
-                    if($currentid == $statussql->getValue('id'))
-                    {
-                        $currentclass = "current";
-                    }
-                    else
-                    {
-                        $currentclass = "";
-                    }
+    $status = "<hr/>";
+    $status .= "<div class='status'>";
+    for ($i = 0; $i < $statussql->getRows(); $i++) {
+        if ($currentid == $statussql->getValue('id')) {
+            $currentclass = "current";
+        } else {
+            $currentclass = "";
+        }
 
-                    if($statussql->getValue('id') == 6)
-                    {
-                        $currentclass .= " done";
-                    }
+        if ($statussql->getValue('id') == 6) {
+            $currentclass .= " done";
+        }
 
-                    $status .= "<a href='#' class='change-status ".$currentclass."' data-id='".$itemid."' data-statusid='".$statussql->getValue('id')."' title='".  $statussql->getValue('status') ."'><i class='rex-icon ".$statussql->getValue('icon')."'></i></a>";
-                    $statussql->next();
-                }
-                $status .= "</div>";
+        $status .= "<a href='#' class='change-status ".$currentclass."' data-id='".$itemid."' data-statusid='".$statussql->getValue('id')."' title='".  $statussql->getValue('status') ."'><i class='rex-icon ".$statussql->getValue('icon')."'></i></a>";
+        $statussql->next();
+    }
+    $status .= "</div>";
 
-                return $status;
-            }
+    return $status;
+}
 
 
-            function getPrioLinks($currentid, $itemid)
-            {
-                $priosql = rex_sql::factory();
-                // $priosql->setDebug();
-                $priosql->setTable(rex::getTablePrefix() . 'aufgaben');
-                $priosql->setTable('rex_aufgaben');
-                $priosql->setWhere('id = ' . $itemid);
-                $priosql->select('*');
-                $prioArray = $priosql->getArray();
-                $currentclass = "";
+function getPrioLinks($currentid, $itemid)
+{
+    $priosql = rex_sql::factory();
+    // $priosql->setDebug();
+    $priosql->setTable(rex::getTablePrefix() . 'aufgaben');
+    $priosql->setTable('rex_aufgaben');
+    $priosql->setWhere('id = ' . $itemid);
+    $priosql->select('*');
+    $prioArray = $priosql->getArray();
+    $currentclass = "";
 
-                $prio = "<div class='prio-wrapper'>";
-                $prio .= "<a href='#' class='change-prio' data-id='" . $itemid . "' data-prioid='0'><i class='fa fa-star-o' aria-hidden='true'></i></a>";
-                for ($i = 0; $i < 3; $i++)
-                {
-                    if ($i+1 == $prioArray[0]["prio"])
-                    {
-                        $currentclass = "current";
-                    }
-                    else
-                    {
-                        $currentclass = "";
-                    }
+    $prio = "<div class='prio-wrapper'>";
+    $prio .= "<a href='#' class='change-prio' data-id='" . $itemid . "' data-prioid='0'><i class='fa fa-star-o' aria-hidden='true'></i></a>";
+    for ($i = 0; $i < 3; $i++) {
+        if ($i + 1 == $prioArray[0]["prio"]) {
+            $currentclass = "current";
+        } else {
+            $currentclass = "";
+        }
 
-                    $prio .= "<a href='#' class='change-prio " . $currentclass . "' data-id='" . $itemid . "' data-prioid='" . ($i+1) . "'><i class='fa fa-star' aria-hidden='true'></i></a>";
-                }
-                $prio .= "</div>";
+        $prio .= "<a href='#' class='change-prio " . $currentclass . "' data-id='" . $itemid . "' data-prioid='" . ($i + 1) . "'><i class='fa fa-star' aria-hidden='true'></i></a>";
+    }
+    $prio .= "</div>";
 
-                return $prio;
-            }
+    return $prio;
+}
 
 
-            foreach ($sql_categories->getArray() as $category)
-            {
-                $sql_aufgaben = rex_sql::factory();
-                // $sql_aufgaben->setDebug();
-                $sql_aufgaben->setTable('rex_aufgaben');
-                $sql_aufgaben->setWhere('category = ' . $category["id"]);
-                $sql_aufgaben->select('*');
-                $aufgaben_array = $sql_aufgaben->getArray();
-                $color = "";
-                ?>
+foreach ($sql_categories->getArray() as $category) {
+    $sql_aufgaben = rex_sql::factory();
+    // $sql_aufgaben->setDebug();
+    $sql_aufgaben->setTable('rex_aufgaben');
+    $sql_aufgaben->setWhere('category = ' . $category["id"]);
+    $sql_aufgaben->select('*');
+    $aufgaben_array = $sql_aufgaben->getArray();
+    $color = "";
+    ?>
 
                 <div class="panel panel-default kanban-col" >
                     <div class="panel-heading" style="position: relative; border-bottom: 4px solid <?= $category["color"]; ?>;">
@@ -244,13 +219,12 @@ if (rex_post('updateprio') == "true")
                     <div class="panel-body" data-categoryid="<?= $category["id"]; ?>" data-color="<?= $category["color"]; ?>">
                         <div class="kanban-centered">
                             <?php
-                            for ($i = 0; $i < count($aufgaben_array); $i++)
-                            {
-                                $itemuid = "item" . uniqid();
-                                $uid = "uid" . uniqid();
-                                $aufgabe = $aufgaben_array[$i];
-                                $description = $aufgabe["description"];
-                                ?>
+                for ($i = 0; $i < count($aufgaben_array); $i++) {
+                    $itemuid = "item" . uniqid();
+                    $uid = "uid" . uniqid();
+                    $aufgabe = $aufgaben_array[$i];
+                    $description = $aufgabe["description"];
+                    ?>
                             <article  style="position: relative; " class="kanban-entry grab" id="<?= $itemuid ?>" draggable="true" data-color="<?= $category["color"]; ?>" data-id="<?= $aufgabe["id"]; ?>" data-categoryid="<?= $category["id"]; ?>" data-item="<?= $itemuid ?>" data-status="<?= $aufgabe["status"] ?>" data-responsible="<?= $aufgabe["responsible"] ?>" data-title="<?= $aufgabe["title"] ?>" data-id="<?= $aufgabe["id"] ?>" data-description="<?= $aufgabe["description"] ?>" data-categoryname="<?= $category["category"]; ?>" >
                                 <?= getPrioLinks($aufgabe["prio"], $aufgabe["id"]); ?>
                                     <a href="#" class="delete-kanban-entry"><i class="fa fa-2x fa-trash-o pull-right"></i></a>
@@ -258,18 +232,16 @@ if (rex_post('updateprio') == "true")
                                     <div class="kanban-entry-inner">
                                         <div class="kanban-label">
                                             <?php
-                                            if (strlen($aufgabe['finaldate']))
-                                            {
-                                                ?>
+                                if (strlen($aufgabe['finaldate'])) {
+                                    ?>
                                                 <div class="date">
                                                     <?= date('d.m.Y', strtotime($aufgabe['finaldate'])) ?>
                                                 </div>
 
                                                 <?php
-                                            }
-                                            if (strlen($description))
-                                            {
-                                                ?>
+                                }
+                    if (strlen($description)) {
+                        ?>
                                                 <h4>
                                                     <a class="expand collapsed" role="button" data-toggle="collapse" href="#<?= $uid ?>" aria-expanded="false" aria-controls="collapseExample">
                                                         <?= $aufgabe["title"] ?>
@@ -278,29 +250,27 @@ if (rex_post('updateprio') == "true")
                                                 <div class="collapse" id="<?= $uid ?>">
                                                     <div class="well">
                                                         <?php
-                                                            if (rex_addon::get('textile')->isAvailable()) {
-                                                              $description = str_replace('<br />', '', $description);
-                                                              $description = rex_textile::parse($description);
-                                                              $description = str_replace('###', '&#x20;', $description);
-                                                            }
-                                                            if (rex_addon::get('rex_markitup')->isAvailable()) {
-                                                                  $description = rex_markitup::parseOutput('textile', $description);
-                                                              }
-                                                              echo $description;
-                                                        ?>
+                                    if (rex_addon::get('textile')->isAvailable()) {
+                                        $description = str_replace('<br />', '', $description);
+                                        $description = rex_textile::parse($description);
+                                        $description = str_replace('###', '&#x20;', $description);
+                                    }
+                        if (rex_addon::get('rex_markitup')->isAvailable()) {
+                            $description = rex_markitup::parseOutput('textile', $description);
+                        }
+                        echo $description;
+                        ?>
                                                     </div>
                                                 </div>
                                                 <?php
-                                            }
-                                            else
-                                            {
-                                                ?>
+                    } else {
+                        ?>
                                                 <h4><?= $aufgabe["title"] ?></h4>
                                                 <?php
-                                            }
+                    }
 
-                                            echo getStatusLinks($aufgabe["status"], $aufgabe["id"]);
-                                            ?>
+                    echo getStatusLinks($aufgabe["status"], $aufgabe["id"]);
+                    ?>
                                             <hr>
                                             <span class="responsible">
                                                 <?php echo $this->i18n('aufgaben_kanban_responsible'); ?>: <?= getresponsible($aufgabe["responsible"]); ?>
@@ -309,8 +279,8 @@ if (rex_post('updateprio') == "true")
                                     </div>
                                 </article>
                                 <?php
-                            }
-                            ?>
+                }
+    ?>
                         </div>
                     </div>
                     <div class="panel-footer">
@@ -319,7 +289,7 @@ if (rex_post('updateprio') == "true")
                 </div>
 
                 <?php
-            }
+}
 
 ?>
         </div>
@@ -375,13 +345,12 @@ if (rex_post('updateprio') == "true")
                                 <div class="rex-select-style">
                                     <select name="responsible" size="1" id="rex-aufgaben-responsible" class="form-control">
                                         <?php
-                                        foreach ($sql_zustaendig->getArray() as $zustaendig)
-                                        {
+                                        foreach ($sql_zustaendig->getArray() as $zustaendig) {
                                             var_dump($zustaendig);
                                             ##taskecho '<option value="' . $zustaendig["id"] . '">' . $zustaendig["login"] . '</option>';
                                             echo '<option value="' . $zustaendig["id"] . '">' . $zustaendig["name"] . '</option>';
                                         }
-                                        ?>
+?>
                                     </select>
                                 </div>
                             </dd>
@@ -394,12 +363,11 @@ if (rex_post('updateprio') == "true")
                                 <div class="rex-select-style">
                                     <select name="status" size="1" id="rex-aufgaben-status" class="form-control">
                                         <?php
-                                            foreach ($sql_status->getArray() as $status)
-                                            {
-                                                var_dump($status);
-                                                echo '<option value="' . $status["id"] . '">' . $status["status"] . '</option>';
-                                            }
-                                        ?>
+    foreach ($sql_status->getArray() as $status) {
+        var_dump($status);
+        echo '<option value="' . $status["id"] . '">' . $status["status"] . '</option>';
+    }
+?>
                                     </select>
                                 </div>
                             </dd>
@@ -454,12 +422,11 @@ if (rex_post('updateprio') == "true")
                                 <div class="rex-select-style">
                                     <select name="category" size="1" id="rex-aufgaben-category-name" class="form-control">
                                         <?php
-                                            foreach ($sql_categories->getArray() as $category)
-                                            {
-                                                var_dump($category);
-                                                echo '<option value="' . $category["id"] . '">'.$category["category"] . '</option>';
-                                            }
-                                        ?>
+    foreach ($sql_categories->getArray() as $category) {
+        var_dump($category);
+        echo '<option value="' . $category["id"] . '">'.$category["category"] . '</option>';
+    }
+?>
                                     </select>
                                 </div>
                             </dd>
@@ -471,12 +438,11 @@ if (rex_post('updateprio') == "true")
                                 <div class="rex-select-style">
                                     <select name="responsible" size="1" id="rex-aufgaben-responsible" class="form-control">
                                         <?php
-                                            foreach ($sql_zustaendig->getArray() as $zustaendig)
-                                            {
-                                                echo '<option value="' . $zustaendig["id"] . '">' . $zustaendig["name"] . '</option>';
-  
-                                            }
-                                        ?>
+    foreach ($sql_zustaendig->getArray() as $zustaendig) {
+        echo '<option value="' . $zustaendig["id"] . '">' . $zustaendig["name"] . '</option>';
+
+    }
+?>
                                     </select>
                                 </div>
                             </dd>
@@ -489,12 +455,11 @@ if (rex_post('updateprio') == "true")
                                 <div class="rex-select-style">
                                     <select name="status" size="1" id="rex-aufgaben-status" class="form-control">
                                         <?php
-                                            foreach ($sql_status->getArray() as $status)
-                                            {
-                                                var_dump($status);
-                                                echo '<option value="' . $status["id"] . '">' . $status["status"] . '</option>';
-                                            }
-                                        ?>
+    foreach ($sql_status->getArray() as $status) {
+        var_dump($status);
+        echo '<option value="' . $status["id"] . '">' . $status["status"] . '</option>';
+    }
+?>
                                     </select>
                                 </div>
                             </dd>
