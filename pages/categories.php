@@ -34,7 +34,7 @@ if ($func == '') {
     $list->setNoRowsMessage('<div class="alert alert-info" role="alert">'.$this->i18n('aufgaben_categories_no_category').'</div>');
 
     // icon column
-    $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '" title="'.$this->i18n('aufgaben_categories_category_add').'"><i class="rex-icon rex-icon-add-action"></i></a>';
+    $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '" title="'.$this->i18n('aufgaben_categories_category_add').'"><i class="rex-icon rex-icon-add"></i></a>';
     $tdIcon = '<i class="rex-icon fa-file-text-o"></i>';
     $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon">###VALUE###</td>']);
     $list->setColumnParams($thIcon, ['func' => 'edit', 'id' => '###id###']);

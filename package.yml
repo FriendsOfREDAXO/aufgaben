@@ -14,8 +14,7 @@ page:
   icon: rex-icon fa-calendar-check-o
 
 requires:
-    redaxo: '>=5.2.0, <6'
     packages:
-        be_style: '>=2.1.0, <4'
+        be_style: '>=2.1.0'
         phpmailer: '>=2.0.1'
- 
+    redaxo: '>=5.2.0'
