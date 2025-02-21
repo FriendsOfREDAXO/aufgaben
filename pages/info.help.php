@@ -4,13 +4,13 @@ $func = rex_request('func', 'string');
 
 if ($func == 'import_beispieldaten') {
 
-  $current_user  = rex::getUser()->getId();
-  $sql = rex_sql::factory();
-  //$sql->setDebug();
-  $sql->setQuery('SELECT * FROM rex_user WHERE id = '.$current_user);
-  $user = $sql->getValue('login');
+    $current_user  = rex::getUser()->getId();
+    $sql = rex_sql::factory();
+    //$sql->setDebug();
+    $sql->setQuery('SELECT * FROM rex_user WHERE id = '.$current_user);
+    $user = $sql->getValue('login');
 
-  $qry = "
+    $qry = "
 
   -- Aufgaben
 
@@ -37,15 +37,15 @@ if ($func == 'import_beispieldaten') {
   INSERT IGNORE `rex_aufgaben_user_settings` VALUES (1,$current_user,5);
   ";
 
-  $sql = rex_sql::factory();
-  // $sql->setDebug();
-  $sql->setQuery($qry);
+    $sql = rex_sql::factory();
+    // $sql->setDebug();
+    $sql->setQuery($qry);
 
-  echo '<div class="alert alert-success">Der Beispieldaten wurden eingefügt.</div>';
-  $func = '';
+    echo '<div class="alert alert-success">Der Beispieldaten wurden eingefügt.</div>';
+    $func = '';
 }
 
-$file = rex_file::get(rex_path::addon('aufgaben','README.md'));
+$file = rex_file::get(rex_path::addon('aufgaben', 'README.md'));
 $Parsedown = new Parsedown();
 $content =  '<div id="aufgaben">'.$Parsedown->text($file);
 

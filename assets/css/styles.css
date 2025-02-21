@@ -1145,7 +1145,7 @@
 }
 
 #aufgaben .priowrapper a i.fa-star-o:hover {
-    color: #f0ad4e
+    color: #fff
 }
 
 #aufgaben .collapsetitle {
@@ -1155,7 +1155,7 @@
 
 #aufgaben .collapsetitle:hover {
     cursor: pointer;
-    color: #000
+    color: #fff
 }
 
 #aufgaben .td_aufgaben {
@@ -1217,7 +1217,7 @@
 }
 
 #aufgaben tbody tr:nth-child(odd) {
-    background-color: #efefef
+    background-color: #263f78
 }
 
 #aufgaben thead {
@@ -1304,7 +1304,7 @@
 }
 
 #aufgaben .rex-select-style.intable option {
-    background: #ff0 !important
+    background: #263f78 !important
 }
 
 #rex-page-aufgaben-aufgaben .markitupEditor-simple {

@@ -6,17 +6,17 @@ $content = '<div id="aufgaben">';
 
 $func = rex_request('func', 'string');
 if ($func == 'update') {
-  $this->setConfig(rex_post('config', [
-        ['ansicht', 'string'],
-        ['mails', 'array[string]'],
-        ['time', 'integer'],
-		['absender', 'string'],
-		['betreff', 'string'],
-		['send-to-all', 'string']
-    ]));
+    $this->setConfig(rex_post('config', [
+          ['ansicht', 'string'],
+          ['mails', 'array[string]'],
+          ['time', 'integer'],
+          ['absender', 'string'],
+          ['betreff', 'string'],
+          ['send-to-all', 'string']
+      ]));
 
-  header('Location: '.rex_getUrl(rex_url::currentBackendPage()));
-  exit;
+    header('Location: '.rex_getUrl(rex_url::currentBackendPage()));
+    exit;
 }
 
 $content .=  '
@@ -93,13 +93,13 @@ $sql_mail->setTable('rex_user');
 $sql_mail->setWhere('email !="" AND status = 1');
 $sql_mail->select();
 if ($sql_mail->getRows()) {
-  for($i=0; $i<$sql_mail->getRows(); $i++) {
-    $tableSelect->addOption($sql_mail->getValue('email'), $sql_mail->getValue('email'));
-    if (in_array($sql_mail->getValue('email'), $this->getConfig('mails'))) {
-        $tableSelect->setSelected($sql_mail->getValue('email'));
+    for ($i = 0; $i < $sql_mail->getRows(); $i++) {
+        $tableSelect->addOption($sql_mail->getValue('email'), $sql_mail->getValue('email'));
+        if (in_array($sql_mail->getValue('email'), $this->getConfig('mails'))) {
+            $tableSelect->setSelected($sql_mail->getValue('email'));
+        }
+        $sql_mail->next();
     }
-    $sql_mail->next();
-  }
 }
 
 $n = [];
@@ -147,5 +147,3 @@ $fragment->setVar('class', 'edit');
 $fragment->setVar('title', $this->i18n('aufgaben_settings_title'));
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');
-
-

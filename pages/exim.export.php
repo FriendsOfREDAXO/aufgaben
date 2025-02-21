@@ -1,4 +1,5 @@
 <?php
+
 $qry = rex_sql::factory();
 $qry->setTable('rex_aufgaben');
 $qry->select('*');
@@ -13,7 +14,7 @@ if (rex_post('export', 'bool')) {
     $sql->select("*");
     $kategorien = $sql->getArray();
     $kategorienArray = [];
-    foreach($kategorien as $kategorie) {
+    foreach ($kategorien as $kategorie) {
         $kategorienArray[$kategorie["id"]] = $kategorie["category"];
     }
 
@@ -23,7 +24,7 @@ if (rex_post('export', 'bool')) {
     $sql->select("*");
     $eigentuemer = $sql->getArray();
     $eigentuemerArray = [];
-    foreach($eigentuemer as $eigentuem) {
+    foreach ($eigentuemer as $eigentuem) {
         $eigentuemerArray[$eigentuem["id"]] = $eigentuem["login"];
     }
 
@@ -33,7 +34,7 @@ if (rex_post('export', 'bool')) {
     $sql->select("*");
     $stati = $sql->getArray();
     $statiArray = [];
-    foreach($stati as $status) {
+    foreach ($stati as $status) {
         $statiArray[$status["id"]] = $status["status"];
     }
 
@@ -41,7 +42,7 @@ if (rex_post('export', 'bool')) {
 
     $qryArray = [];
     $firstLineKeys = false;
-    foreach($qry->getArray() as $line) {
+    foreach ($qry->getArray() as $line) {
         if (empty($firstLineKeys)) {
             $firstLineKeys = array_keys($line);
             $firstLineKeys = array_flip($firstLineKeys);
@@ -81,11 +82,10 @@ if (rex_post('export', 'bool')) {
         $firstLineKeys = false;
         function encode_items($array)
         {
-            foreach($array as $key => $value) {
+            foreach ($array as $key => $value) {
                 if (is_array($value)) {
                     $array[$key] = encode_items($value);
-                }
-                else {
+                } else {
                     $array[$key] = mb_convert_encoding($value, 'Windows-1252', 'UTF-8');
                 }
             }
@@ -93,7 +93,7 @@ if (rex_post('export', 'bool')) {
             return $array;
         }
 
-        foreach(encode_items($qryArray) as $line) {
+        foreach (encode_items($qryArray) as $line) {
             if (empty($firstLineKeys)) {
                 $firstLineKeys = array_keys($line);
                 fputcsv($file, $firstLineKeys);
@@ -112,9 +112,9 @@ if (rex_post('export', 'bool')) {
 }
 
 $content = '<div id="aufgaben">';
-$content.= '<form action="' . rex_url::currentBackendPage() . '" data-pjax="false" method="post">';
-$content.= '<fieldset>';
-$content.= '<dl class="rex-form-group form-group">
+$content .= '<form action="' . rex_url::currentBackendPage() . '" data-pjax="false" method="post">';
+$content .= '<fieldset>';
+$content .= '<dl class="rex-form-group form-group">
     <dt>Dateityp wählen</dt>
         <dd>
             <dl class="rex-form-group form-group">
@@ -141,12 +141,11 @@ $content.= '<dl class="rex-form-group form-group">
             </dl>
         </dd>
     </dl>';
-$content.= '</fieldset>';
-$content.= '</form>';
-$content.= '</div>';
+$content .= '</fieldset>';
+$content .= '</form>';
+$content .= '</div>';
 $fragment = new rex_fragment();
 $fragment->setVar('class', 'edit', false);
 $fragment->setVar('title', $this->i18n('aufgaben_exim_export'));
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');
-?>
