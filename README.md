@@ -1,4 +1,5 @@
-***Falls jemand das AddOn "übernehmen" möchte bitte gerne :-)***
+🚨Das AddOn wurde archiviert und wird nicht mehr fortgeführt. 
+Nachfolger: https://github.com/FriendsOfREDAXO/issue_tracker
 
 ---
 
